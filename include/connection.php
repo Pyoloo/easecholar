@@ -1,6 +1,12 @@
 <?php
+$dbServer = "easecholar.mysql.database.azure.com";
+$dbUsername = "easecholar";
+$dbPassword = "IphonenaMaarte0208";
+$dbName = "easecholar";
 
-$dbConn = mysqli_connect ("localhost", "root", "") or die ('MySQL connect failed. ' );
-mysqli_select_db($dbConn, "easecholar") or die('Cannot select database. '  );
+$dbConn = mysqli_connect($dbServer, $dbUsername, $dbPassword, $dbName);
 
+if (!$dbConn) {
+    die("Connection failed: " . mysqli_connect_error());
+}
 ?>
