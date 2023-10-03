@@ -1,8 +1,8 @@
 <?php
 $serverName = "easecholar.mysql.database.azure.com";
-$databaseName = "easecholar"; // Replace with your actual database name
+$databaseName = "easecholar";
 $username = "easecholar";
-$password = "your-password"; // Replace with your actual password
+$password = "IphonenaMaarte0208"; 
 
 // Construct the connection string
 $connectionString = "Server=$serverName;Database=$databaseName;User Id=$username;Password=$password;";
