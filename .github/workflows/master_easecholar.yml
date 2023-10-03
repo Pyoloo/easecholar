@@ -56,5 +56,5 @@ jobs:
         with:
           app-name: 'easecholar'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_5428C6EEE3DE4BDBB2FED24B13AF6394 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_F848A23C837545A3B920E95C08BB0629 }}
           package: .
