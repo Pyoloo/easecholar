@@ -103,7 +103,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $uploadedFiles = array();
 
         // Specify the target directory using $_SERVER['DOCUMENT_ROOT']
-        $targetDirectory = $_SERVER['DOCUMENT_ROOT'] . '/EASE-CHOLAR/file_uploads/';
+        $targetDirectory = $_SERVER['DOCUMENT_ROOT'] . '/file_uploads/';
 
         for ($i = 0; $i < $fileCount; $i++) {
             $fileName = $file["name"][$i];

@@ -52,7 +52,7 @@ if (isset($_POST['submit'])) {
                         $base_url = 'http://localhost/EASE-CHOLAR/Applicant%20WSASystem/';
                     } else {
 
-                        $base_url = 'https://easecholarship.me/Applicant%20WSASystem/';
+                        $base_url = 'https://easecholar.azurewebsites.net/Applicant%20WSASystem/';
                     }
 
                     $verification_link = $base_url . 'verify.php?email=' . urlencode($email) . '&token=' . $verification_token;

@@ -132,7 +132,7 @@ $select = mysqli_query($conn, "SELECT * FROM tbl_userapp") or die('query failed'
                         <?php while ($row = mysqli_fetch_assoc($notifications)) { ?>
                             <div class="notify_item">
                                 <div class="notify_img">
-                                    <img src='/EASE-CHOLAR/user_profiles/<?php echo $row['image']; ?>' alt="" style="width: 50px">
+                                    <img src='../user_profiles/<?php echo $row['image']; ?>' alt="" style="width: 50px">
                                 </div>
                                 <div class="notify_info">
                                     <p><?php echo $row['message']; ?></p>
@@ -157,7 +157,7 @@ $select = mysqli_query($conn, "SELECT * FROM tbl_userapp") or die('query failed'
                         $select_osa = mysqli_query($conn, "SELECT * FROM `tbl_admin` WHERE admin_id = '$admin_id'") or die('query failed');
                         $fetch = mysqli_fetch_assoc($select_osa);
                         if ($fetch && $fetch['profile'] != '') {
-                            $imagePath = $_SERVER['DOCUMENT_ROOT'] . '/EASE-CHOLAR/user_profiles/' . $fetch['profile'];
+                            $imagePath = $_SERVER['DOCUMENT_ROOT'] . '/user_profiles/' . $fetch['profile'];
 
                             if (file_exists($imagePath)) {
                                 echo '<img src="../user_profiles/' . $fetch['profile'] . '">';

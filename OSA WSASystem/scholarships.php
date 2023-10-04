@@ -138,7 +138,7 @@ function formatExpireDate($dbExpireDate)
                         <?php while ($row = mysqli_fetch_assoc($notifications)) { ?>
                             <div class="notify_item">
                                 <div class="notify_img">
-                                    <img src='/EASE-CHOLAR/user_profiles/<?php echo $row['image']; ?>' alt="" style="width: 50px">
+                                    <img src='../user_profiles/<?php echo $row['image']; ?>' alt="" style="width: 50px">
                                 </div>
                                 <div class="notify_info">
                                     <p><?php echo $row['message']; ?></p>
@@ -164,7 +164,7 @@ function formatExpireDate($dbExpireDate)
                         $fetch = mysqli_fetch_assoc($select_osa);
                         if ($fetch && $fetch['profile'] != '') {
                             // Build the absolute path to the image using $_SERVER['DOCUMENT_ROOT']
-                            $imagePath = $_SERVER['DOCUMENT_ROOT'] . '/EASE-CHOLAR/user_profiles/' . $fetch['profile'];
+                            $imagePath = $_SERVER['DOCUMENT_ROOT'] . '/user_profiles/' . $fetch['profile'];
 
                             if (file_exists($imagePath)) {
                                 echo '<img src="../user_profiles/' . $fetch['profile'] . '">';

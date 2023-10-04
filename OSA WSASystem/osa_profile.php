@@ -63,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         $file_name = uniqid('profile_') . '.' . $file_extension;
-        $upload_directory = $_SERVER['DOCUMENT_ROOT'] . '/EASE-CHOLAR/user_profiles/' . $file_name;
+        $upload_directory = $_SERVER['DOCUMENT_ROOT'] . '/user_profiles/' . $file_name;
 
         if (move_uploaded_file($profile['tmp_name'], $upload_directory)) {
             // Store only the file name in the database
@@ -137,7 +137,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <?php
 
                     if (!empty($profile_path)) {
-                        echo "<img src='/EASE-CHOLAR/user_profiles/{$profile_path}' width='150' height='150'>";
+                        echo "<img src='../user_profiles/{$profile_path}' width='150' height='150'>";
                     }
                     ?>
                     <label for="profile">Profile Picture:</label>

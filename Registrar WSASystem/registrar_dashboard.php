@@ -224,7 +224,7 @@ $select = mysqli_query($conn, "SELECT * FROM tbl_userapp") or die('query failed'
                         <?php while ($row = mysqli_fetch_assoc($notifications)) { ?>
                             <div class="notify_item">
                                 <div class="notify_img">
-                                    <img src='/EASE-CHOLAR/user_profiles/<?php echo $row['image']; ?>' alt="" style="width: 50px">
+                                    <img src='../user_profiles/<?php echo $row['image']; ?>' alt="" style="width: 50px">
                                 </div>
                                 <div class="notify_info">
                                     <p><?php echo $row['message']; ?></p>
@@ -250,10 +250,10 @@ $select = mysqli_query($conn, "SELECT * FROM tbl_userapp") or die('query failed'
                         $fetch = mysqli_fetch_assoc($select_registrar);
                         if ($fetch && $fetch['profile'] != '') {
                             // Build the absolute path to the image using $_SERVER['DOCUMENT_ROOT']
-                            $imagePath = $_SERVER['DOCUMENT_ROOT'] . '/EASE-CHOLAR/user_profiles/' . $fetch['profile'];
+                            $imagePath = $_SERVER['DOCUMENT_ROOT'] . '/user_profiles/' . $fetch['profile'];
 
                             if (file_exists($imagePath)) {
-                                echo '<img src="/EASE-CHOLAR/user_profiles/' . $fetch['profile'] . '">';
+                                echo '<img src="../user_profiles/' . $fetch['profile'] . '">';
                             } else {
                                 echo '<img src="img/default-avatar.png">';
                             }
@@ -365,7 +365,7 @@ $select = mysqli_query($conn, "SELECT * FROM tbl_userapp") or die('query failed'
                                 }
                                 echo '
                             <tr>
-                                <td><img src="/EASE-CHOLAR/user_profiles/' . $row['image'] . '" alt="">' . $row['applicant_name'] . '</td>
+                                <td><img src="../user_profiles/' . $row['image'] . '" alt="">' . $row['applicant_name'] . '</td>
                                 <td>' . formatDateSubmitted($row['date_submitted']) . '</td>
                                 <td><p class="status ' . $statusClass . '">' . $row['status'] . '</td>
                             </tr>

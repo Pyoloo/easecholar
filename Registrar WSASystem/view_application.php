@@ -118,7 +118,7 @@ if (isset($_POST['message_content'])) {
         <form action="" method="POST" enctype="multipart/form-data">
             <div class="container">
                 <div class="head">
-                    <div class="img"><img src="/EASE-CHOLAR/user_profiles/<?php echo $applicationData['image']; ?>" alt="Profile"></div>
+                    <div class="img"><img src="../user_profiles/<?php echo $applicationData['image']; ?>" alt="Profile"></div>
                     <p>Applicant Name: <?php echo $applicationData['applicant_name']; ?></p>
                     <div class="reminder">
                         <h2>Status: <?php echo $status; ?></h2>
@@ -244,7 +244,7 @@ if (isset($_POST['message_content'])) {
                 if (!empty($applicationData['file'])) {
                     $fileNames = explode(',', $applicationData['file']);
                     foreach ($fileNames as $fileName) {
-                        $filePath = '/EASE-CHOLAR/file_uploads/' . $fileName;
+                        $filePath = '../file_uploads/' . $fileName;
                         // Update the file path
                         if (file_exists($_SERVER['DOCUMENT_ROOT'] . $filePath)) {
                             echo '<p>File: <a href="' . $filePath . '" target="_blank">' . $fileName . '</a></p>';

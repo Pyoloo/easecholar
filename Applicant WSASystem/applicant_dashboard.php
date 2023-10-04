@@ -298,7 +298,7 @@ if ($rowUserInfo = mysqli_fetch_assoc($resultUserInfo)) {
                         $fetch = mysqli_fetch_assoc($select_user);
                         if ($fetch && $fetch['image'] != '') {
                             // Build the absolute path to the image using $_SERVER['DOCUMENT_ROOT']
-                            $imagePath = $_SERVER['DOCUMENT_ROOT'] . '/EASE-CHOLAR/user_profiles/' . $fetch['image'];
+                            $imagePath = $_SERVER['DOCUMENT_ROOT'] . '/user_profiles/' . $fetch['image'];
 
                             if (file_exists($imagePath)) {
                                 echo '<img src="../user_profiles/' . $fetch['image'] . '">';

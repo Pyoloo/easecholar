@@ -184,7 +184,7 @@ $select = mysqli_query($conn, "SELECT * FROM tbl_userapp WHERE status = 'Pending
                         <?php while ($row = mysqli_fetch_assoc($notifications)) { ?>
                             <div class="notify_item">
                                 <div class="notify_img">
-                                    <img src='/EASE-CHOLAR/user_profiles/<?php echo $row['image']; ?>' alt="" style="width: 50px">
+                                    <img src='../user_profiles/<?php echo $row['image']; ?>' alt="" style="width: 50px">
                                 </div>
                                 <div class="notify_info">
                                     <p><?php echo $row['message']; ?></p>
@@ -210,7 +210,7 @@ $select = mysqli_query($conn, "SELECT * FROM tbl_userapp WHERE status = 'Pending
                         $fetch = mysqli_fetch_assoc($select_osa);
                         if ($fetch && $fetch['profile'] != '') {
                             // Build the absolute path to the image using $_SERVER['DOCUMENT_ROOT']
-                            $imagePath = $_SERVER['DOCUMENT_ROOT'] . '/EASE-CHOLAR/user_profiles/' . $fetch['profile'];
+                            $imagePath = $_SERVER['DOCUMENT_ROOT'] . '/user_profiles/' . $fetch['profile'];
 
                             if (file_exists($imagePath)) {
                                 echo '<img src="../user_profiles/' . $fetch['profile'] . '">';
@@ -352,7 +352,7 @@ $select = mysqli_query($conn, "SELECT * FROM tbl_userapp WHERE status = 'Pending
                         <?php
                         if ($result->num_rows > 0) {
                             while ($row = $result->fetch_assoc()) {
-                                echo '<li class="scholar_container"><img class="scholar_image" src="/EASE-CHOLAR/user_profiles/' . $row['image'] . '" alt=""> <span class="scholar_name">' . $row['applicant_name'] . ' </span> </li>';
+                                echo '<li class="scholar_container"><img class="scholar_image" src="../user_profiles/' . $row['image'] . '" alt=""> <span class="scholar_name">' . $row['applicant_name'] . ' </span> </li>';
                             }
                         } else {
                             echo '<li>No new scholars found.</li>';

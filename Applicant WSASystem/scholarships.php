@@ -265,7 +265,7 @@ function formatExpireDate($dbExpireDate)
                                         $admin_image = $_SESSION['profile'];
                                     } else {
                                         // Set a default value or handle the case when 'profile' is not set in the session
-                                        $admin_image = '/EASE-CHOLAR/default-avatar.png'; // Replace with the default image name or path
+                                        $admin_image = '../user_profiles/default-avatar.png'; // Replace with the default image name or path
                                     }
                                     ?>
                                     <img src='img/<?php echo $admin_image; ?>' alt="" style="width: 50px">
