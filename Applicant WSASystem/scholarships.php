@@ -299,7 +299,7 @@ function formatExpireDate($dbExpireDate)
                         $select_user = mysqli_query($conn, "SELECT * FROM `tbl_user` WHERE user_id = '$user_id'") or die('query failed');
                         $fetch = mysqli_fetch_assoc($select_user);
                         if ($fetch && $fetch['image'] != '') {
-                            $imagePath = $_SERVER['DOCUMENT_ROOT'] . '/EASE-CHOLAR/user_profiles/' . $fetch['image'];
+                            $imagePath = $_SERVER['DOCUMENT_ROOT'] . '/user_profiles/' . $fetch['image'];
 
                             if (file_exists($imagePath)) {
                                 echo '<img src="../user_profiles/' . $fetch['image'] . '">';
