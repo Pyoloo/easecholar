@@ -29,7 +29,7 @@ if (isset($_POST['submit'])) {
     } else {
         $filename = uniqid() . '_' . $image;
 
-        $targetDirectory = $_SERVER['DOCUMENT_ROOT'] . '/EASE-CHOLAR/user_profiles/';
+        $targetDirectory = $_SERVER['DOCUMENT_ROOT'] . '/user_profiles/';
 
         $targetPath = $targetDirectory . $filename;
 
