@@ -76,7 +76,6 @@
   padding: 40px;
   box-shadow: 10px 10px 5px rgba(0, 0, 0, 0.471);
   width: 300px;
-  height: 500px;
 }
 
 .log-in form .page-links {
@@ -151,6 +150,37 @@
 
 .log-in form .input-container.input-style.error {
   border-color: red;
+}
+.selected-image-container {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.image-container {
+  display: flex;
+  justify-content: center;
+
+}
+
+#image-label {
+  display: block;
+  color: white;
+  font-style: italic;
+
+}
+
+#selected-image {
+  width: 60px;
+  height: 60px;
+  border-radius: 30px;
+  border: 1px solid darkgreen;
+}
+.show-password {
+  display: flex;
+  color: white;
+  margin-bottom: 10px;
 }
 
 /* Media Queries */

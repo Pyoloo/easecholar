@@ -149,6 +149,9 @@ if (isset($_POST['submit'])) {
             height: 60px;
             border-radius: 30px;
         }
+        .show-password {
+            display: flex;
+        }
     </style>
 </head>
 
@@ -279,10 +282,10 @@ if (isset($_POST['submit'])) {
                     <i class="fa fa-lock"></i>
                 </span>
                 <input class="input-style" id="password" type="password" name="password" placeholder="LRN's number" required>
-                <label for="show-password">
-        <input type="checkbox" id="show-password"> Show Password
-    </label>
             </div>
+            <label class="show-password" for="show-password">
+                <input type="checkbox" id="show-password"> Show Password
+            </label>
 
             <div class="button">
                 <button type="submit" name="submit" class="submit">Submit</button>
