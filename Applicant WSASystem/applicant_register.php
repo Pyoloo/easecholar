@@ -279,6 +279,9 @@ if (isset($_POST['submit'])) {
                     <i class="fa fa-lock"></i>
                 </span>
                 <input class="input-style" id="password" type="password" name="password" placeholder="LRN's number" required>
+                <label for="show-password">
+        <input type="checkbox" id="show-password"> Show Password
+    </label>
             </div>
 
             <div class="button">
@@ -329,6 +332,16 @@ if (isset($_POST['submit'])) {
 
         // Call the function to display the selected image
         displaySelectedImage();
+
+        document.getElementById("show-password").addEventListener("change", function() {
+    var passwordInput = document.getElementById("password");
+    if (this.checked) {
+        passwordInput.type = "text";
+    } else {
+        passwordInput.type = "password";
+    }
+});
+
     </script>
 
 </body>
