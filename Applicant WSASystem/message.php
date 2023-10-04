@@ -18,10 +18,10 @@ if (isset($_GET['application_id'])) {
 
     // Retrieve message content from 'tbl_user_messages' using prepared statement
     $messageQuery = "SELECT `message_content` FROM `tbl_user_messages` WHERE `application_id` = ?";
-    $stmt = mysqli_prepare($dbConn, $messageQuery);
+    $stmt = mysqli_prepare($conn, $messageQuery);
 
     if (!$stmt) {
-        echo "Error preparing query: " . mysqli_error($dbConn);
+        echo "Error preparing query: " . mysqli_error($conn);
         exit();
     }
 
@@ -30,7 +30,7 @@ if (isset($_GET['application_id'])) {
     $messageResult = mysqli_stmt_get_result($stmt);
 
     if (!$messageResult) {
-        echo "Error executing query: " . mysqli_error($dbConn);
+        echo "Error executing query: " . mysqli_error($conn);
         exit();
     }
 

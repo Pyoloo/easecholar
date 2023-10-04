@@ -4,11 +4,11 @@ session_name("ApplicantSession");
 session_start();
 
 if (isset($_POST['submit'])) {
-    $emailOrStudentNum = mysqli_real_escape_string($dbConn, $_POST['email_or_student_num']);
-    $password = mysqli_real_escape_string($dbConn, $_POST['password']);
+    $emailOrStudentNum = mysqli_real_escape_string($conn, $_POST['email_or_student_num']);
+    $password = mysqli_real_escape_string($conn, $_POST['password']);
 
     // Use a prepared statement to prevent SQL injection
-    $query = mysqli_prepare($dbConn, "SELECT * FROM tbl_user WHERE (email = ? OR student_num = ?) AND acc_status = 'verified'");
+    $query = mysqli_prepare($conn, "SELECT * FROM tbl_user WHERE (email = ? OR student_num = ?) AND acc_status = 'verified'");
     mysqli_stmt_bind_param($query, "ss", $emailOrStudentNum, $emailOrStudentNum);
     mysqli_stmt_execute($query);
     $result = mysqli_stmt_get_result($query);
@@ -22,7 +22,7 @@ if (isset($_POST['submit'])) {
         }
     } else {
         // Check if the user exists in the database (not verified)
-        $query = mysqli_prepare($dbConn, "SELECT * FROM tbl_user WHERE email = ? OR student_num = ?");
+        $query = mysqli_prepare($conn, "SELECT * FROM tbl_user WHERE email = ? OR student_num = ?");
         mysqli_stmt_bind_param($query, "ss", $emailOrStudentNum, $emailOrStudentNum);
         mysqli_stmt_execute($query);
         $result = mysqli_stmt_get_result($query);

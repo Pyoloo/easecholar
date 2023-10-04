@@ -4,10 +4,10 @@ session_name("OsaSession");
 session_start();
 
 if (isset($_POST['submit'])) {
-    $usernameOrEmail = mysqli_real_escape_string($dbConn, $_POST['username_or_email']);
-    $password = mysqli_real_escape_string($dbConn, $_POST['password']);
+    $usernameOrEmail = mysqli_real_escape_string($conn, $_POST['username_or_email']);
+    $password = mysqli_real_escape_string($conn, $_POST['password']);
 
-    $stmt = mysqli_prepare($dbConn, "SELECT * FROM tbl_admin WHERE (username = ? OR email = ?) AND role = 'OSA'");
+    $stmt = mysqli_prepare($conn, "SELECT * FROM tbl_admin WHERE (username = ? OR email = ?) AND role = 'OSA'");
     mysqli_stmt_bind_param($stmt, "ss", $usernameOrEmail, $usernameOrEmail);
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);

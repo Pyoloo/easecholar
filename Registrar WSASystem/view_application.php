@@ -23,10 +23,10 @@ if (isset($_GET['id'])) {
 
     // Retrieve application details from 'tbl_userapp' using prepared statement
     $query = "SELECT * FROM `tbl_userapp` WHERE `application_id` = ?";
-    $stmt = mysqli_prepare($dbConn, $query);
+    $stmt = mysqli_prepare($conn, $query);
 
     if (!$stmt) {
-        echo "Error preparing query: " . mysqli_error($dbConn);
+        echo "Error preparing query: " . mysqli_error($conn);
         exit();
     }
 
@@ -35,7 +35,7 @@ if (isset($_GET['id'])) {
     $result = mysqli_stmt_get_result($stmt);
 
     if (!$result) {
-        echo "Error executing query: " . mysqli_error($dbConn);
+        echo "Error executing query: " . mysqli_error($conn);
         exit();
     }
 
@@ -48,10 +48,10 @@ if (isset($_GET['id'])) {
 
     // Retrieve status from 'tbl_userapp' using prepared statement
     $statusQuery = "SELECT `grade_status` FROM `tbl_userapp` WHERE `application_id` = ?";
-    $statusStmt = mysqli_prepare($dbConn, $statusQuery);
+    $statusStmt = mysqli_prepare($conn, $statusQuery);
 
     if (!$statusStmt) {
-        echo "Error preparing query: " . mysqli_error($dbConn);
+        echo "Error preparing query: " . mysqli_error($conn);
         exit();
     }
 
@@ -60,7 +60,7 @@ if (isset($_GET['id'])) {
     $statusResult = mysqli_stmt_get_result($statusStmt);
 
     if (!$statusResult) {
-        echo "Error executing query: " . mysqli_error($dbConn);
+        echo "Error executing query: " . mysqli_error($conn);
         exit();
     }
 
@@ -78,10 +78,10 @@ if (isset($_POST['message_content'])) {
     // Insert the message into 'tbl_user_messages' using prepared statement
     $insertQuery = "INSERT INTO `tbl_user_messages` (`application_id`, `registrar_id`, `message_content`, `sent_at`)
                     VALUES (?, ?, ?, NOW())";
-    $insertStmt = mysqli_prepare($dbConn, $insertQuery);
+    $insertStmt = mysqli_prepare($conn, $insertQuery);
 
     if (!$insertStmt) {
-        echo "Error preparing query: " . mysqli_error($dbConn);
+        echo "Error preparing query: " . mysqli_error($conn);
         exit();
     }
 
@@ -94,7 +94,7 @@ if (isset($_POST['message_content'])) {
         header("Location: view_application.php?id=$application_id");
         exit();
     } else {
-        echo "Error sending message: " . mysqli_error($dbConn);
+        echo "Error sending message: " . mysqli_error($conn);
     }
 }
 ?>

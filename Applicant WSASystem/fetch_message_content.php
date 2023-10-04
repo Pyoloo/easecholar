@@ -7,15 +7,15 @@ if (isset($_POST['message_id']) && isset($_POST['application_id']) && isset($_PO
     $adminId = $_POST['admin_id'];
 
     // Function to update the message status as read
-    function markMessageAsRead($dbConn, $messageId, $adminId)
+    function markMessageAsRead($conn, $messageId, $adminId)
     {
         $updateQuery = "UPDATE tbl_user_messages SET read_status = 'read' WHERE message_id = ? AND admin_id = ?";
-        $stmtUpdate = mysqli_prepare($dbConn, $updateQuery);
+        $stmtUpdate = mysqli_prepare($conn, $updateQuery);
         mysqli_stmt_bind_param($stmtUpdate, "ii", $messageId, $adminId);
         mysqli_stmt_execute($stmtUpdate);
     }
 
-    $selectMessage = mysqli_prepare($dbConn, "SELECT osa_message_content FROM tbl_user_messages WHERE message_id = ? AND application_id = ? AND admin_id = ?");
+    $selectMessage = mysqli_prepare($conn, "SELECT osa_message_content FROM tbl_user_messages WHERE message_id = ? AND application_id = ? AND admin_id = ?");
     mysqli_stmt_bind_param($selectMessage, "iii", $messageId, $applicationId, $adminId);
     mysqli_stmt_execute($selectMessage);
     $result = mysqli_stmt_get_result($selectMessage);

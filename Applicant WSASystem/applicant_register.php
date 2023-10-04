@@ -5,17 +5,17 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
 if (isset($_POST['submit'])) {
-    $full_name = mysqli_real_escape_string($dbConn, $_POST['full_name']);
-    $email = mysqli_real_escape_string($dbConn, $_POST['email']);
-    $student_num = mysqli_real_escape_string($dbConn, $_POST['student_num']);
-    $password = mysqli_real_escape_string($dbConn, $_POST['password']);
+    $full_name = mysqli_real_escape_string($conn, $_POST['full_name']);
+    $email = mysqli_real_escape_string($conn, $_POST['email']);
+    $student_num = mysqli_real_escape_string($conn, $_POST['student_num']);
+    $password = mysqli_real_escape_string($conn, $_POST['password']);
     $image = $_FILES['image']['name'];
     $image_size = $_FILES['image']['size'];
     $image_tmp_name = $_FILES['image']['tmp_name'];
     $image_type = $_FILES['image']['type'];
     $maxImageSize = 1024 * 1024;
 
-    $query = mysqli_prepare($dbConn, "SELECT * FROM `tbl_user` WHERE email = ? OR student_num = ?");
+    $query = mysqli_prepare($conn, "SELECT * FROM `tbl_user` WHERE email = ? OR student_num = ?");
     mysqli_stmt_bind_param($query, "ss", $email, $student_num);
     mysqli_stmt_execute($query);
     $result = mysqli_stmt_get_result($query);
@@ -41,7 +41,7 @@ if (isset($_POST['submit'])) {
                 // Generate a verification token
                 $verification_token = bin2hex(random_bytes(16));
 
-                $insert = mysqli_prepare($dbConn, "INSERT INTO `tbl_user` (custom_id, full_name, student_num, email, password, image, verification_token) VALUES(?, ?, ?, ?, ?, ?, ?)");
+                $insert = mysqli_prepare($conn, "INSERT INTO `tbl_user` (custom_id, full_name, student_num, email, password, image, verification_token) VALUES(?, ?, ?, ?, ?, ?, ?)");
                 mysqli_stmt_bind_param($insert, "sssssss", $custom_id, $full_name, $student_num, $email, $password, $filename, $verification_token);
 
                 if (mysqli_stmt_execute($insert)) {

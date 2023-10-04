@@ -7,7 +7,7 @@ if (isset($_POST['submit'])) {
   $username = $_POST["username"];
   $password = $_POST["password"];
 
-  $stmt = mysqli_prepare($dbConn, "SELECT * FROM tbl_registrar WHERE username = ?");
+  $stmt = mysqli_prepare($conn, "SELECT * FROM tbl_registrar WHERE username = ?");
   mysqli_stmt_bind_param($stmt, "s", $username);
   mysqli_stmt_execute($stmt);
   $result = mysqli_stmt_get_result($stmt);

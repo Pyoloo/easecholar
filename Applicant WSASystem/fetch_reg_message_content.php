@@ -9,16 +9,16 @@ if (isset($_POST['message_id']) && isset($_POST['application_id']) && isset($_PO
     $registrarId = $_POST['registrar_id'];
 
     // Function to update the message status as read
-    function markMessageAsRead($dbConn, $messageId, $registrarId)
+    function markMessageAsRead($conn, $messageId, $registrarId)
     {
         $updateQuery = "UPDATE tbl_reg_messages SET read_status = 'read' WHERE message_id = ? AND registrar_id = ?";
-        $stmtUpdate = mysqli_prepare($dbConn, $updateQuery);
+        $stmtUpdate = mysqli_prepare($conn, $updateQuery);
         mysqli_stmt_bind_param($stmtUpdate, "ii", $messageId, $registrarId);
         mysqli_stmt_execute($stmtUpdate);
     }
 
     // Check if the message is associated with the provided application ID and registrar ID
-    $selectMessage = mysqli_prepare($dbConn, "SELECT registrar_message_content FROM tbl_reg_messages WHERE message_id = ? AND application_id = ? AND registrar_id = ?");
+    $selectMessage = mysqli_prepare($conn, "SELECT registrar_message_content FROM tbl_reg_messages WHERE message_id = ? AND application_id = ? AND registrar_id = ?");
     mysqli_stmt_bind_param($selectMessage, "iii", $messageId, $applicationId, $registrarId);
     mysqli_stmt_execute($selectMessage);
     $result = mysqli_stmt_get_result($selectMessage);

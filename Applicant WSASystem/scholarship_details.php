@@ -3,8 +3,8 @@ session_name("ApplicantSession");
 session_start();
 include('../include/connection.php');
 
-if ($dbConn->connect_error) {
-    die('Connection failed: ' . $dbConn->connect_errno);
+if ($conn->connect_error) {
+    die('Connection failed: ' . $conn->connect_errno);
 }
 
 if (isset($_GET['id']) && isset($_SESSION['user_id'])) {
@@ -13,7 +13,7 @@ if (isset($_GET['id']) && isset($_SESSION['user_id'])) {
 
     // Query to check if the user has already applied for this scholarship
     $sqlCheckApplication = "SELECT * FROM tbl_userapp WHERE user_id = ? AND scholarship_id = ?";
-    $stmtCheckApplication = $dbConn->prepare($sqlCheckApplication);
+    $stmtCheckApplication = $conn->prepare($sqlCheckApplication);
     $stmtCheckApplication->bind_param("ii", $user_id, $scholarshipId);
     $stmtCheckApplication->execute();
     $resultCheckApplication = $stmtCheckApplication->get_result();
@@ -25,7 +25,7 @@ if (isset($_GET['id']) && isset($_SESSION['user_id'])) {
     } else {
         // Check the scholarship status
         $sqlCheckScholarshipStatus = "SELECT scholarship_status FROM tbl_scholarship WHERE scholarship_id = ?";
-        $stmtCheckScholarshipStatus = $dbConn->prepare($sqlCheckScholarshipStatus);
+        $stmtCheckScholarshipStatus = $conn->prepare($sqlCheckScholarshipStatus);
         $stmtCheckScholarshipStatus->bind_param("i", $scholarshipId);
         $stmtCheckScholarshipStatus->execute();
         $resultCheckScholarshipStatus = $stmtCheckScholarshipStatus->get_result();
@@ -52,7 +52,7 @@ if (isset($_GET['id']) && isset($_SESSION['user_id'])) {
 
 
     $sql = "SELECT * FROM tbl_scholarship WHERE scholarship_id = $scholarshipId";
-    $result = $dbConn->query($sql);
+    $result = $conn->query($sql);
 
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();

@@ -7,17 +7,21 @@ if (isset($_POST['submit'])) {
     $username = $_POST["username"];
     $password = $_POST["password"];
 
-    $row = mysqli_fetch_assoc(mysqli_query($dbConn, "SELECT * FROM tbl_super_admin WHERE username = '$username'"));
+    $query = "SELECT * FROM tbl_super_admin WHERE username = '$username'";
+    $result = $conn->query($query);
 
-    if ($row && $password == $row['password']) {
-        $_SESSION["super_admin_id"] = $row["super_admin_id"];
-        $successMessage = "Login successfully!";
-    } elseif (isset($row)) {
-        // User exists, but wrong password
-        $incorrectMessage = 'Incorrect Username or Password!';
+    if ($result) {
+        $row = $result->fetch_assoc();
+        if ($row && $password == $row['password']) {
+            $_SESSION["super_admin_id"] = $row["super_admin_id"];
+            $successMessage = "Login successfully!";
+        } else {
+            // User exists, but wrong password
+            $incorrectMessage = 'Incorrect Username or Password!';
+        }
     } else {
-        // User not registered
-        $notRegistered = "User not registered";
+        // Error executing the query
+        die("Error executing the query: " . $conn->error);
     }
 }
 ?>

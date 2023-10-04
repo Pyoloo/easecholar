@@ -29,10 +29,10 @@ if (isset($_GET['scholarship_name'])) {
 }
 
 $query = "SELECT application_id, scholarship_name, applicant_name, id_number, mobile_num FROM tbl_userapp WHERE status = 'Accepted'";
-$result = mysqli_query($dbConn, $query);
+$result = mysqli_query($conn, $query);
 
 if (!$result) {
-    die('Query failed: ' . mysqli_error($dbConn));
+    die('Query failed: ' . mysqli_error($conn));
 }
 
 $prevScholarshipName = '';

@@ -17,14 +17,14 @@ if (isset($_GET['logout'])) {
 }
 
 // No need to include the connection.php again here
-$select = mysqli_query($dbConn, "SELECT * FROM tbl_userapp WHERE status = 'Pending'") or die('query failed');
+$select = mysqli_query($conn, "SELECT * FROM tbl_userapp WHERE status = 'Pending'") or die('query failed');
 
 // Execute SQL queries to fetch counts for each status
-$pendingCount = mysqli_query($dbConn, "SELECT COUNT(*) as count FROM tbl_userapp WHERE status = 'Pending'")->fetch_assoc()['count'];
-$inReviewCount = mysqli_query($dbConn, "SELECT COUNT(*) as count FROM tbl_userapp WHERE status = 'In Review'")->fetch_assoc()['count'];
-$qualifiedCount = mysqli_query($dbConn, "SELECT COUNT(*) as count FROM tbl_userapp WHERE status = 'Qualified'")->fetch_assoc()['count'];
-$acceptedCount = mysqli_query($dbConn, "SELECT COUNT(*) as count FROM tbl_userapp WHERE status = 'Accepted'")->fetch_assoc()['count'];
-$rejectedCount = mysqli_query($dbConn, "SELECT COUNT(*) as count FROM tbl_userapp WHERE status = 'Rejected'")->fetch_assoc()['count'];
+$pendingCount = mysqli_query($conn, "SELECT COUNT(*) as count FROM tbl_userapp WHERE status = 'Pending'")->fetch_assoc()['count'];
+$inReviewCount = mysqli_query($conn, "SELECT COUNT(*) as count FROM tbl_userapp WHERE status = 'In Review'")->fetch_assoc()['count'];
+$qualifiedCount = mysqli_query($conn, "SELECT COUNT(*) as count FROM tbl_userapp WHERE status = 'Qualified'")->fetch_assoc()['count'];
+$acceptedCount = mysqli_query($conn, "SELECT COUNT(*) as count FROM tbl_userapp WHERE status = 'Accepted'")->fetch_assoc()['count'];
+$rejectedCount = mysqli_query($conn, "SELECT COUNT(*) as count FROM tbl_userapp WHERE status = 'Rejected'")->fetch_assoc()['count'];
 ?>
 
 
@@ -45,117 +45,6 @@ $rejectedCount = mysqli_query($dbConn, "SELECT COUNT(*) as count FROM tbl_userap
 
 
     <title>adminModule</title>
-    <style>
-        .notification .bxs-bell {
-            cursor: pointer;
-        }
-
-        .dropdown {
-            width: 350px;
-            height: auto;
-            background: whitesmoke;
-            border-radius: 5px;
-            box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.125);
-            margin: 15px auto 0;
-            padding: 15px;
-            position: absolute;
-            top: 40px;
-            /* Adjust the distance from the notification icon as needed */
-            right: 0;
-            /* To align it with the notification icon */
-            display: none;
-        }
-
-        .dropdown .notify_item {
-            display: flex;
-            align-items: center;
-            padding: 10px 0;
-            border-bottom: 1px solid #dbdaff;
-        }
-
-        .dropdown .notify_item:last-child {
-            border-bottom: 0px;
-        }
-
-        .dropdown .notify_item .notify_img {
-            margin-right: 15px;
-        }
-
-        .dropdown .notify_item .notify_info p {
-            margin-bottom: 5px;
-        }
-
-        .dropdown .notify_item .notify_info p span {
-            color: #605dff;
-            margin-left: 5px;
-        }
-
-        .dropdown .notify_item .notify_info .notify_time {
-            color: #c5c5e6;
-            font-size: 12px;
-        }
-
-        .dropdown:before {
-            content: "";
-            position: absolute;
-            top: -30px;
-            left: 50%;
-            transform: translateX(-50%);
-            border: 15px solid;
-            border-color: transparent transparent #fff transparent;
-        }
-
-        .dropdown.active {
-            display: block;
-        }
-
-        .scholar_image {
-            width: 50px;
-            height: 50px;
-            object-fit: cover;
-            border: 3px solid #28a745;
-            border-radius: 25px;
-            margin-right: 10px;
-        }
-
-        .bxs-message-square-check {
-            border: #28a745;
-        }
-
-        .donut-container {
-            width: 60%;
-            height: 30%;
-            background-color: white;
-            padding: 10px;
-            border-radius: 20px;
-        }
-        .scholarship-analytics{
-            flex-grow: 1;
-	        flex-basis: 300px;
-        }
-        td{
-            padding-left: 10px;
-            padding-top: 10px;
-
-        }
-        th{
-            text-align: left;
-        }
-        .head-analytics{
-            width: 20px;
-        }
-        .applicants-count{
-            text-align: center;
-        }
-        .num_applicants{
-            color: white;
-            padding: 0px 20px;
-            border-radius: 10px;
-            background-color: brown;
-            font-size: 20px;
-            font-weight: 600;
-        }
-    </style>
 
 </head>
 
@@ -232,7 +121,7 @@ $rejectedCount = mysqli_query($dbConn, "SELECT COUNT(*) as count FROM tbl_userap
                 <div class="notif">
                     <div class="notification">
                         <?php
-                        $getNotificationCountQuery = mysqli_query($dbConn, "SELECT COUNT(*) as count FROM tbl_admin_notif WHERE is_read = 'unread'") or die('query failed');
+                        $getNotificationCountQuery = mysqli_query($conn, "SELECT COUNT(*) as count FROM tbl_admin_notif WHERE is_read = 'unread'") or die('query failed');
                         $notificationCountData = mysqli_fetch_assoc($getNotificationCountQuery);
                         $notificationCount = $notificationCountData['count'];
 
@@ -259,7 +148,7 @@ $rejectedCount = mysqli_query($dbConn, "SELECT COUNT(*) as count FROM tbl_userap
                     <!-- Inside the "notif" div, add the following code: -->
                     <div class="dropdown">
                         <?php
-                        $notifications = mysqli_query($dbConn, "SELECT * FROM tbl_admin_notif WHERE is_read = 'unread'") or die('query failed');
+                        $notifications = mysqli_query($conn, "SELECT * FROM tbl_admin_notif WHERE is_read = 'unread'") or die('query failed');
                         ?>
                         <?php while ($row = mysqli_fetch_assoc($notifications)) { ?>
                             <div class="notify_item">
@@ -286,7 +175,7 @@ $rejectedCount = mysqli_query($dbConn, "SELECT COUNT(*) as count FROM tbl_userap
                 <div class="profile">
                     <a href="admin_profile.php" class="profile">
                         <?php
-                        $select_admin = mysqli_query($dbConn, "SELECT * FROM `tbl_super_admin` WHERE super_admin_id = '$super_admin_id'") or die('query failed');
+                        $select_admin = mysqli_query($conn, "SELECT * FROM `tbl_super_admin` WHERE super_admin_id = '$super_admin_id'") or die('query failed');
                         if (mysqli_num_rows($select_admin) > 0) {
                             $fetch_admin = mysqli_fetch_assoc($select_admin);
                         }
@@ -324,7 +213,7 @@ $rejectedCount = mysqli_query($dbConn, "SELECT COUNT(*) as count FROM tbl_userap
                     <?php include('../include/connection.php'); ?>
 
                     <?php
-                    $result = mysqli_query($dbConn, "SELECT * FROM tbl_scholarship");
+                    $result = mysqli_query($conn, "SELECT * FROM tbl_scholarship");
                     $num_rows = mysqli_num_rows($result);
                     ?>
                     <span class="text">
@@ -337,7 +226,7 @@ $rejectedCount = mysqli_query($dbConn, "SELECT COUNT(*) as count FROM tbl_userap
                     <?php include('../include/connection.php'); ?>
 
                     <?php
-                    $result = mysqli_query($dbConn, "SELECT * FROM tbl_userapp");
+                    $result = mysqli_query($conn, "SELECT * FROM tbl_userapp");
                     $num_rows = mysqli_num_rows($result);
                     ?>
                     <span class="text">
@@ -382,7 +271,7 @@ $rejectedCount = mysqli_query($dbConn, "SELECT COUNT(*) as count FROM tbl_userap
                             LEFT JOIN tbl_userapp ua ON s.scholarship_id = ua.scholarship_id
                             GROUP BY s.scholarship";
 
-                            $listResult = mysqli_query($dbConn, $sql);
+                            $listResult = mysqli_query($conn, $sql);
 
                             if ($listResult) {
                                 while ($row = mysqli_fetch_assoc($listResult)) {
@@ -392,7 +281,7 @@ $rejectedCount = mysqli_query($dbConn, "SELECT COUNT(*) as count FROM tbl_userap
                                     echo '</tr>';
                                 }
                             } else {
-                                echo '<tr><td colspan="2">Error executing the query: ' . mysqli_error($dbConn) . '</td></tr>';
+                                echo '<tr><td colspan="2">Error executing the query: ' . mysqli_error($conn) . '</td></tr>';
                             }
                             ?>
                         </tbody>
@@ -462,7 +351,7 @@ $rejectedCount = mysqli_query($dbConn, "SELECT COUNT(*) as count FROM tbl_userap
                 </div>
                 <?php
                 $newScholarsQuery = "SELECT * FROM tbl_userapp WHERE status = 'Qualified' ORDER BY application_id DESC LIMIT 10";
-                $result = $dbConn->query($newScholarsQuery);
+                $result = $conn->query($newScholarsQuery);
                 ?>
                 <div class="todo">
                     <div class="head">

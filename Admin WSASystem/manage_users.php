@@ -17,31 +17,31 @@ if (isset($_GET['logout'])) {
   exit();
 }
 
-if (!$dbConn) {
+if (!$conn) {
   die("Connection failed: " . mysqli_connect_error());
 }
 
 // Retrieve regular users (tbl_user)
 $sqlUser = "SELECT * FROM tbl_user WHERE acc_status = 'verified'";
-$resultUser = mysqli_query($dbConn, $sqlUser);
+$resultUser = mysqli_query($conn, $sqlUser);
 
 if (!$resultUser) {
-  die("Query failed: " . mysqli_error($dbConn));
+  die("Query failed: " . mysqli_error($conn));
 }
 
 // Retrieve OSA users (tbl_admin)
 $sqlAdmin = "SELECT * FROM tbl_admin WHERE role = 'OSA'";
-$resultAdmin = mysqli_query($dbConn, $sqlAdmin);
+$resultAdmin = mysqli_query($conn, $sqlAdmin);
 
 if (!$resultAdmin) {
-  die("Query failed: " . mysqli_error($dbConn));
+  die("Query failed: " . mysqli_error($conn));
 }
 
 $sqlRegistrar = "SELECT * FROM tbl_registrar WHERE role = 'Registrar'";
-$resultRegistrar = mysqli_query($dbConn, $sqlRegistrar);
+$resultRegistrar = mysqli_query($conn, $sqlRegistrar);
 
 if (!$resultRegistrar) {
-  die("Query failed: " . mysqli_error($dbConn));
+  die("Query failed: " . mysqli_error($conn));
 }
 ?>
 
@@ -132,7 +132,7 @@ if (!$resultRegistrar) {
         <div class="notif">
           <div class="notification">
             <?php
-            $getNotificationCountQuery = mysqli_query($dbConn, "SELECT COUNT(*) as count FROM tbl_admin_notif WHERE is_read = 'unread'") or die('query failed');
+            $getNotificationCountQuery = mysqli_query($conn, "SELECT COUNT(*) as count FROM tbl_admin_notif WHERE is_read = 'unread'") or die('query failed');
             $notificationCountData = mysqli_fetch_assoc($getNotificationCountQuery);
             $notificationCount = $notificationCountData['count'];
 
@@ -159,7 +159,7 @@ if (!$resultRegistrar) {
           <!-- Inside the "notif" div, add the following code: -->
           <div class="dropdown">
             <?php
-            $notifications = mysqli_query($dbConn, "SELECT * FROM tbl_admin_notif WHERE is_read = 'unread'") or die('query failed');
+            $notifications = mysqli_query($conn, "SELECT * FROM tbl_admin_notif WHERE is_read = 'unread'") or die('query failed');
             ?>
             <?php while ($row = mysqli_fetch_assoc($notifications)) { ?>
               <div class="notify_item">
@@ -186,7 +186,7 @@ if (!$resultRegistrar) {
         <div class="profile">
           <a href="admin_profile.php" class="profile">
             <?php
-            $select_admin = mysqli_query($dbConn, "SELECT * FROM `tbl_super_admin` WHERE super_admin_id = '$super_admin_id'") or die('query failed');
+            $select_admin = mysqli_query($conn, "SELECT * FROM `tbl_super_admin` WHERE super_admin_id = '$super_admin_id'") or die('query failed');
             if (mysqli_num_rows($select_admin) > 0) {
               $fetch_admin = mysqli_fetch_assoc($select_admin);
             }

@@ -457,6 +457,116 @@ nav .profile img {
 	color: var(--dark);	
 }
 
+.notification .bxs-bell {
+	cursor: pointer;
+}
+
+.dropdown {
+	width: 350px;
+	height: auto;
+	background: whitesmoke;
+	border-radius: 5px;
+	box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.125);
+	margin: 15px auto 0;
+	padding: 15px;
+	position: absolute;
+	top: 40px;
+	/* Adjust the distance from the notification icon as needed */
+	right: 0;
+	/* To align it with the notification icon */
+	display: none;
+}
+
+.dropdown .notify_item {
+	display: flex;
+	align-items: center;
+	padding: 10px 0;
+	border-bottom: 1px solid #dbdaff;
+}
+
+.dropdown .notify_item:last-child {
+	border-bottom: 0px;
+}
+
+.dropdown .notify_item .notify_img {
+	margin-right: 15px;
+}
+
+.dropdown .notify_item .notify_info p {
+	margin-bottom: 5px;
+}
+
+.dropdown .notify_item .notify_info p span {
+	color: #605dff;
+	margin-left: 5px;
+}
+
+.dropdown .notify_item .notify_info .notify_time {
+	color: #c5c5e6;
+	font-size: 12px;
+}
+
+.dropdown:before {
+	content: "";
+	position: absolute;
+	top: -30px;
+	left: 50%;
+	transform: translateX(-50%);
+	border: 15px solid;
+	border-color: transparent transparent #fff transparent;
+}
+
+.dropdown.active {
+	display: block;
+}
+
+.scholar_image {
+	width: 50px;
+	height: 50px;
+	object-fit: cover;
+	border: 3px solid #28a745;
+	border-radius: 25px;
+	margin-right: 10px;
+}
+
+.bxs-message-square-check {
+	border: #28a745;
+}
+
+.donut-container {
+	width: 60%;
+	height: 30%;
+	background-color: white;
+	padding: 10px;
+	border-radius: 20px;
+}
+.scholarship-analytics{
+	flex-grow: 1;
+flex-basis: 300px;
+}
+td{
+	padding-left: 10px;
+	padding-top: 10px;
+
+}
+th{
+	text-align: left;
+}
+.head-analytics{
+	width: 20px;
+}
+.applicants-count{
+	text-align: center;
+}
+.num_applicants{
+	color: white;
+	padding: 0px 20px;
+	border-radius: 10px;
+	background-color: brown;
+	font-size: 20px;
+	font-weight: 600;
+}
+
 
 
 

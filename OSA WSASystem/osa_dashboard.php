@@ -17,7 +17,7 @@ if (isset($_GET['logout'])) {
 }
 
     // Query the database to check if the user has seen the pop-up
-    $checkPopupSeenQuery = mysqli_query($dbConn, "SELECT seen FROM tbl_admin WHERE admin_id = '$admin_id'");
+    $checkPopupSeenQuery = mysqli_query($conn, "SELECT seen FROM tbl_admin WHERE admin_id = '$admin_id'");
     $userData = mysqli_fetch_assoc($checkPopupSeenQuery);
     $popupSeen = $userData['seen'];
     
@@ -26,7 +26,7 @@ if (isset($_GET['logout'])) {
         $showPopupReminder = true;
 
         // Update the database to mark the pop-up as seen for this user
-        mysqli_query($dbConn, "UPDATE tbl_admin SET seen = 1 WHERE admin_id = '$admin_id'");
+        mysqli_query($conn, "UPDATE tbl_admin SET seen = 1 WHERE admin_id = '$admin_id'");
     } else {
         // The user has already seen the pop-up, so don't show it
         $showPopupReminder = false;
@@ -34,7 +34,7 @@ if (isset($_GET['logout'])) {
 
 
 // No need to include the connection.php again here
-$select = mysqli_query($dbConn, "SELECT * FROM tbl_userapp WHERE status = 'Pending'") or die('query failed');
+$select = mysqli_query($conn, "SELECT * FROM tbl_userapp WHERE status = 'Pending'") or die('query failed');
 
 ?>
 
@@ -152,7 +152,7 @@ $select = mysqli_query($dbConn, "SELECT * FROM tbl_userapp WHERE status = 'Pendi
                 <div class="notif">
                     <div class="notification">
                         <?php
-                        $getNotificationCountQuery = mysqli_query($dbConn, "SELECT COUNT(*) as count FROM tbl_notifications WHERE is_read = 'unread'") or die('query failed');
+                        $getNotificationCountQuery = mysqli_query($conn, "SELECT COUNT(*) as count FROM tbl_notifications WHERE is_read = 'unread'") or die('query failed');
                         $notificationCountData = mysqli_fetch_assoc($getNotificationCountQuery);
                         $notificationCount = $notificationCountData['count'];
 
@@ -179,7 +179,7 @@ $select = mysqli_query($dbConn, "SELECT * FROM tbl_userapp WHERE status = 'Pendi
                     <!-- Inside the "notif" div, add the following code: -->
                     <div class="dropdown">
                         <?php
-                        $notifications = mysqli_query($dbConn, "SELECT * FROM tbl_notifications WHERE is_read = 'unread'") or die('query failed');
+                        $notifications = mysqli_query($conn, "SELECT * FROM tbl_notifications WHERE is_read = 'unread'") or die('query failed');
                         ?>
                         <?php while ($row = mysqli_fetch_assoc($notifications)) { ?>
                             <div class="notify_item">
@@ -206,7 +206,7 @@ $select = mysqli_query($dbConn, "SELECT * FROM tbl_userapp WHERE status = 'Pendi
                 <div class="profile">
                     <a href="osa_profile.php" class="profile">
                         <?php
-                        $select_osa = mysqli_query($dbConn, "SELECT * FROM `tbl_admin` WHERE admin_id = '$admin_id'") or die('query failed');
+                        $select_osa = mysqli_query($conn, "SELECT * FROM `tbl_admin` WHERE admin_id = '$admin_id'") or die('query failed');
                         $fetch = mysqli_fetch_assoc($select_osa);
                         if ($fetch && $fetch['profile'] != '') {
                             // Build the absolute path to the image using $_SERVER['DOCUMENT_ROOT']
@@ -249,7 +249,7 @@ $select = mysqli_query($dbConn, "SELECT * FROM tbl_userapp WHERE status = 'Pendi
                     <?php include('../include/connection.php'); ?>
 
                     <?php
-                    $result = mysqli_query($dbConn, "SELECT * FROM tbl_scholarship");
+                    $result = mysqli_query($conn, "SELECT * FROM tbl_scholarship");
                     $num_rows = mysqli_num_rows($result);
                     ?>
                     <span class="text">
@@ -262,7 +262,7 @@ $select = mysqli_query($dbConn, "SELECT * FROM tbl_userapp WHERE status = 'Pendi
                     <?php include('../include/connection.php'); ?>
 
                     <?php
-                    $result = mysqli_query($dbConn, "SELECT * FROM tbl_userapp");
+                    $result = mysqli_query($conn, "SELECT * FROM tbl_userapp");
                     $num_rows = mysqli_num_rows($result);
                     ?>
                     <span class="text">
@@ -342,7 +342,7 @@ $select = mysqli_query($dbConn, "SELECT * FROM tbl_userapp WHERE status = 'Pendi
 
                 <?php
                 $newScholarsQuery = "SELECT * FROM tbl_userapp WHERE status = 'Accepted' ORDER BY application_id DESC LIMIT 10";
-                $result = $dbConn->query($newScholarsQuery);
+                $result = $conn->query($newScholarsQuery);
                 ?>
                 <div class="todo">
                     <div class="head">

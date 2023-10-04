@@ -41,7 +41,7 @@ if (!$isEmptyField) {
   $benefitsString = implode("\n", $benefits);
 
   $sql = "INSERT INTO `tbl_scholarship` (scholarship, details, requirements, benefits, scholarship_status, expire_date) VALUES (?, ?, ?, ?, ?, ?)";
-  $stmt = $dbConn->prepare($sql);
+  $stmt = $conn->prepare($sql);
   $stmt->bind_param("ssssss", $scholarship, $details, $requirementsString, $benefitsString, $scholarship_status, $expire_date);
 
   if ($stmt->execute()) {

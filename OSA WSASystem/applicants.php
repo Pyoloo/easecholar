@@ -17,7 +17,7 @@ if (isset($_GET['logout'])) {
     exit();
 }
 
-$select = mysqli_query($dbConn, "SELECT * FROM tbl_userapp") or die('query failed');
+$select = mysqli_query($conn, "SELECT * FROM tbl_userapp") or die('query failed');
 ?>
 
 <!DOCTYPE html>
@@ -107,7 +107,7 @@ $select = mysqli_query($dbConn, "SELECT * FROM tbl_userapp") or die('query faile
                 <div class="notif">
                     <div class="notification">
                         <?php
-                        $getNotificationCountQuery = mysqli_query($dbConn, "SELECT COUNT(*) as count FROM tbl_notifications WHERE is_read = 'unread'") or die('query failed');
+                        $getNotificationCountQuery = mysqli_query($conn, "SELECT COUNT(*) as count FROM tbl_notifications WHERE is_read = 'unread'") or die('query failed');
                         $notificationCountData = mysqli_fetch_assoc($getNotificationCountQuery);
                         $notificationCount = $notificationCountData['count'];
 
@@ -127,7 +127,7 @@ $select = mysqli_query($dbConn, "SELECT * FROM tbl_userapp") or die('query faile
                     <!-- Inside the "notif" div, add the following code: -->
                     <div class="dropdown">
                         <?php
-                        $notifications = mysqli_query($dbConn, "SELECT * FROM tbl_notifications WHERE is_read = 'unread'") or die('query failed');
+                        $notifications = mysqli_query($conn, "SELECT * FROM tbl_notifications WHERE is_read = 'unread'") or die('query failed');
                         ?>
                         <?php while ($row = mysqli_fetch_assoc($notifications)) { ?>
                             <div class="notify_item">
@@ -154,7 +154,7 @@ $select = mysqli_query($dbConn, "SELECT * FROM tbl_userapp") or die('query faile
                 <div class="profile">
                     <a href="osa_profile.php" class="profile">
                         <?php
-                        $select_osa = mysqli_query($dbConn, "SELECT * FROM `tbl_admin` WHERE admin_id = '$admin_id'") or die('query failed');
+                        $select_osa = mysqli_query($conn, "SELECT * FROM `tbl_admin` WHERE admin_id = '$admin_id'") or die('query failed');
                         $fetch = mysqli_fetch_assoc($select_osa);
                         if ($fetch && $fetch['profile'] != '') {
                             $imagePath = $_SERVER['DOCUMENT_ROOT'] . '/EASE-CHOLAR/user_profiles/' . $fetch['profile'];
@@ -253,7 +253,7 @@ $select = mysqli_query($dbConn, "SELECT * FROM tbl_userapp") or die('query faile
                     <tbody>
 
                     <?php
-$select = mysqli_query($dbConn, "SELECT ua.*, u.custom_id
+$select = mysqli_query($conn, "SELECT ua.*, u.custom_id
             FROM tbl_userapp ua
             JOIN tbl_user u ON ua.user_id = u.user_id") or die('query failed');
 ?>

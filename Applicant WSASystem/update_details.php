@@ -52,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             mother_work = ?
             WHERE user_id = ?";
     
-    $stmt = $dbConn->prepare($sql);
+    $stmt = $conn->prepare($sql);
     $stmt->bind_param(
         "ssssssssssssssssssssi",
         $last_name,
@@ -87,7 +87,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 // Fetch the current details from the database
 $sql = "SELECT * FROM tbl_userapp WHERE user_id = ?";
-$stmt = $dbConn->prepare($sql);
+$stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $user_id);
 $stmt->execute();
 $result = $stmt->get_result();

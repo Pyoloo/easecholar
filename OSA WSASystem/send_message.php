@@ -12,10 +12,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $insertQuery = "INSERT INTO `tbl_user_messages` (`application_id`, `admin_id`, `osa_message_content`, `sent_at`, `read_status`)
                     VALUES (?, ?, ?, NOW(), 'unread')";
 
-    $stmt = mysqli_prepare($dbConn, $insertQuery);
+    $stmt = mysqli_prepare($conn, $insertQuery);
 
     if ($stmt === false) {
-        echo "Error preparing statement: " . mysqli_error($dbConn);
+        echo "Error preparing statement: " . mysqli_error($conn);
         exit();
     }
 
@@ -23,7 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $result = mysqli_stmt_execute($stmt);
 
     if ($result === false) {
-        echo "Error executing query: " . mysqli_error($dbConn);
+        echo "Error executing query: " . mysqli_error($conn);
         exit();
     }
 

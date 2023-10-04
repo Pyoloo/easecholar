@@ -15,11 +15,11 @@ if (isset($_GET['logout'])) {
     exit();
 }
 
-$select = mysqli_query($dbConn, "SELECT application_id, scholarship_name, date_submitted, status FROM tbl_userapp WHERE user_id = '$user_id'") or die(mysqli_error($dbConn));
+$select = mysqli_query($conn, "SELECT application_id, scholarship_name, date_submitted, status FROM tbl_userapp WHERE user_id = '$user_id'") or die(mysqli_error($conn));
 
 
 $sqlAdmin = "SELECT username FROM tbl_admin WHERE admin_id = ?";
-$stmtAdmin = $dbConn->prepare($sqlAdmin);
+$stmtAdmin = $conn->prepare($sqlAdmin);
 $stmtAdmin->bind_param("s", $_SESSION['admin_id']);
 $stmtAdmin->execute();
 $resultAdmin = $stmtAdmin->get_result();
@@ -33,7 +33,7 @@ if ($resultAdmin->num_rows > 0) {
 
 
 $sqlRegistrar = "SELECT username FROM tbl_registrar WHERE registrar_id = ?";
-$stmtRegistrar = $dbConn->prepare($sqlRegistrar);
+$stmtRegistrar = $conn->prepare($sqlRegistrar);
 $stmtRegistrar->bind_param("s", $_SESSION['registrar_id']);
 $stmtRegistrar->execute();
 $resultRegistrar = $stmtRegistrar->get_result();
@@ -46,7 +46,7 @@ if ($resultRegistrar->num_rows > 0) {
 }
 
 $applicationQuery = "SELECT application_id FROM tbl_userapp WHERE user_id = ?";
-$stmtApplication = mysqli_prepare($dbConn, $applicationQuery);
+$stmtApplication = mysqli_prepare($conn, $applicationQuery);
 mysqli_stmt_bind_param($stmtApplication, "i", $user_id);
 mysqli_stmt_execute($stmtApplication);
 $applicationResult = mysqli_stmt_get_result($stmtApplication);
@@ -59,7 +59,7 @@ if ($applicationResult->num_rows > 0) {
 
 }
 
-function markMessageAsRead($dbConn, $messageId, $adminId, $registrarId)
+function markMessageAsRead($conn, $messageId, $adminId, $registrarId)
 {
     if ($adminId !== null) {
         $updateQuery = "UPDATE tbl_user_messages SET read_status = 'read' WHERE message_id = ? AND admin_id = ?";
@@ -67,7 +67,7 @@ function markMessageAsRead($dbConn, $messageId, $adminId, $registrarId)
         $updateQuery = "UPDATE tbl_reg_messages SET read_status = 'read' WHERE message_id = ? AND registrar_id = ?";
     }
 
-    $stmtUpdate = mysqli_prepare($dbConn, $updateQuery);
+    $stmtUpdate = mysqli_prepare($conn, $updateQuery);
 
     if ($adminId !== null) {
         mysqli_stmt_bind_param($stmtUpdate, "ii", $messageId, $adminId);
@@ -90,12 +90,12 @@ if (isset($_GET['read_message']) && is_numeric($_GET['read_message'])) {
         $registrarId = intval($_GET['registrar_id']);
     }
 
-    markMessageAsRead($dbConn, $messageId, $adminId, $registrarId);
+    markMessageAsRead($conn, $messageId, $adminId, $registrarId);
 }
 
 
 $userInfoQuery = "SELECT full_name FROM tbl_user WHERE user_id = ?";
-$stmtUserInfo = mysqli_prepare($dbConn, $userInfoQuery);
+$stmtUserInfo = mysqli_prepare($conn, $userInfoQuery);
 mysqli_stmt_bind_param($stmtUserInfo, "i", $user_id);
 mysqli_stmt_execute($stmtUserInfo);
 $resultUserInfo = mysqli_stmt_get_result($stmtUserInfo);
@@ -201,14 +201,14 @@ if ($rowUserInfo = mysqli_fetch_assoc($resultUserInfo)) {
                         $regMessageCountQuery = "SELECT COUNT(*) AS count FROM tbl_reg_messages WHERE application_id = ? AND read_status = 'unread'";
 
                         // Fetch user message count
-                        $stmtUserMessageCount = mysqli_prepare($dbConn, $userMessageCountQuery);
+                        $stmtUserMessageCount = mysqli_prepare($conn, $userMessageCountQuery);
                         mysqli_stmt_bind_param($stmtUserMessageCount, "i", $application_id);
                         mysqli_stmt_execute($stmtUserMessageCount);
                         $userMessageCountData = mysqli_fetch_assoc(mysqli_stmt_get_result($stmtUserMessageCount));
                         $userMessageCount = $userMessageCountData['count'];
 
                         // Fetch registrar message count
-                        $stmtRegMessageCount = mysqli_prepare($dbConn, $regMessageCountQuery);
+                        $stmtRegMessageCount = mysqli_prepare($conn, $regMessageCountQuery);
                         mysqli_stmt_bind_param($stmtRegMessageCount, "i", $application_id);
                         mysqli_stmt_execute($stmtRegMessageCount);
                         $regMessageCountData = mysqli_fetch_assoc(mysqli_stmt_get_result($stmtRegMessageCount));
@@ -246,7 +246,7 @@ if ($rowUserInfo = mysqli_fetch_assoc($resultUserInfo)) {
                         SELECT message_id, application_id, null as admin_id, registrar_id, registrar_message_content as message_content, sent_at
                         FROM tbl_reg_messages WHERE application_id = ?
                         ORDER BY sent_at DESC";
-                        $stmtNotifications = mysqli_prepare($dbConn, $notificationsQuery);
+                        $stmtNotifications = mysqli_prepare($conn, $notificationsQuery);
                         mysqli_stmt_bind_param($stmtNotifications, "ii", $application_id, $application_id);
                         mysqli_stmt_execute($stmtNotifications);
                         $notificationsResult = mysqli_stmt_get_result($stmtNotifications);
@@ -294,7 +294,7 @@ if ($rowUserInfo = mysqli_fetch_assoc($resultUserInfo)) {
                 <div class="profile">
                     <a href="applicant_profile.php" class="profile">
                         <?php
-                        $select_user = mysqli_query($dbConn, "SELECT * FROM `tbl_user` WHERE user_id = '$user_id'") or die('query failed');
+                        $select_user = mysqli_query($conn, "SELECT * FROM `tbl_user` WHERE user_id = '$user_id'") or die('query failed');
                         $fetch = mysqli_fetch_assoc($select_user);
                         if ($fetch && $fetch['image'] != '') {
                             // Build the absolute path to the image using $_SERVER['DOCUMENT_ROOT']
@@ -381,7 +381,7 @@ if ($rowUserInfo = mysqli_fetch_assoc($resultUserInfo)) {
                     <?php include('../include/connection.php'); ?>
 
                     <?php
-                    $result = mysqli_query($dbConn, "SELECT * FROM tbl_scholarship");
+                    $result = mysqli_query($conn, "SELECT * FROM tbl_scholarship");
                     $num_rows = mysqli_num_rows($result);
                     ?>
                     <span class="text">
@@ -392,7 +392,7 @@ if ($rowUserInfo = mysqli_fetch_assoc($resultUserInfo)) {
 
                 <?php
                 $totalAppliedQuery = "SELECT COUNT(*) AS total_applied FROM tbl_userapp WHERE user_id = ?";
-                $stmtTotalApplied = mysqli_prepare($dbConn, $totalAppliedQuery);
+                $stmtTotalApplied = mysqli_prepare($conn, $totalAppliedQuery);
                 mysqli_stmt_bind_param($stmtTotalApplied, "i", $user_id);
                 mysqli_stmt_execute($stmtTotalApplied);
                 $totalAppliedResult = mysqli_stmt_get_result($stmtTotalApplied);
@@ -473,7 +473,7 @@ if ($rowUserInfo = mysqli_fetch_assoc($resultUserInfo)) {
 
                 <?php
                 $ongoingScholarshipQuery = "SELECT * FROM tbl_scholarship WHERE scholarship_status = 'Ongoing'";
-                $result = $dbConn->query($ongoingScholarshipQuery);
+                $result = $conn->query($ongoingScholarshipQuery);
                 ?>
                 <div class="todo">
                     <div class="head">

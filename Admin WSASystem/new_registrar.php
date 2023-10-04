@@ -2,11 +2,11 @@
 include '../include/connection.php';
 
 if (isset($_POST['submit'])) {
-  $username = mysqli_real_escape_string($dbConn, $_POST['username']);
-  $full_name = mysqli_real_escape_string($dbConn, $_POST['full_name']);
-  $email = mysqli_real_escape_string($dbConn, $_POST['email']);
-  $password = mysqli_real_escape_string($dbConn, $_POST['password']);
-  $confirmpassword = mysqli_real_escape_string($dbConn, $_POST['confirmpassword']);
+  $username = mysqli_real_escape_string($conn, $_POST['username']);
+  $full_name = mysqli_real_escape_string($conn, $_POST['full_name']);
+  $email = mysqli_real_escape_string($conn, $_POST['email']);
+  $password = mysqli_real_escape_string($conn, $_POST['password']);
+  $confirmpassword = mysqli_real_escape_string($conn, $_POST['confirmpassword']);
   $profile = $_FILES['profile']['name'];
   $image_size = $_FILES['profile']['size'];
   $image_tmp_name = $_FILES['profile']['tmp_name'];
@@ -14,7 +14,7 @@ if (isset($_POST['submit'])) {
 
   $role = 'Registrar';
 
-  $select = mysqli_query($dbConn, "SELECT * FROM `tbl_registrar` WHERE email = '$email'") or die('query failed');
+  $select = mysqli_query($conn, "SELECT * FROM `tbl_registrar` WHERE email = '$email'") or die('query failed');
 
   if (mysqli_num_rows($select) > 0) {
     $emailExistsMessage = "Email Already exists!";
@@ -27,7 +27,7 @@ if (isset($_POST['submit'])) {
       // Hash the password
       $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-      $insert = mysqli_query($dbConn, "INSERT INTO `tbl_registrar` (username, full_name, email, password, role, profile) VALUES ('$username', '$full_name', '$email', '$hashed_password', '$role', '$profile')") or die('Query failed: ' . mysqli_error($dbConn));
+      $insert = mysqli_query($conn, "INSERT INTO `tbl_registrar` (username, full_name, email, password, role, profile) VALUES ('$username', '$full_name', '$email', '$hashed_password', '$role', '$profile')") or die('Query failed: ' . mysqli_error($conn));
 
       if ($insert) {
         move_uploaded_file($image_tmp_name, $image_folder);

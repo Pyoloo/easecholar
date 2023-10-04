@@ -20,17 +20,6 @@ $profile_path = '';
 $email = '';
 $phone_num = '';
 
-// Check if the user profile data exists in the database
-$dbHost = "localhost"; // Replace with your database host
-$dbUser = "root"; // Replace with your database username
-$dbPass = ""; // Replace with your database password
-$dbName = "easecholar"; // Replace with your database name
-
-$conn = new mysqli($dbHost, $dbUser, $dbPass, $dbName);
-
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
 
 $sql = "SELECT * FROM tbl_admin WHERE admin_id = ?";
 $stmt = $conn->prepare($sql);
@@ -88,7 +77,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $conn = new mysqli($dbHost, $dbUser, $dbPass, $dbName);
 
         if ($conn->connect_error) {
-            die("Connection failed: " . $conn->connect_error);
+            die("connection failed: " . $conn->connect_error);
         }
 
         $sql = "UPDATE tbl_admin SET email = ?, phone_num = ?, profile = ? WHERE admin_id = ?";

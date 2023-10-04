@@ -11,7 +11,7 @@ if (!isset($user_id)) {
 
 // Fetch the notification count for the logged-in user using a prepared statement
 $sql = "SELECT COUNT(*) AS notification_count FROM tbl_user_messages WHERE application_id = ? AND read_status = 0";
-$stmt = mysqli_prepare($dbConn, $sql);
+$stmt = mysqli_prepare($conn, $sql);
 mysqli_stmt_bind_param($stmt, "i", $user_id);
 mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);

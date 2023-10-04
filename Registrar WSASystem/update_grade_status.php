@@ -16,12 +16,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         // Update grade_status in 'tbl_userapp'
         $query = "UPDATE `tbl_userapp` SET `grade_status` = '$grade_status' WHERE `application_id` = $application_id";
-        $result = mysqli_query($dbConn, $query);
+        $result = mysqli_query($conn, $query);
         
         if ($result) {
             echo "Grade Status updated successfully.";
         } else {
-            echo "Error updating grade_status: " . mysqli_error($dbConn);
+            echo "Error updating grade_status: " . mysqli_error($conn);
         }
     } else {
         echo "Invalid request.";

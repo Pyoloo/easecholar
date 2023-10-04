@@ -1,14 +1,14 @@
 <?php
 include('../include/connection.php');
 
-if ($dbConn->connect_error) {
-    die('Connection failed: ' . $dbConn->connect_errno);
+if ($conn->connect_error) {
+    die('Connection failed: ' . $conn->connect_errno);
 }
 
 if (isset($_GET['id'])) {
     $scholarshipId = $_GET['id'];
     $sql = "SELECT * FROM tbl_scholarship WHERE scholarship_id = $scholarshipId";
-    $result = $dbConn->query($sql);
+    $result = $conn->query($sql);
 
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();

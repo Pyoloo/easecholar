@@ -17,7 +17,7 @@ if (isset($_GET['logout'])) {
 }
 
 // No need to include the connection.php again here
-$select = mysqli_query($dbConn, "SELECT * FROM tbl_userapp") or die('query failed');
+$select = mysqli_query($conn, "SELECT * FROM tbl_userapp") or die('query failed');
 ?>
 
 <!DOCTYPE html>
@@ -193,7 +193,7 @@ $select = mysqli_query($dbConn, "SELECT * FROM tbl_userapp") or die('query faile
                 <div class="notif">
                     <div class="notification">
                         <?php
-                        $getNotificationCountQuery = mysqli_query($dbConn, "SELECT COUNT(*) as count FROM tbl_reg_notifications WHERE is_read = 'unread'") or die('query failed');
+                        $getNotificationCountQuery = mysqli_query($conn, "SELECT COUNT(*) as count FROM tbl_reg_notifications WHERE is_read = 'unread'") or die('query failed');
                         $notificationCountData = mysqli_fetch_assoc($getNotificationCountQuery);
                         $notificationCount = $notificationCountData['count'];
 
@@ -219,7 +219,7 @@ $select = mysqli_query($dbConn, "SELECT * FROM tbl_userapp") or die('query faile
                     <!-- Inside the "notif" div, add the following code: -->
                     <div class="dropdown">
                         <?php
-                        $notifications = mysqli_query($dbConn, "SELECT * FROM tbl_reg_notifications WHERE is_read = 'unread'") or die('query failed');
+                        $notifications = mysqli_query($conn, "SELECT * FROM tbl_reg_notifications WHERE is_read = 'unread'") or die('query failed');
                         ?>
                         <?php while ($row = mysqli_fetch_assoc($notifications)) { ?>
                             <div class="notify_item">
@@ -246,7 +246,7 @@ $select = mysqli_query($dbConn, "SELECT * FROM tbl_userapp") or die('query faile
                 <div class="profile">
                     <a href="registrar_profile.php" class="profile">
                         <?php
-                        $select_registrar = mysqli_query($dbConn, "SELECT * FROM `tbl_registrar` WHERE registrar_id = '$registrar_id'") or die('query failed');
+                        $select_registrar = mysqli_query($conn, "SELECT * FROM `tbl_registrar` WHERE registrar_id = '$registrar_id'") or die('query failed');
                         $fetch = mysqli_fetch_assoc($select_registrar);
                         if ($fetch && $fetch['profile'] != '') {
                             // Build the absolute path to the image using $_SERVER['DOCUMENT_ROOT']
@@ -289,7 +289,7 @@ $select = mysqli_query($dbConn, "SELECT * FROM tbl_userapp") or die('query faile
                     <?php include('connection.php'); ?>
 
                     <?php
-                    $result = mysqli_query($dbConn, "SELECT * FROM tbl_scholarship");
+                    $result = mysqli_query($conn, "SELECT * FROM tbl_scholarship");
                     $num_rows = mysqli_num_rows($result);
                     ?>
                     <span class="text">
@@ -302,7 +302,7 @@ $select = mysqli_query($dbConn, "SELECT * FROM tbl_userapp") or die('query faile
                     <?php include('connection.php'); ?>
 
                     <?php
-                    $result = mysqli_query($dbConn, "SELECT * FROM tbl_userapp");
+                    $result = mysqli_query($conn, "SELECT * FROM tbl_userapp");
                     $num_rows = mysqli_num_rows($result);
                     ?>
                     <span class="text">

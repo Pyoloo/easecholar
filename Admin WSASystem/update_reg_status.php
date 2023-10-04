@@ -1,7 +1,7 @@
 <?php
 include '../include/connection.php';
 
-if (!$dbConn) {
+if (!$conn) {
   die("Connection failed: " . mysqli_connect_error());
 }
 
@@ -11,7 +11,7 @@ if (isset($_POST['registrarId']) && isset($_POST['status'])) {
 
   // Update the registrar user's account status in the database
   $sql = "UPDATE tbl_registrar SET is_active = ? WHERE registrar_id = ?";
-  $stmt = mysqli_prepare($dbConn, $sql);
+  $stmt = mysqli_prepare($conn, $sql);
 
   if ($stmt) {
     mysqli_stmt_bind_param($stmt, "ii", $status, $registrarId);
@@ -32,5 +32,5 @@ if (isset($_POST['registrarId']) && isset($_POST['status'])) {
   echo "error";
 }
 
-mysqli_close($dbConn);
+mysqli_close($conn);
 ?>

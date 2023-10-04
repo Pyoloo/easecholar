@@ -33,7 +33,7 @@ $scholarshipId = '';
 if (isset($_GET['id'])) {
     $scholarshipId = $_GET['id'];
     $sql = "SELECT * FROM tbl_scholarship WHERE scholarship_id = ?";
-    $stmt = $dbConn->prepare($sql);
+    $stmt = $conn->prepare($sql);
     $stmt->bind_param("i", $scholarshipId);
     $stmt->execute();
     $result = $stmt->get_result();
@@ -53,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Fetch the selected scholarship's ID based on the scholarship name
     $sql = "SELECT scholarship_id FROM tbl_scholarship WHERE scholarship = ?";
-    $stmt = $dbConn->prepare($sql);
+    $stmt = $conn->prepare($sql);
     $stmt->bind_param("s", $scholarship);
     $stmt->execute();
     $result = $stmt->get_result();
@@ -68,7 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Fetch the full name and image from the tbl_user table
     $sql = "SELECT full_name, image FROM tbl_user WHERE user_id = ?";
-    $stmt = $dbConn->prepare($sql);
+    $stmt = $conn->prepare($sql);
     $stmt->bind_param("s", $user_id);
     $stmt->execute();
     $result = $stmt->get_result();
@@ -85,7 +85,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Check if the user has already applied for the selected scholarship
     $sql = "SELECT * FROM tbl_userapp WHERE applicant_name = ? AND scholarship_name = ?";
-    $stmt = $dbConn->prepare($sql);
+    $stmt = $conn->prepare($sql);
     $stmt->bind_param("ss", $full_name, $scholarship);
     $stmt->execute();
     $result = $stmt->get_result();
@@ -142,7 +142,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Insert into Database
         $sql = "INSERT INTO `tbl_userapp` (user_id, image, applicant_name, scholarship_name, last_name, first_name, middle_name, dob, pob, gender, email, mobile_num, citizenship, barangay, town_city, province, zip_code, id_number, father_name, father_address, father_work, mother_name, mother_address, mother_work, file, scholarship_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-        $stmt = $dbConn->prepare($sql);
+        $stmt = $conn->prepare($sql);
 
         if ($stmt->error) {
             die('Error in SQL query: ' . $stmt->error);
@@ -184,7 +184,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } else {
             // Get the image from 'tbl_user' table
             $sql = "SELECT image FROM tbl_user WHERE user_id = ?";
-            $stmt = $dbConn->prepare($sql);
+            $stmt = $conn->prepare($sql);
             $stmt->bind_param("s", $user_id);
             $stmt->execute();
             $result = $stmt->get_result();
@@ -200,14 +200,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Insert notification with the image
             $notificationMessage = "New application has been submitted";
             $sql = "INSERT INTO tbl_notifications (user_id, message, image, is_read) VALUES (?, ?, ?, ?)";
-            $stmt = $dbConn->prepare($sql);
+            $stmt = $conn->prepare($sql);
             $stmt->bind_param("ssss", $user_id, $notificationMessage, $userImage, $is_read);
             $stmt->execute();
 
             // Insert notification with the image into tbl_reg_notifications
             $regNotificationMessage = "New application has been submitted"; // Change this message if needed
             $sqlRegNotifications = "INSERT INTO tbl_reg_notifications (user_id, message, image, is_read) VALUES (?, ?, ?, ?)";
-            $stmtRegNotifications = $dbConn->prepare($sqlRegNotifications);
+            $stmtRegNotifications = $conn->prepare($sqlRegNotifications);
             $stmtRegNotifications->bind_param("ssss", $user_id, $regNotificationMessage, $userImage, $is_read);
             $stmtRegNotifications->execute();
                  // Trigger a SweetAlert2 modal based on success

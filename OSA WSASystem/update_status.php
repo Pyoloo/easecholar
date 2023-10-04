@@ -16,12 +16,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         // Update status in 'tbl_userapp'
         $query = "UPDATE `tbl_userapp` SET `status` = '$status' WHERE `application_id` = $application_id";
-        $result = mysqli_query($dbConn, $query);
+        $result = mysqli_query($conn, $query);
         
         if ($result) {
             echo "Status updated successfully.";
         } else {
-            echo "Error updating status: " . mysqli_error($dbConn);
+            echo "Error updating status: " . mysqli_error($conn);
         }
     } else {
         echo "Invalid request.";
