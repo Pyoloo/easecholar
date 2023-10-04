@@ -169,12 +169,25 @@ if (isset($_POST['submit'])) {
                 </span>
                 <input class="input-style" name="password" type="password" placeholder="LRN's number" required>
             </div>
+            <label class="show-password" for="show-password">
+                <input type="checkbox" id="show-password"> Show Password
+            </label>
 
             <div class="button">
                 <button type="submit" name="submit" class="submit">Login</button>
             </div>
         </form>
     </div>
+    <script>
+        document.getElementById("show-password").addEventListener("change", function() {
+            var passwordInput = document.getElementById("password");
+            if (this.checked) {
+                passwordInput.type = "text";
+            } else {
+                passwordInput.type = "password";
+            }
+        });
+    </script>
 </body>
 
 </html>
