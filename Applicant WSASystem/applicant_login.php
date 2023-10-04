@@ -167,7 +167,7 @@ if (isset($_POST['submit'])) {
                 <span class="input-container-addon">
                     <i class="fa fa-lock"></i>
                 </span>
-                <input class="input-style" name="password" type="password" placeholder="LRN's number" required>
+                <input class="input-style" name="password" type="password" id="password" placeholder="LRN's number" required>
             </div>
             <label class="show-password" for="show-password">
                 <input type="checkbox" id="show-password"> Show Password
