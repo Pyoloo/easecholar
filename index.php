@@ -16,10 +16,10 @@
         <p class="header-title">A Web-Based Scholarship Application Management System</p>
       </div>
       <div class="user-portal">
-        <a href="Admin WSASystem/admin_login.php"><button class="admin-button"><i class='fas fa-user-lock'></i>Admin</button></a>
-        <a href="OSA WSASystem/osa_login.php"><button class="osa-button"><i class='fas fa-id-badge'></i>Osa</button> </a>
-        <a href="Registrar WSASystem/registrar_login.php"><button class="registrar-button"><i class='fas fa-id-card-alt'></i>Registrar</button>
-        <a href="Applicant WSASystem/applicant_login.php"><button class="student-button"><i class='fas fa-address-card'></i>Student</button>
+        <a href="Admin WSASystem/admin_login.php"><button class="admin-button"><i class='fas fa-user-lock'></i>ADMIN</button></a>
+        <a href="OSA WSASystem/osa_login.php"><button class="osa-button"><i class='fas fa-id-badge'></i>OSA</button> </a>
+        <a href="Registrar WSASystem/registrar_login.php"><button class="registrar-button"><i class='fas fa-id-card-alt'></i>REGISTRAR</button>
+        <a href="Applicant WSASystem/applicant_login.php"><button class="student-button"><i class='fas fa-address-card'></i>STUDENT</button>
       </div>
       <div class="portal-footer">
         <p class="footer-content">ISABELA STATE UNIVERSITY SANTIAGO EXTENSION</p>

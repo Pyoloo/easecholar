@@ -165,7 +165,6 @@ if (isset($_POST['submit'])) {
              ?>
             <div class="page-links">
             <a href="create_user.php" class="active">OSA</a>
-                <a href="new_registrar.php">REGISTRAR </a>
                 
             </div>
 

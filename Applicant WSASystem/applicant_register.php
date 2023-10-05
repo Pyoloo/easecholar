@@ -123,36 +123,6 @@ if (isset($_POST['submit'])) {
     <title>ApplicantModule</title>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-    <style>
-        .selected-image-container {
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .image-container {
-            display: flex;
-            justify-content: center;
-
-        }
-
-        #image-label {
-            display: block;
-            color: white;
-            font-style: italic;
-
-        }
-
-        #selected-image {
-            width: 60px;
-            height: 60px;
-            border-radius: 30px;
-        }
-        .show-password {
-            display: flex;
-        }
-    </style>
 </head>
 
 <body>
