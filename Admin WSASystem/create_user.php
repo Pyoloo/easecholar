@@ -2,63 +2,64 @@
 include '../include/connection.php';
 
 if (isset($_POST['submit'])) {
-   $username = mysqli_real_escape_string($conn, $_POST['username']);
-   $full_name = mysqli_real_escape_string($conn, $_POST['full_name']);
-   $password = mysqli_real_escape_string($conn, $_POST['password']);
-   $confirmpassword = mysqli_real_escape_string($conn, $_POST['confirmpassword']);
-   $profile = $_FILES['profile']['name'];
-   $image_size = $_FILES['profile']['size'];
-   $image_tmp_name = $_FILES['profile']['tmp_name'];
-   $image_folder = $_SERVER['DOCUMENT_ROOT'] . '/EASE-CHOLAR/user_profiles/' . $profile;
+    $username = mysqli_real_escape_string($conn, $_POST['username']);
+    $full_name = mysqli_real_escape_string($conn, $_POST['full_name']);
+    $password = mysqli_real_escape_string($conn, $_POST['password']);
+    $confirmpassword = mysqli_real_escape_string($conn, $_POST['confirmpassword']);
+    $profile = $_FILES['profile']['name'];
+    $image_size = $_FILES['profile']['size'];
+    $image_tmp_name = $_FILES['profile']['tmp_name'];
+    $image_folder = $_SERVER['DOCUMENT_ROOT'] . '/EASE-CHOLAR/user_profiles/' . $profile;
 
-   $role = 'OSA';
+    $role = 'OSA';
 
-  $query = mysqli_prepare($conn, "SELECT * FROM `tbl_admin` WHERE username = ? OR email = ?");
-  mysqli_stmt_bind_param($query, "ss", $username, $email);
-  mysqli_stmt_execute($query);
-  $result = mysqli_stmt_get_result($query);
+    $query = mysqli_prepare($conn, "SELECT * FROM `tbl_admin` WHERE username = ? OR email = ?");
+    mysqli_stmt_bind_param($query, "ss", $username, $email);
+    mysqli_stmt_execute($query);
+    $result = mysqli_stmt_get_result($query);
 
 
-   if (mysqli_num_rows($result) > 0) {
-      $emailExistsMessage = "Email or Username Already exists!";
-   } else {
-      if ($password != $confirmpassword) {
-         $passwordMismatchMessage = "Confirm password does not match!";
-      } elseif ($image_size > 2000000) {
-         $largeImageMessage = "Image size is too large!";
-      } else {
-         // Hash the password
-         $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+    if (mysqli_num_rows($result) > 0) {
+        $emailExistsMessage = "Email or Username Already exists!";
+    } else {
+        if ($password != $confirmpassword) {
+            $passwordMismatchMessage = "Confirm password does not match!";
+        } elseif ($image_size > 2000000) {
+            $largeImageMessage = "Image size is too large!";
+        } else {
+            // Hash the password
+            $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-         $insert = mysqli_query($conn, "INSERT INTO `tbl_admin` (username, full_name, email, password, role, profile) VALUES ('$username', '$full_name', '$email', '$hashed_password', '$role', '$profile')") or die('Query failed: ' . mysqli_error($conn));
+            $insert = mysqli_query($conn, "INSERT INTO `tbl_admin` (username, full_name, email, password, role, profile) VALUES ('$username', '$full_name', '$email', '$hashed_password', '$role', '$profile')") or die('Query failed: ' . mysqli_error($conn));
 
-         if ($insert) {
-            move_uploaded_file($image_tmp_name, $image_folder);
-            $successMessage = 'Registered successfully!';
-         } else {
-            $registrationFailedMessage = 'Registration failed!';
-         }
-      }
-   }
+            if ($insert) {
+                move_uploaded_file($image_tmp_name, $image_folder);
+                $successMessage = 'Registered successfully!';
+            } else {
+                $registrationFailedMessage = 'Registration failed!';
+            }
+        }
+    }
 }
 ?>
 
 
 <!DOCTYPE html>
 <html lang="en">
-<head>
-   <meta charset="UTF-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-   <!-- Boxicons -->
-   <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
-   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-   <!-- My CSS -->
-   <link rel="stylesheet" href="css/create_user.css">
-   <title>AdminModule</title>
-   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-   <style>
-    .selected-image-container {
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Boxicons -->
+    <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- My CSS -->
+    <link rel="stylesheet" href="css/create_user.css">
+    <title>AdminModule</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <style>
+        .selected-image-container {
             text-align: center;
             display: flex;
             flex-direction: column;
@@ -83,10 +84,11 @@ if (isset($_POST['submit'])) {
             height: 60px;
             border-radius: 30px;
         }
-   </style>
+    </style>
 </head>
+
 <body>
-  
+
     <div class="background">
         <div class="info-logo">
             <div class="logo">
@@ -102,7 +104,7 @@ if (isset($_POST['submit'])) {
         <form class="form" action="" method="POST" enctype="multipart/form-data">
             <p class="form-title">REGISTRATION</p>
             <?php
-              if (isset($emailExistsMessage)) {
+            if (isset($emailExistsMessage)) {
                 echo '<script>
                 Swal.fire({
                     icon: "error",
@@ -113,7 +115,7 @@ if (isset($_POST['submit'])) {
                 })
             </script>';
             }
-              if (isset($passwordMismatchMessage)) {
+            if (isset($passwordMismatchMessage)) {
                 echo '<script>
                 Swal.fire({
                     icon: "error",
@@ -124,7 +126,7 @@ if (isset($_POST['submit'])) {
                 })
             </script>';
             }
-              if (isset($largeImageMessage)) {
+            if (isset($largeImageMessage)) {
                 echo '<script>
                 Swal.fire({
                     icon: "error",
@@ -136,7 +138,7 @@ if (isset($_POST['submit'])) {
             </script>';
             }
 
-              if (isset($successMessage)) {
+            if (isset($successMessage)) {
                 echo '<script>
                 Swal.fire({
                     position: "center",
@@ -151,7 +153,7 @@ if (isset($_POST['submit'])) {
                 });
                 </script>';
             }
-              if (isset($registrationFailedMessage)) {
+            if (isset($registrationFailedMessage)) {
                 echo '<script>
                 Swal.fire({
                     icon: "error",
@@ -162,10 +164,9 @@ if (isset($_POST['submit'])) {
                 })
             </script>';
             }
-             ?>
+            ?>
             <div class="page-links">
-            <a href="create_user.php" class="active">OSA</a>
-                
+                <a href="create_user.php" class="active">OSA</a>
             </div>
 
             <div class="selected-image-container">
@@ -214,8 +215,8 @@ if (isset($_POST['submit'])) {
     </div>
 
     <script>
-      // Function to display the selected image and control label visibility
-      function displaySelectedImage() {
+        // Function to display the selected image and control label visibility
+        function displaySelectedImage() {
             var input = document.getElementById('image-input');
             var selectedImage = document.getElementById('selected-image');
             var imageLabel = document.getElementById('image-label');
@@ -243,4 +244,5 @@ if (isset($_POST['submit'])) {
         displaySelectedImage();
     </script>
 </body>
+
 </html>

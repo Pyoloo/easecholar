@@ -298,7 +298,7 @@ if ($rowUserInfo = mysqli_fetch_assoc($resultUserInfo)) {
                             $imagePath = $_SERVER['DOCUMENT_ROOT'] . '/user_profiles/' . $fetch['image'];
 
                             if (file_exists($imagePath)) {
-                                echo '<img src="../user_profiles/' . $fetch['image'] . '">';
+                                echo '<img src="' . $imagePath . '">';
                             } else {
                                 echo '<img src="../user_profiles/default-avatar.png">';
                             }
