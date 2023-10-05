@@ -380,7 +380,7 @@ if ($rowUserInfo = mysqli_fetch_assoc($resultUserInfo)) {
                     <?php include('../include/connection.php'); ?>
 
                     <?php
-                    $result = mysqli_query($conn, "SELECT * FROM tbl_scholarship");
+                    $result = mysqli_query($conn, "SELECT * FROM tbl_scholarship WHERE scholarship_status= 'Ongoing'");
                     $num_rows = mysqli_num_rows($result);
                     ?>
                     <span class="text">

@@ -160,7 +160,7 @@ $select = mysqli_query($conn, "SELECT * FROM tbl_userapp") or die('query failed'
                             $imagePath = $_SERVER['DOCUMENT_ROOT'] . '/user_profiles/' . $fetch['profile'];
 
                             if (file_exists($imagePath)) {
-                                echo '<img src="../user_profiles/' . $fetch['profile'] . '">';
+                                echo '<img src="' . $imagePath . '">';
                             } else {
                                 echo '<img src="../user_profiles/default-avatar.png">';
                             }
@@ -191,15 +191,19 @@ $select = mysqli_query($conn, "SELECT * FROM tbl_userapp") or die('query failed'
                     </ul>
                 </div>
 
-        <?php while ($row = mysqli_fetch_array($select)) { ?>
-            <?php
-            $scholarshipNameVariable = $row['scholarship_name'];
-            ?>
-            <a href="generate_pdf.php?scholarship_name=<?php echo urlencode($scholarshipNameVariable); ?>" class="btn-download">
-                <img class="export-img" src="../img/export.png">
-                <span class="text">Export</span>
-            </a>
-        <?php } ?>
+                <?php while ($row = mysqli_fetch_array($select)) { ?>
+                    <?php
+                    $scholarshipNameVariable = $row['scholarship_name'];
+                    $applicantStatus = $row['status'];
+                    ?>
+
+                    <?php if ($applicantStatus === 'Accepted') { ?>
+                        <a href="generate_pdf.php?scholarship_name=<?php echo urlencode($scholarshipNameVariable); ?>" class="btn-download">
+                            <img class="export-img" src="../img/export.png">
+                            <span class="text">Export</span>
+                        </a>
+                    <?php } ?>
+                <?php } ?>
 
 
 

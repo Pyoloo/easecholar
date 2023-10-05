@@ -167,7 +167,7 @@ function formatExpireDate($dbExpireDate)
                             $imagePath = $_SERVER['DOCUMENT_ROOT'] . '/user_profiles/' . $fetch['profile'];
 
                             if (file_exists($imagePath)) {
-                                echo '<img src="../user_profiles/' . $fetch['profile'] . '">';
+                                echo '<img src="' . $imagePath . '">';
                             } else {
                                 echo '<img src="../img/default-avatar.png">';
                             }

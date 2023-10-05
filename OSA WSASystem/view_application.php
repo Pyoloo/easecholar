@@ -135,7 +135,8 @@ if (isset($_POST['status'])) {
         $applicantEmail = $applicationData['email'];
         $applicantName = $applicationData['applicant_name'];
         $emailSubject = 'Application Status Update';
-        $emailBody = "Dear $applicantName,\n\nYour application status has been updated to: $newStatus\n\nPlease visit the website to check your application.\n";
+        $websiteLink = 'https://easecholarship.azurewebsites.net/';
+        $emailBody = "Dear $applicantName,\n\nYour application status has been updated to: $newStatus\n\nPlease visit the website to check your application:\n$websiteLink\n";
 
         sendEmailNotification($applicantEmail, $applicantName, $emailSubject, $emailBody);
 
@@ -197,14 +198,14 @@ function sendEmailNotification($toEmail, $toName, $subject, $body)
         <form action="" method="POST" enctype="multipart/form-data">
             <div class="container">
                 <div class="head">
-                    <div class="img"><img src="../user_profiles/<?php echo $applicationData['image']; ?>" alt="Profile"></div>
-                    <p>Applicant Name: <?php echo $applicationData['applicant_name']; ?></p>
+                    <div class="img"><img src="/EASE-CHOLAR/user_profiles/<?php echo $applicationData['image']; ?>" alt="Profile"></div>
+                    <p class="applicant-name"><?php echo $applicationData['applicant_name']; ?></p>
                     <div class="reminder">
-                        <h2>Status: <?php echo $status; ?></h2>
-                        <span class="remind">*Please update the applicant status</span>
+                        <h3 class="status-container">Status: <span class="status <?php echo strtolower($status); ?>"><?php echo $status; ?></span></h3>
+                        <span class="remind">*Please update the applicant status: </span>
+
 
                         <form method="post" action="view_application.php?id=<?php echo $application_id; ?>">
-                            <label for="status">Status:</label>
                             <select name="status" id="status">
                                 <option value="Pending" <?php if ($status == 'Pending') echo 'selected'; ?>>Pending</option>
                                 <option value="In Review" <?php if ($status == 'In Review') echo 'selected'; ?>>In Review</option>
@@ -213,7 +214,7 @@ function sendEmailNotification($toEmail, $toName, $subject, $body)
                                 <option value="Rejected" <?php if ($status == 'Rejected') echo 'selected'; ?>>Rejected</option>
                             </select>
 
-                            <button type="submit">Update</button>
+                            <button class="submit-button" type="submit">Update</button>
                         </form>
                     </div>
                 </div>
@@ -317,13 +318,13 @@ function sendEmailNotification($toEmail, $toName, $subject, $body)
                     </div>
                 </div>
 
-                <h3>Other Documents</h3>
+                <h3 class="document-label">Other Documents</h3>
                 <?php
                 // Assuming $applicationData['file'] contains comma-separated file names
                 if (!empty($applicationData['file'])) {
                     $fileNames = explode(',', $applicationData['file']);
                     foreach ($fileNames as $fileName) {
-                        $filePath = '../file_uploads/' . $fileName;
+                        $filePath = '/EASE-CHOLAR/file_uploads/' . $fileName;
                         // Update the file path
                         if (file_exists($_SERVER['DOCUMENT_ROOT'] . $filePath)) {
                             echo '<p>File: <a href="' . $filePath . '" target="_blank">' . $fileName . '</a></p>';
@@ -338,11 +339,15 @@ function sendEmailNotification($toEmail, $toName, $subject, $body)
                 <div class="message-box">
                     <h3>Send Message to Applicant</h3>
                     <form method="post" action="view_application.php?id=<?php echo $application_id; ?>">
-                        <input type="hidden" name="application_id" value="<?php echo $application_id; ?>">
-                        <input type="hidden" name="admin_id" value="<?php echo $admin_id; ?>"> <!-- Add this line -->
-                        <label for="message_content">Message:</label>
-                        <textarea name="message_content" id="message_content" rows="4" cols="50"></textarea>
-                        <button type="submit">Send</button>
+                        <div class="message-form">
+                            <input type="hidden" name="application_id" value="<?php echo $application_id; ?>">
+                            <input type="hidden" name="admin_id" value="<?php echo $admin_id; ?>"> <!-- Add this line -->
+                            <div class="message-box-container">
+                                <label for="message_content">Message:</label>
+                                <textarea name="message_content" id="message_content" rows="4" cols="50"></textarea>
+                            </div>
+                            <button type="submit">Send</button>
+                        </div>
                     </form>
                 </div>
             </div>

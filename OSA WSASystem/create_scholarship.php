@@ -20,7 +20,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $scholarship_status = $_POST["scholarship_status"];
   $expire_date = $_POST["expire_date"];
 
-  if (!empty($expire_date) && strtotime($expire_date) <= time()) {
+  date_default_timezone_set('Asia/Manila');
+
+  $currentTimestamp = strtotime('now');
+  $expireTimestamp = strtotime($expire_date);
+
+  if (empty($expire_date)) {
+    $error_message = "Expiration date is required.";
+  } elseif ($expireTimestamp <= $currentTimestamp) {
     $error_message = "Expiration date must be in the future.";
   } else {
     $requiredFields = [$scholarship, $details, $requirements, $benefits, $scholarship_status, $expire_date];
@@ -36,24 +43,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
 
-if (!$isEmptyField) {
-  $requirementsString = implode("\n", $requirements);
-  $benefitsString = implode("\n", $benefits);
+    if (!$isEmptyField) {
+      $requirementsString = implode("\n", $requirements);
+      $benefitsString = implode("\n", $benefits);
 
-  $sql = "INSERT INTO `tbl_scholarship` (scholarship, details, requirements, benefits, scholarship_status, expire_date) VALUES (?, ?, ?, ?, ?, ?)";
-  $stmt = $conn->prepare($sql);
-  $stmt->bind_param("ssssss", $scholarship, $details, $requirementsString, $benefitsString, $scholarship_status, $expire_date);
+      $sql = "INSERT INTO `tbl_scholarship` (scholarship, details, requirements, benefits, scholarship_status, expire_date) VALUES (?, ?, ?, ?, ?, ?)";
+      $stmt = $conn->prepare($sql);
+      $stmt->bind_param("ssssss", $scholarship, $details, $requirementsString, $benefitsString, $scholarship_status, $expire_date);
 
-  if ($stmt->execute()) {
-    // Database insertion successful
-    $successMessage = 'You have created successfully';
-  } else {
-    // Database insertion failed
-    $error_message = "Database error: " . $stmt->error;
-  }
+      if ($stmt->execute()) {
+        // Database insertion successful
+        $successMessage = 'You have created successfully';
+      } else {
+        // Database insertion failed
+        $error_message = "Database error: " . $stmt->error;
+      }
 
-  $stmt->close();
-}
+      $stmt->close();
+    }
   }
 }
 
@@ -74,44 +81,56 @@ if (!$isEmptyField) {
     <div class="header">Add Scholarship</div>
     <?php
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-      if (isset($error_message)) {
+      if (empty($expire_date)) {
+        // Show the error message for an empty expiration date
         echo '<script>
-              Swal.fire({
-                  icon: "error",
-                  title: "Invalid Date",
-                  text: "' . $error_message . '",
-                  showConfirmButton: false,
-                  timer: 2000
-              })
-          </script>';
-      }
-      if (isset($error_input)) {
+          Swal.fire({
+              icon: "error",
+              title: "Empty Field",
+              text: "Expiration date is required.",
+              showConfirmButton: false,
+              timer: 2000
+          })
+      </script>';
+      } elseif (!empty($error_message) && strtotime($expire_date) <= time()) {
+
+        // Show the error message for an invalid date
         echo '<script>
             Swal.fire({
                 icon: "error",
-                title: "Empty Field",
-                text: "' . $error_input . '",
+                title: "Invalid Date",
+                text: "' . $error_message . '",
                 showConfirmButton: false,
                 timer: 2000
             })
         </script>';
-      }
-
-      if (isset($successMessage)) {
+      } elseif (isset($error_input)) {
+        // Show the error message related to the empty field
         echo '<script>
-              Swal.fire({
-                  position: "center",
-                  icon: "success",
-                  title: "' . $successMessage . '",
-                  showConfirmButton: false,
-                  timer: 1500
-              }).then((result) => {
-                  if (result.dismiss === Swal.DismissReason.timer) {
-                      window.location.href = "scholarships.php";
-                  }
-              });
-              </script>';
+          Swal.fire({
+              icon: "error",
+              title: "Empty Field",
+              text: "' . $error_input . '",
+              showConfirmButton: false,
+              timer: 2000
+          })
+      </script>';
       }
+    }
+    if (!empty($successMessage)) {
+      echo '<script>
+            Swal.fire({
+                position: "center",
+                icon: "success",
+                title: "' . $successMessage . '",
+                showConfirmButton: false,
+                timer: 1500
+            }).then((result) => {
+                if (result.dismiss === Swal.DismissReason.timer) {
+                    window.location.href = "scholarships.php";
+                }
+            });
+            </script>';
     }
     ?>
     <form method="POST" action="" class="form">
@@ -144,12 +163,13 @@ if (!$isEmptyField) {
 
         <div class="input-class">
           <label>Deadline:</label>
-          <input type="date" name="expire_date">
+          <input type="date" name="expire_date" value="<?php echo date('Y-m-d'); ?>" required>
         </div>
+
         <button type="submit">Submit</button>
       </div>
 
-      
+
     </form>
   </section>
 
