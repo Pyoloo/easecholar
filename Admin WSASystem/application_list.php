@@ -304,7 +304,7 @@ $select = mysqli_query($conn, "SELECT * FROM tbl_userapp") or die('query failed'
                     }).then((result) => {
                         if (result.isConfirmed) {
                             // If the user confirms, redirect to the logout script
-                            window.location.href = "osa_logout.php";
+                            window.location.href = "admin_logout.php";
                         }
                     });
                 }
