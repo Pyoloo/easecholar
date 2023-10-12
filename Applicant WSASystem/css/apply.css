@@ -26,6 +26,13 @@ body{
 	font-size: 16px;
 	position: relative;
 }
+.label1{
+	color: darkgreen;
+	margin-top: 0;
+    margin-bottom: .5rem;
+    font-weight: 600;
+    line-height: 1.2;
+}
 
 .wrapper{
 	background: rgb(246, 245, 245);
@@ -265,10 +272,11 @@ form.secActive .form.first{
     transform: translateX(-100%);
 }
 .container .title{
-    font-size: 16px;
-    font-weight: 500;
-    margin: 6px 60px;
-    color: #333;
+	font-size: 16px;
+	font-weight: 600;
+	margin: 6px 60px;
+	color: #333;
+	text-align: center;
 }
 .container .fields-info .form{
 	border: 1px solid #aaa;
@@ -450,6 +458,12 @@ form .buttons button , .backBtn{
 
 .input-field.error .address-inputs input:last-child {
     border-color: red;
+}
+.h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
+	margin-top: 0;
+	margin-bottom: .5rem;
+	font-weight: 600;
+	line-height: 1.2;
 }
 
 

@@ -138,7 +138,7 @@ if ($rowUserInfo = mysqli_fetch_assoc($resultUserInfo)) {
     <section id="sidebar">
         <div class="brand">
             <img src="../img/isulogo.png">
-            <span class="text"><?= $full_name; ?></span>
+            <span class="name-hub"><?= $full_name; ?></span>
 </div>
         <ul class="side-menu top">
             <li class="active">
@@ -155,7 +155,7 @@ if ($rowUserInfo = mysqli_fetch_assoc($resultUserInfo)) {
             </li>
             <li>
                 <a href="application_status.php">
-                    <i class='bx bxs-file-blank'></i>
+                <i class='bx bxs-file' ></i>
                     <span class="text">Application</span>
                 </a>
             </li>
@@ -163,12 +163,6 @@ if ($rowUserInfo = mysqli_fetch_assoc($resultUserInfo)) {
                 <a href="message.php">
                     <i class='bx bxs-message-dots'></i>
                     <span class="text">Message</span>
-                </a>
-            </li>
-            <li>
-                <a href="#">
-                    <i class='bx bxs-group'></i>
-                    <span class="text">Team</span>
                 </a>
             </li>
         </ul>
@@ -191,6 +185,7 @@ if ($rowUserInfo = mysqli_fetch_assoc($resultUserInfo)) {
         <nav>
             <div class="menu">
                 <i class='bx bx-menu'></i>
+                <span class="school-name">ISABELA STATE UNIVERSITY SANTIAGO</span>
             </div>
             <div class="right-section">
                 <div class="notif">
@@ -236,7 +231,7 @@ if ($rowUserInfo = mysqli_fetch_assoc($resultUserInfo)) {
                     ?>
 
                     <div class="dropdown">
-                        <div class="notif-label">Notifications</div>
+                        <div class="notif-label"><i style="margin-right: 50px;" class='bx bxs-bell'></i>Notifications</div>
                         <?php
                         // Query to fetch messages for the logged-in applicant's application
                         $notificationsQuery = "
@@ -383,10 +378,12 @@ if ($rowUserInfo = mysqli_fetch_assoc($resultUserInfo)) {
                     $result = mysqli_query($conn, "SELECT * FROM tbl_scholarship WHERE scholarship_status= 'Ongoing'");
                     $num_rows = mysqli_num_rows($result);
                     ?>
+                    <a href="scholarships.php">
                     <span class="text">
                         <h3><?php echo $num_rows; ?></h3>
                         <p>Scholarship Applications</p>
                     </span>
+                    </a>
                 </li>
 
                 <?php
@@ -400,10 +397,12 @@ if ($rowUserInfo = mysqli_fetch_assoc($resultUserInfo)) {
                 ?>
                 <li>
                     <i class='bx bxs-receipt'></i>
+                    <a href="application_status.php">
                     <span class="text">
                         <h3><?php echo $totalApplied; ?></h3>
                         <p>Total Scholarships Applied</p>
                     </span>
+                    </a>
                 </li>
 
             </ul>

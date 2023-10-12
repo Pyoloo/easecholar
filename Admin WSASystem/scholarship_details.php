@@ -1,56 +1,23 @@
 <?php
-session_name("ApplicantSession");
+include '../include/connection.php';
+session_name("AdminSession");
 session_start();
-include('../include/connection.php');
+$super_admin_id = $_SESSION['super_admin_id'];
 
-if ($conn->connect_error) {
-    die('Connection failed: ' . $conn->connect_errno);
+if (!isset($super_admin_id)) {
+    header('location: admin_login.php');
+    exit();
 }
 
-if (isset($_GET['id']) && isset($_SESSION['user_id'])) {
+if (isset($_GET['logout'])) {
+    unset($super_admin_id);
+    session_destroy();
+    header('location: admin_login.php');
+    exit();
+}
+
+if (isset($_GET['id'])) {
     $scholarshipId = $_GET['id'];
-    $user_id = $_SESSION['user_id'];
-
-    // Query to check if the user has already applied for this scholarship
-    $sqlCheckApplication = "SELECT * FROM tbl_userapp WHERE user_id = ? AND scholarship_id = ?";
-    $stmtCheckApplication = $conn->prepare($sqlCheckApplication);
-    $stmtCheckApplication->bind_param("ii", $user_id, $scholarshipId);
-    $stmtCheckApplication->execute();
-    $resultCheckApplication = $stmtCheckApplication->get_result();
-
-    if ($resultCheckApplication->num_rows > 0) {
-        // The applicant has already applied, display the message
-        $applicationStatus = "You have already applied for this scholarship.";
-        $showApplyButton = false; // Do not show the "APPLY" button
-    } else {
-        // Check the scholarship status
-        $sqlCheckScholarshipStatus = "SELECT scholarship_status FROM tbl_scholarship WHERE scholarship_id = ?";
-        $stmtCheckScholarshipStatus = $conn->prepare($sqlCheckScholarshipStatus);
-        $stmtCheckScholarshipStatus->bind_param("i", $scholarshipId);
-        $stmtCheckScholarshipStatus->execute();
-        $resultCheckScholarshipStatus = $stmtCheckScholarshipStatus->get_result();
-
-        if ($resultCheckScholarshipStatus->num_rows > 0) {
-            $row = $resultCheckScholarshipStatus->fetch_assoc();
-            $scholarshipStatus = $row['scholarship_status'];
-
-            if ($scholarshipStatus === 'Closed') {
-                // The scholarship is closed, display a message
-                $applicationStatus = "This scholarship is closed and no longer accepting applications.";
-                $showApplyButton = false; // Do not show the "APPLY" button
-            } else {
-                // The scholarship is ongoing, set a default message for cases where the user hasn't applied
-                $applicationStatus = "";
-                $showApplyButton = true; // Show the "APPLY" button
-            }
-        } else {
-            // Scholarship status not found, handle as needed
-            $applicationStatus = "Scholarship status not found.";
-            $showApplyButton = false; // Do not show the "APPLY" button
-        }
-    }
-
-
     $sql = "SELECT * FROM tbl_scholarship WHERE scholarship_id = $scholarshipId";
     $result = $conn->query($sql);
 
@@ -61,12 +28,16 @@ if (isset($_GET['id']) && isset($_SESSION['user_id'])) {
         $benefits = explode("\n", $row['benefits']);
 ?>
 
+
         <!DOCTYPE html>
         <html lang="en">
 
         <head>
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+            <link rel="stylesheet" href="https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css">
+            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
             <link rel="stylesheet" href="css/scholarship_details.css">
 
             <title>Scholarship Details</title>
@@ -75,7 +46,11 @@ if (isset($_GET['id']) && isset($_SESSION['user_id'])) {
 
         <body>
             <div class="table-data">
+                <div class="label-container">
                 <h1 class="scholarship-title"><?php echo $row['scholarship']; ?></h1>
+                </div>
+
+
                 <hr>
                 <div class="scholarship-details"> <?php echo $row['details']; ?></div>
                 <div class="details-container">
@@ -108,7 +83,7 @@ if (isset($_GET['id']) && isset($_SESSION['user_id'])) {
 
                 <div class="faq-content">
                     <label class="how-to-apply">How to know the status of your application? </label>
-                    <p class="guidelines">To check the status of your application, log in to your account and navigate to the '<a class="aplication-status" href="application_status.php">Application Status</a>' section, where you can view whether your application is in one of the following states: Pending, In Review, Qualified, Accepted, or Rejected. Click <span class="status-details" onclick="showStatusInfo()">Status Details</span> for more information.</p>
+                    <p class="guidelines">To check the status of your application, log in to your account and navigate to the '<a class="aplication-status">Application Status</a>' section, where you can view whether your application is in one of the following states: Pending, In Review, Qualified, Accepted, or Rejected. Click <span class="status-details" onclick="showStatusInfo()">Status Details</span> for more information.</p>
                 </div>
 
                 <div id="statusInfoModal" class="modal">
@@ -136,13 +111,6 @@ if (isset($_GET['id']) && isset($_SESSION['user_id'])) {
                         </div>
                     </div>
                 </div>
-
-
-
-                <p class="alert-message"><?php echo $applicationStatus; ?></p>
-                <?php if ($showApplyButton) { ?>
-                    <a class="button" href="apply.php?id=<?php echo $scholarshipId; ?>&user_id=<?php echo $_SESSION['user_id']; ?>">APPLY</a>
-                <?php } ?>
             </div>
 
     <?php

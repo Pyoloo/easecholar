@@ -79,7 +79,7 @@ body {
 	height: 56px;
 	display: flex;
 	align-items: center;
-	color: rgb(36 95 36);
+	color: rgb(41, 162, 41);
 	position: sticky;
 	top: 0;
 	left: 0;
@@ -89,6 +89,7 @@ body {
 	padding-top: 5px;
 	box-sizing: content-box;
 }
+
 #sidebar .brand img {
 	margin: 10px 1em 0 0;
 	width: 60px;
@@ -191,16 +192,6 @@ body {
 
 
 /* NAVBAR */
-.school-name{
-	margin-left: 30px;
-	font-weight: 600;
-	font-size: x-large;
-	letter-spacing: 5px;
-	word-spacing: 5px;
-	color: #066606;
-	text-shadow: 0 0 1px darkgoldenrod;
-}
-
 nav {
 	height: 56px;
 	background: var(--light);
@@ -371,7 +362,7 @@ nav .profile img {
 #content nav #switch-mode:checked + .switch-mode::before {
 	left: calc(100% - (25px - 4px) - 2px);
 }
-.osa-hub {
+.admin-hub {
 	text-align: center;
 	flex: 0.7;
 	color: green;
@@ -379,24 +370,17 @@ nav .profile img {
 	font-weight: 600px;
 	text-shadow: 0 0 1px black;
 }
+.school-name{
+	margin-left: 30px;
+	font-weight: 600;
+	font-size: 20px;
+	letter-spacing: 5px;
+	word-spacing: 5px;
+	color: green;
+	text-shadow: 0 0 2px darkgoldenrod;
+}
 .export-img{
 	width: 30px;
-}
-.name-hub {
-	text-align: center;
-	color: green;
-	font-weight: 600px;
-	text-shadow: 0 0 1px black;
-}
-.notif-label{
-	display: flex;
-	align-items: center;
-	font-size: 18px;
-	border-bottom: 1px solid grey;
-	margin-bottom: 20px;
-	padding: 10px;
-	font-weight: bold;
-	color: rgba(0, 0, 0, 0.65);
 }
 /* NAVBAR */
 
@@ -652,9 +636,7 @@ nav .profile img {
 	padding: 15px;
 	position: absolute;
 	top: 40px;
-	/* Adjust the distance from the notification icon as needed */
 	right: 0;
-	/* To align it with the notification icon */
 	display: none;
 }
 
@@ -719,20 +701,16 @@ option {
 	font-size: 15px;
 }
 
-/* Define CSS classes for grade status */
 .pending-grade {
 	color: orange;
-	/* Change the color to your desired indicator color */
 }
 
 .passed-grade {
 	color: green;
-	/* Change the color to your desired indicator color */
 }
 
 .failed-grade {
 	color: red;
-	/* Change the color to your desired indicator color */
 }
 .status-filter {
 display: flex;
@@ -751,25 +729,25 @@ border-top-left-radius: 10px;
 border-top-right-radius: 10px;
 }
 .pending-button{
-background-color: var(--orange);
-color: white;
-}
-.inreview-button{
-background-color: var(--yellow);
-color: white;
-}
-.qualified-button{
-background-color: #00d084;
-color: white;
-}
-.accepted-button{
-background-color: #28a745;
-color: white;
-}
-.rejected-button{
-background-color: red;
-color: white;
-}
+	background-color: #f7aa8a;
+	color: white;
+	}
+	.inreview-button{
+	background-color: #f6d872;
+	color: white;
+	}
+	.qualified-button{
+	background-color: #6dccaa;
+	color: white;
+	}
+	.accepted-button{
+	background-color: #61aa72;
+	color: white;
+	}
+	.rejected-button{
+	background-color: #ff7070;
+	color: white;
+	}
 
 .status-button.active {
 background-color: #d5d1defe;
@@ -777,15 +755,6 @@ color: black;
 border: none;
 padding: 5px 15px;
 }
-.application-label{
-	margin-right: auto;
-    font-size: 24px;
-    font-weight: 600;
-		color: #565656;
-}
-
-
-
 /* MAIN */
 /* CONTENT */
 
@@ -856,38 +825,11 @@ padding: 5px 15px;
 	#content main .table-data .todo .todo-list {
 		min-width: 420px;
 	}
-	.h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6{
-		font-size: 1rem;
-		margin-bottom: .5rem;
-    font-family: inherit;
-    font-weight: 600;
-    line-height: 1.2;
-    color: inherit;
-	}
-	.dropdown {
-		width: 300px;
-		height: auto;
-		background: var(--grey);
-		border-radius: 5px;
-		box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.125);
-		margin: 15px auto 0;
-		padding: 0;
-		position: absolute;
-		top: 41px;
-		right: 0;
-		display: none;
-	}
-
-	.school-name {
-    margin-left: 20px;
-		font-size: 7px;
-    font-weight: 600;
-		letter-spacing: 0px;
-    word-spacing: 5px;
-    color: #066606;
-    text-shadow: 0 0 1px darkgoldenrod;
-	}
 }
+
+
+
+
 
 
 * {
@@ -921,7 +863,7 @@ main.table {
     align-items: center;
 }
 
-.table__header .search-engine {
+.table__header .input-group {
     width: 35%;
     height: 100%;
     background-color: #fff5;
@@ -935,18 +877,18 @@ main.table {
     transition: .2s;
 }
 
-.table__header .search-engine:hover {
+.table__header .input-group:hover {
     width: 45%;
     background-color: #fff8;
     box-shadow: 0 .1rem .4rem #0002;
 }
 
-.table__header .search-engine img {
+.table__header .input-group img {
     width: 1.2rem;
     height: 1.2rem;
 }
 
-.table__header .search-engine input {
+.table__header .input-group input {
     width: 100%;
     padding: 0 .5rem 0 .3rem;
     background-color: transparent;
@@ -1047,36 +989,32 @@ tbody tr.hide td img {
 }
 
 .status {
-    padding: 1px 0;
+    padding: 2px 0;
     border-radius: 2rem;
     text-align: center;
 }
 
-.status.delivered {
-    background-color: #86e49d;
-    color: #006b21;
-}
-
-.status.cancelled {
-    background-color: #d893a3;
-    color: #b30021;
-}
-
-.status.pending {
-    background-color: #ebc474;
-}
-
-.status.shipped {
-    background-color: #6fcaea;
-}
-.view-link{
-	background-color: #d5d1defe;
-	border-radius: 5px;
-	padding: 5px 15px;
-	color: #444;
+.school-name{
+	margin-left: 30px;
 	font-weight: 600;
-	box-shadow: 0 0 2px rgba(0, 0, 0, 0.30);
+	font-size: x-large;
+	letter-spacing: 5px;
+	word-spacing: 5px;
+	color: #066606;
+	text-shadow: 0 0 1px darkgoldenrod;
 }
+
+.view-link{
+  background-color: #d5d1defe;
+  border-radius: 5px;
+  padding: 5px 15px;
+  color: #444;
+  font-weight: 600;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.30);
+}
+
+
+
 
 
 @media (max-width: 1000px) {

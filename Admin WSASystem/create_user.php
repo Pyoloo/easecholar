@@ -9,15 +9,29 @@ if (isset($_POST['submit'])) {
     $profile = $_FILES['profile']['name'];
     $image_size = $_FILES['profile']['size'];
     $image_tmp_name = $_FILES['profile']['tmp_name'];
-    $image_folder = $_SERVER['DOCUMENT_ROOT'] . '/EASE-CHOLAR/user_profiles/' . $profile;
+    $image_folder = $_SERVER['DOCUMENT_ROOT'] . '/user_profiles/' . $profile;
 
     $role = 'OSA';
+
+    if (strlen($password) < 8) {
+        $passwordLengthMessage = "Password must be at least 8 characters long.";
+    } elseif (!preg_match('/[A-Z]/', $password) || !preg_match('/[a-z]/', $password) || !preg_match('/\d/', $password) || !preg_match('/[!@#\$%^&*()\-_=+{};:,<.>]/', $password)) {
+        $passwordComplexityMessage = "Password must contain at least one uppercase letter, one lowercase letter, one digit, and one special character.";
+    }
+
+    // Check if an image was uploaded
+    if (isset($_FILES['profile']) && $_FILES['profile']['error'] === UPLOAD_ERR_OK) {
+        $profile = $_FILES['profile']['name'];
+        move_uploaded_file($image_tmp_name, $image_folder . $profile);
+    } else {
+        // If no image was uploaded, set a default image
+        $profile = 'default-avatar.png';
+    }
 
     $query = mysqli_prepare($conn, "SELECT * FROM `tbl_admin` WHERE username = ? OR email = ?");
     mysqli_stmt_bind_param($query, "ss", $username, $email);
     mysqli_stmt_execute($query);
     $result = mysqli_stmt_get_result($query);
-
 
     if (mysqli_num_rows($result) > 0) {
         $emailExistsMessage = "Email or Username Already exists!";
@@ -26,11 +40,11 @@ if (isset($_POST['submit'])) {
             $passwordMismatchMessage = "Confirm password does not match!";
         } elseif ($image_size > 2000000) {
             $largeImageMessage = "Image size is too large!";
+        } elseif (isset($passwordLengthMessage) || isset($passwordComplexityMessage)) {
+            // Do nothing if password requirements are not met
         } else {
-            // Hash the password
-            $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-
-            $insert = mysqli_query($conn, "INSERT INTO `tbl_admin` (username, full_name, email, password, role, profile) VALUES ('$username', '$full_name', '$email', '$hashed_password', '$role', '$profile')") or die('Query failed: ' . mysqli_error($conn));
+            // Insert the data into the database without hashing the password
+            $insert = mysqli_query($conn, "INSERT INTO `tbl_admin` (username, full_name, email, password, role, profile) VALUES ('$username', '$full_name', '$email', '$password', '$role', '$profile')") or die('Query failed: ' . mysqli_error($conn));
 
             if ($insert) {
                 move_uploaded_file($image_tmp_name, $image_folder);
@@ -58,33 +72,6 @@ if (isset($_POST['submit'])) {
     <link rel="stylesheet" href="css/create_user.css">
     <title>AdminModule</title>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-    <style>
-        .selected-image-container {
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .image-container {
-            display: flex;
-            justify-content: center;
-
-        }
-
-        #image-label {
-            display: block;
-            color: white;
-            font-style: italic;
-
-        }
-
-        #selected-image {
-            width: 60px;
-            height: 60px;
-            border-radius: 30px;
-        }
-    </style>
 </head>
 
 <body>
@@ -112,6 +99,28 @@ if (isset($_POST['submit'])) {
                     text: "' . $emailExistsMessage . '",
                     showConfirmButton: false,
                     timer: 2000
+                })
+            </script>';
+            }
+            if (isset($passwordLengthMessage)) {
+                echo '<script>
+                Swal.fire({
+                    icon: "error",
+                    title: "Short Password",
+                    text: "' . $passwordLengthMessage . '",
+                    showConfirmButton: false,
+                    timer: 2000
+                })
+            </script>';
+            }
+            if (isset($passwordComplexityMessage)) {
+                echo '<script>
+                Swal.fire({
+                    icon: "error",
+                    title: "Password Not Secure",
+                    text: "' . $passwordComplexityMessage . '",
+                    showConfirmButton: true,
+                   
                 })
             </script>';
             }
@@ -167,33 +176,32 @@ if (isset($_POST['submit'])) {
             ?>
             <div class="page-links">
                 <a href="create_user.php" class="active">OSA</a>
+
             </div>
 
             <div class="selected-image-container">
                 <div class="image-container">
                     <img id="selected-image" src="../user_profiles/default-avatar.png" alt="Selected Image">
                 </div>
-            </div>
-
-            <div class="input-container">
-                <span class="input-container-addon">
-                    <i class="fa fa-image"></i>
-                </span>
-                <input class="input-style" type="file" name="profile" placeholder="Profile pic" accept="image/jpg, image/jpeg, image/png">
-            </div>
-
-            <div class="input-container">
-                <span class="input-container-addon">
-                    <i class="fa fa-user"></i>
-                </span>
-                <input class="input-style" id="full_name" type="text" name="full_name" placeholder="First Name | Middle Name | Last Name" required>
+                <div class="round">
+                    <input class="input-style" type="file" name="profile" placeholder="Profile pic" accept="image/jpg, image/jpeg, image/png">
+                    <i class='bx bxs-camera'></i>
+                </div>
             </div>
 
             <div class="input-container">
                 <span class="input-container-addon">
                     <i class="fa fa-user"></i>
                 </span>
-                <input class="input-style" id="username" type="text" name="username" placeholder="Enter username" required>
+
+                <input class="input-style" id="full_name" type="text" name="full_name" placeholder="First Name | Middle Name | Last Name" required <?php if (isset($_POST['full_name'])) echo 'value="' . htmlspecialchars($_POST['full_name']) . '"'; ?>>
+            </div>
+
+            <div class="input-container">
+                <span class="input-container-addon">
+                    <i class="fa fa-user"></i>
+                </span>
+                <input class="input-style" id="username" type="text" name="username" placeholder="Enter username" required <?php if (isset($_POST['username'])) echo 'value="' . htmlspecialchars($_POST['username']) . '"'; ?>>
             </div>
 
             <div class="input-container">

@@ -55,9 +55,6 @@ $select = mysqli_query($conn, "SELECT * FROM tbl_userapp WHERE status = 'Pending
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
 
     <title>OSAModule</title>
-    <style>
-
-    </style>
 
 </head>
 
@@ -110,20 +107,8 @@ $select = mysqli_query($conn, "SELECT * FROM tbl_userapp WHERE status = 'Pending
             </li>
             <li>
                 <a href="applicants.php">
-                    <i class='bx bxs-group'></i>
-                    <span class="text">Applicants</span>
-                </a>
-            </li>
-            <li>
-                <a href="applicant_list.php">
-                    <i class='bx bxs-file'></i>
-                    <span class="text">Application List</span>
-                </a>
-            </li>
-            <li>
-                <a href="#">
-                    <i class='bx bxs-message-dots'></i>
-                    <span class="text">Message</span>
+                <i class='bx bxs-file' ></i>
+                    <span class="text">Applications</span>
                 </a>
             </li>
         </ul>
@@ -190,14 +175,6 @@ $select = mysqli_query($conn, "SELECT * FROM tbl_userapp WHERE status = 'Pending
                                     <p><?php echo $row['message']; ?></p>
                                     <span class="notify_time"><?php echo formatCreatedAt($row['created_at']); ?></span>
                                 </div>
-                                <div class="notify_options">
-                                    <i class="bx bx-dots-vertical-rounded"></i>
-                                    <!-- Add the ellipsis (three-dots) icon and the options menu -->
-                                    <div class="options_menu">
-                                        <span class="delete_option" data-notification-id="<?php echo $row['notification_id']; ?>">Delete</span>
-                                        <span class="cancel_option">Cancel</span>
-                                    </div>
-                                </div>
                             </div>
                         <?php } ?>
                     </div>
@@ -209,7 +186,6 @@ $select = mysqli_query($conn, "SELECT * FROM tbl_userapp WHERE status = 'Pending
                         $select_osa = mysqli_query($conn, "SELECT * FROM `tbl_admin` WHERE admin_id = '$admin_id'") or die('query failed');
                         $fetch = mysqli_fetch_assoc($select_osa);
                         if ($fetch && $fetch['profile'] != '') {
-                            // Build the absolute path to the image using $_SERVER['DOCUMENT_ROOT']
                             $imagePath = $_SERVER['DOCUMENT_ROOT'] . '/user_profiles/' . $fetch['profile'];
 
                             if (file_exists($imagePath)) {
@@ -249,13 +225,15 @@ $select = mysqli_query($conn, "SELECT * FROM tbl_userapp WHERE status = 'Pending
                     <?php include('../include/connection.php'); ?>
 
                     <?php
-                    $result = mysqli_query($dbConn, "SELECT * FROM tbl_scholarship WHERE scholarship_status = 'Ongoing'");
+                    $result = mysqli_query($conn, "SELECT * FROM tbl_scholarship WHERE scholarship_status = 'Ongoing'");
                     $num_rows = mysqli_num_rows($result);
                     ?>
+                    <a href="scholarships.php">
                     <span class="text">
                         <h3><?php echo $num_rows; ?></h3>
                         <p>Available Scholarships </p>
                     </span>
+                    </a>
                 </li>
                 <li>
                     <i class='bx bxs-group'></i>
@@ -265,17 +243,21 @@ $select = mysqli_query($conn, "SELECT * FROM tbl_userapp WHERE status = 'Pending
                     $result = mysqli_query($conn, "SELECT * FROM tbl_userapp");
                     $num_rows = mysqli_num_rows($result);
                     ?>
+                    <a href="applicants.php">
                     <span class="text">
                         <h3><?php echo $num_rows; ?></h3>
                         <p>Applicants</p>
                     </span>
+                    </a>
                 </li>
                 <li>
                     <i class='bx bxs-receipt'></i>
+                    <a href="applicants.php">
                     <span class="text">
                         <h3><?php echo $num_rows; ?></h3>
                         <p>Total Applications Received</p>
                     </span>
+                    </a>
                 </li>
             </ul>
 

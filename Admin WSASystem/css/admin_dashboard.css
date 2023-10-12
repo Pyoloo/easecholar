@@ -46,11 +46,21 @@ body {
 	overflow-x: hidden;
 }
 
-
-
-
+.swal2-container.swal2-bottom, .swal2-container.swal2-center, .swal2-container.swal2-top {
+	grid-template-columns: auto minmax(0,1fr) auto;
+	z-index: 2000;
+}
 
 /* SIDEBAR */
+.admin-hub {
+	text-align: center;
+	flex: 0.7;
+	color: green;
+	font-size: 20px;
+	font-weight: 600px;
+	text-shadow: 0 0 1px black;
+}
+
 #sidebar {
 	position: fixed;
 	top: 0;
@@ -71,6 +81,7 @@ body {
 #sidebar.hide {
 	width: 60px;
 }
+
 #sidebar .brand {
 	font-size: 15px;
 	font-weight: 700;
@@ -83,9 +94,11 @@ body {
 	left: 0;
 	background: var(--light);
 	z-index: 500;
-	padding-bottom: 20px;
+	padding-bottom: 10px;
+	padding-top: 5px;
 	box-sizing: content-box;
 }
+
 #sidebar .brand img {
 	margin: 10px 1em 0 0;
 	width: 60px;
@@ -206,7 +219,6 @@ nav .menu {
 	color: var(--dark);
 }
 
-/* Add this style to align the "notif" div and the profile icon on the right side */
 .right-section {
     display: flex;
     align-items: center;
@@ -215,19 +227,16 @@ nav .menu {
     margin-right: 20px;
 }
 
-/* Move the notification bell to the right side */
 .right-section .notif {
     margin-left: auto;
 }
 
-/* Style the notification bell icon */
 .right-section .notification .bxs-bell {
     cursor: pointer;
     font-size: 24px;
     color: var(--dark);
 }
 
-/* Style the notification count badge */
 .right-section .notification .num {
     position: absolute;
     top: -6px;
@@ -245,7 +254,6 @@ nav .menu {
     align-items: center;
 }
 
-/* Position the dropdown above the notification bell */
 .right-section .dropdown:before {
     top: -30px;
     bottom: auto;
@@ -374,87 +382,14 @@ nav .profile img {
 
 
 /* MAIN */
-#content main {
-	width: 100%;
-	padding: 36px 24px;
-	font-family: var(--poppins);
-	max-height: calc(100vh - 56px);
-	overflow-y: auto;
-}
-#content main .head-title {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	grid-gap: 16px;
-	flex-wrap: wrap;
-}
-#content main .head-title .left h1 {
-	font-size: 36px;
+.school-name{
+	margin-left: 30px;
 	font-weight: 600;
-	margin-bottom: 10px;
-	color: var(--dark);
-}
-#content main .head-title .left .breadcrumb {
-	display: flex;
-	align-items: center;
-	grid-gap: 16px;
-}
-#content main .head-title .left .breadcrumb li {
-	color: var(--dark);
-}
-#content main .head-title .left .breadcrumb li a {
-	color: var(--dark-grey);
-	pointer-events: none;
-}
-#content main .head-title .left .breadcrumb li a.active {
-	color: var(--blue);
-	pointer-events: unset;
-}
-
-
-
-#content main .box-info {
-	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-	grid-gap: 24px;
-	margin-top: 36px;
-}
-#content main .box-info li {
-	padding: 24px;
-	background: var(--light);
-	border-radius: 20px;
-	display: flex;
-	align-items: center;
-	grid-gap: 24px;
-}
-#content main .box-info li .bx {
-	width: 80px;
-	height: 80px;
-	border-radius: 10px;
-	font-size: 36px;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-}
-#content main .box-info li:nth-child(1) .bx {
-	background: var(--light-blue);
-	color: var(--blue);
-}
-#content main .box-info li:nth-child(2) .bx {
-	background: var(--light-yellow);
-	color: var(--yellow);
-}
-#content main .box-info li:nth-child(3) .bx {
-	background: var(--light-orange);
-	color: var(--orange);
-}
-#content main .box-info li .text h3 {
-	font-size: 24px;
-	font-weight: 600;
-	color: var(--dark);
-}
-#content main .box-info li .text p {
-	color: var(--dark);	
+	font-size: x-large;
+	letter-spacing: 5px;
+	word-spacing: 5px;
+	color: #066606;
+	text-shadow: 0 0 1px darkgoldenrod;
 }
 
 .notification .bxs-bell {
@@ -471,9 +406,7 @@ nav .profile img {
 	padding: 15px;
 	position: absolute;
 	top: 40px;
-	/* Adjust the distance from the notification icon as needed */
 	right: 0;
-	/* To align it with the notification icon */
 	display: none;
 }
 
@@ -562,9 +495,91 @@ th{
 	color: white;
 	padding: 0px 20px;
 	border-radius: 10px;
-	background-color: brown;
+	background-color: dimgrey;
 	font-size: 20px;
 	font-weight: 600;
+}
+#content main {
+	width: 100%;
+	padding: 36px 24px;
+	font-family: var(--poppins);
+	max-height: calc(100vh - 56px);
+	overflow-y: auto;
+}
+#content main .head-title {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	grid-gap: 16px;
+	flex-wrap: wrap;
+}
+#content main .head-title .left h1 {
+	font-size: 36px;
+	font-weight: 600;
+	margin-bottom: 10px;
+	color: var(--dark);
+}
+#content main .head-title .left .breadcrumb {
+	display: flex;
+	align-items: center;
+	grid-gap: 16px;
+}
+#content main .head-title .left .breadcrumb li {
+	color: var(--dark);
+}
+#content main .head-title .left .breadcrumb li a {
+	color: var(--dark-grey);
+	pointer-events: none;
+}
+#content main .head-title .left .breadcrumb li a.active {
+	color: var(--blue);
+	pointer-events: unset;
+}
+
+
+
+#content main .box-info {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+	grid-gap: 24px;
+	margin-top: 36px;
+}
+#content main .box-info li {
+	padding: 24px;
+	background: var(--light);
+	border-radius: 20px;
+	display: flex;
+	align-items: center;
+	grid-gap: 24px;
+}
+#content main .box-info li .bx {
+	width: 80px;
+	height: 80px;
+	border-radius: 10px;
+	font-size: 36px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+#content main .box-info li:nth-child(1) .bx {
+	background: var(--light-blue);
+	color: var(--blue);
+}
+#content main .box-info li:nth-child(2) .bx {
+	background: var(--light-yellow);
+	color: var(--yellow);
+}
+#content main .box-info li:nth-child(3) .bx {
+	background: var(--light-orange);
+	color: var(--orange);
+}
+#content main .box-info li .text h3 {
+	font-size: 24px;
+	font-weight: 600;
+	color: var(--dark);
+}
+#content main .box-info li .text p {
+	color: var(--dark);	
 }
 
 
@@ -595,6 +610,7 @@ th{
 	margin-right: auto;
 	font-size: 24px;
 	font-weight: 600;
+	color: #727272;
 }
 #content main .table-data .head .bx {
 	cursor: pointer;
@@ -697,13 +713,6 @@ th{
 }
 /* MAIN */
 /* CONTENT */
-
-
-
-
-
-
-
 
 
 @media screen and (max-width: 768px) {

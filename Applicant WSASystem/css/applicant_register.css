@@ -151,16 +151,16 @@
 .log-in form .input-container.input-style.error {
   border-color: red;
 }
+
 .selected-image-container {
   text-align: center;
   display: flex;
   flex-direction: column;
   justify-content: center;
-}
-
-.image-container {
-  display: flex;
-  justify-content: center;
+  width: 80px;
+  position: relative;
+  margin: auto auto 20px auto;
+  
 
 }
 
@@ -168,14 +168,42 @@
   display: block;
   color: white;
   font-style: italic;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
 
 }
 
 #selected-image {
   width: 60px;
   height: 60px;
-  border-radius: 30px;
-  border: 1px solid darkgreen;
+  border-radius: 35px;
+  position: relative;
+  border: 5px solid #DCDCDC;
+}
+.round {
+  position: absolute;
+  bottom: 0px;
+  right: 0;
+  background: #00B4FF;
+  width: 32px;
+  height: 32px;
+  line-height: 36px;
+  text-align: center;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.round input[type="file"] {
+  position: absolute;
+  transform: scale(2);
+  opacity: 0;
+}
+
+input[type=file]::-webkit-file-upload-button {
+  cursor: pointer;
 }
 
 .show-password {

@@ -102,7 +102,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $validImageExtension = ['jpg', 'jpeg', 'png', 'pdf'];
         $uploadedFiles = array();
 
-        // Specify the target directory using $_SERVER['DOCUMENT_ROOT']
         $targetDirectory = $_SERVER['DOCUMENT_ROOT'] . '/file_uploads/';
 
         for ($i = 0; $i < $fileCount; $i++) {
@@ -309,7 +308,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <form action="" method="POST" enctype="multipart/form-data">
             <div class="container">
                 <div class="form first">
-                    <h3 style="color:darkgreen">PERSONAL INFORMATION:</h3>
+                    <h4 class="label1">PERSONAL INFORMATION:</h4>
                     <br>
                     <div class="details personal">
                         <div class="fields">
@@ -373,7 +372,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </div>
                         <hr>
                         <div class="input-field">
-                            <h4>Permanent Address</h4>
+                            <h4 class="label1">Permanent Address</h4>
                             <div class="address-inputs">
                                 <div class="address-container">
                                     <input type="text" id="barangay" name="barangay" placeholder="Street & Barangay" value="<?php echo $barangay; ?>" required>
@@ -405,7 +404,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
 
                 <div class="form_2 data_info" style="display: none;">
-                    <h3 style="color:darkgreen">FAMILY BACKGROUND:</h3>
+                    <h4 class="label1">FAMILY BACKGROUND:</h4>
+                    <br>
                     <div class="details family">
                         <div class="fields-info">
                             <div class="form">
@@ -450,8 +450,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
 
                 <div class="form_3 data_info" style="display: none;">
-                    <h3 style="color: darkgreen">Requirements Upload:</h3>
-                    <hr>
+                    <h4 class="label1">Requirements Upload:</h4>
+                    <hr><br>
                     <div class="details requirements">
                         <?php foreach ($requirements as $index => $requirement) { ?>
                             <div class="input-file">

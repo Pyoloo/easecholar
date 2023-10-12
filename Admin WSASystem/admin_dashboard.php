@@ -43,7 +43,6 @@ $rejectedCount = mysqli_query($conn, "SELECT COUNT(*) as count FROM tbl_userapp 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
 
-
     <title>adminModule</title>
 
 </head>
@@ -54,10 +53,10 @@ $rejectedCount = mysqli_query($conn, "SELECT COUNT(*) as count FROM tbl_userapp 
 
 
     <!-- SIDEBAR -->
-    <section id="sidebar" class="hide">
+    <section id="sidebar">
         <a href="#" class="brand">
             <img src="../img/isulogo.png">
-            <span class="text">ISU Santiago Extension</span>
+            <span class="admin-hub">ADMIN</span>
         </a>
         <ul class="side-menu top">
             <li class="active">
@@ -75,29 +74,17 @@ $rejectedCount = mysqli_query($conn, "SELECT COUNT(*) as count FROM tbl_userapp 
             <li>
                 <a href="manage_users.php">
                     <i class='bx bxs-group'></i>
-                    <span class="text">Applicants</span>
+                    <span class="text">Manage Users</span>
                 </a>
             </li>
             <li>
-                <a href="applicant_list.php">
+                <a href="application_list.php">
                     <i class='bx bxs-file'></i>
                     <span class="text">Application List</span>
                 </a>
             </li>
-            <li>
-                <a href="#">
-                    <i class='bx bxs-message-dots'></i>
-                    <span class="text">Message</span>
-                </a>
-            </li>
         </ul>
         <ul class="side-menu">
-            <li>
-                <a href="#">
-                    <i class='bx bxs-cog'></i>
-                    <span class="text">Settings</span>
-                </a>
-            </li>
             <li>
                 <a href="#" class="logout">
                     <i class='bx bxs-log-out-circle'></i>
@@ -116,6 +103,7 @@ $rejectedCount = mysqli_query($conn, "SELECT COUNT(*) as count FROM tbl_userapp 
         <nav>
             <div class="menu">
                 <i class='bx bx-menu'></i>
+                <span class="school-name">ISABELA STATE UNIVERSITY SANTIAGO</span>
             </div>
             <div class="right-section">
                 <div class="notif">
@@ -145,7 +133,6 @@ $rejectedCount = mysqli_query($conn, "SELECT COUNT(*) as count FROM tbl_userapp 
                     }
                     ?>
 
-                    <!-- Inside the "notif" div, add the following code: -->
                     <div class="dropdown">
                         <?php
                         $notifications = mysqli_query($conn, "SELECT * FROM tbl_admin_notif WHERE is_read = 'unread'") or die('query failed');
@@ -176,16 +163,22 @@ $rejectedCount = mysqli_query($conn, "SELECT COUNT(*) as count FROM tbl_userapp 
                     <a href="admin_profile.php" class="profile">
                         <?php
                         $select_admin = mysqli_query($conn, "SELECT * FROM `tbl_super_admin` WHERE super_admin_id = '$super_admin_id'") or die('query failed');
-                        if (mysqli_num_rows($select_admin) > 0) {
-                            $fetch_admin = mysqli_fetch_assoc($select_admin);
-                        }
-                        if ($fetch_admin['profile'] == '') {
-                            echo '<img src="../img/isulogo.png">';
+                        $fetch = mysqli_fetch_assoc($select_admin);
+                        if ($fetch && $fetch['profile'] != '') {
+            
+                            $imagePath = $_SERVER['DOCUMENT_ROOT'] . '/user_profiles/' . $fetch['profile'];
+
+                            if (file_exists($imagePath)) {
+                                echo '<img src="' . $imagePath . '">';
+                            } else {
+                                echo '<img src="../user_profiles/isulogo.png">';
+                            }
                         } else {
-                            echo '<img src="../img/' . $fetch_admin['profile'] . '">';
+                            echo '<img src="../user_profiles/isulogo.png">';
                         }
                         ?>
                     </a>
+
                 </div>
             </div>
         </nav>
@@ -213,13 +206,15 @@ $rejectedCount = mysqli_query($conn, "SELECT COUNT(*) as count FROM tbl_userapp 
                     <?php include('../include/connection.php'); ?>
 
                     <?php
-                    $result = mysqli_query($conn, "SELECT * FROM tbl_scholarship");
+                    $result = mysqli_query($conn, "SELECT * FROM tbl_scholarship WHERE scholarship = 'Ongoing'");
                     $num_rows = mysqli_num_rows($result);
                     ?>
+                    <a href="scholarship_list.php">
                     <span class="text">
                         <h3><?php echo $num_rows; ?></h3>
                         <p>Available Scholarships </p>
                     </span>
+                    </a>
                 </li>
                 <li>
                     <i class='bx bxs-group'></i>
@@ -229,17 +224,28 @@ $rejectedCount = mysqli_query($conn, "SELECT COUNT(*) as count FROM tbl_userapp 
                     $result = mysqli_query($conn, "SELECT * FROM tbl_userapp");
                     $num_rows = mysqli_num_rows($result);
                     ?>
+                    
+                    <a href="manage_users.php">
                     <span class="text">
                         <h3><?php echo $num_rows; ?></h3>
-                        <p>Applicants</p>
+                        <p>System Users</p>
                     </span>
+                    </a>
                 </li>
                 <li>
                     <i class='bx bxs-receipt'></i>
+                    <?php include('../include/connection.php'); ?>
+
+                    <?php
+                    $result = mysqli_query($conn, "SELECT * FROM tbl_userapp");
+                    $num_rows = mysqli_num_rows($result);
+                    ?>
+                    <a href="application_list.php">
                     <span class="text">
                         <h3><?php echo $num_rows; ?></h3>
                         <p>Total Applications Received</p>
                     </span>
+                    </a>
                 </li>
             </ul>
 
@@ -339,7 +345,7 @@ $rejectedCount = mysqli_query($conn, "SELECT COUNT(*) as count FROM tbl_userapp 
                                 }
                                 echo '
                             <tr>
-                                <td><img src="/EASE-CHOLAR/user_profiles/' . $row['image'] . '" alt="">' . $row['applicant_name'] . '</td>
+                                <td><img src="../user_profiles/' . $row['image'] . '" alt="">' . $row['applicant_name'] . '</td>
                                 <td>' . formatDateSubmitted($row['date_submitted']) . '</td>
                                 <td><p class="status ' . $statusClass . '">' . $row['status'] . '</td>
                             </tr>
@@ -361,7 +367,7 @@ $rejectedCount = mysqli_query($conn, "SELECT COUNT(*) as count FROM tbl_userapp 
                         <?php
                         if ($result->num_rows > 0) {
                             while ($row = $result->fetch_assoc()) {
-                                echo '<li class="scholar_container"><img class="scholar_image" src="/EASE-CHOLAR/user_profiles/' . $row['image'] . '" alt=""> <span class="scholar_name">' . $row['applicant_name'] . ' </span> </li>';
+                                echo '<li class="scholar_container"><img class="scholar_image" src="../user_profiles/' . $row['image'] . '" alt=""> <span class="scholar_name">' . $row['applicant_name'] . ' </span> </li>';
                             }
                         } else {
                             echo '<li>No new scholars found.</li>';
@@ -376,8 +382,6 @@ $rejectedCount = mysqli_query($conn, "SELECT COUNT(*) as count FROM tbl_userapp 
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        // Fetch data from your PHP code (you can use AJAX)
-        // For demonstration purposes, let's assume you have fetched the counts as follows:
         const statusCounts = {
             'Pending': <?php echo $pendingCount; ?>,
             'In Review': <?php echo $inReviewCount; ?>,
@@ -386,7 +390,6 @@ $rejectedCount = mysqli_query($conn, "SELECT COUNT(*) as count FROM tbl_userapp 
             'Rejected': <?php echo $rejectedCount; ?>,
         };
 
-        // Create a Donut Chart
         const ctx = document.getElementById('applicationStatusChart').getContext('2d');
         new Chart(ctx, {
             type: 'doughnut',
@@ -412,16 +415,16 @@ $rejectedCount = mysqli_query($conn, "SELECT COUNT(*) as count FROM tbl_userapp 
                         position: 'bottom'
                     },
                     title: {
-                        display: true, // Display the title
-                        text: 'Application Statistics', // Set the title text here
-                        fontSize: 16, // Adjust the font size as needed
+                        display: true, 
+                        text: 'Application Statistics', 
+                        fontSize: 16, 
                     },
                 },
             },
         });
 
         $(document).ready(function() {
-            // Function to confirm logout
+
             function confirmLogout() {
                 Swal.fire({
                     title: "Logout",
@@ -434,62 +437,66 @@ $rejectedCount = mysqli_query($conn, "SELECT COUNT(*) as count FROM tbl_userapp 
                     cancelButtonText: "Cancel"
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        // If the user confirms, redirect to the logout script
                         window.location.href = "admin_logout.php";
                     }
                 });
             }
 
-            // Attach the click event to the "Logout" link
             document.querySelector(".logout").addEventListener("click", function(event) {
-                event.preventDefault(); // Prevent the link from navigating directly
+                event.preventDefault(); 
                 confirmLogout();
             });
 
-            // TOGGLE SIDEBAR
-            const menuBar = document.querySelector("#content nav .bx.bx-menu");
-            const sidebar = document.getElementById("sidebar");
+             // TOGGLE SIDEBAR
+        const menuBar = document.querySelector('#content nav .bx.bx-menu');
+        const sidebar = document.getElementById('sidebar');
 
-            menuBar.addEventListener("click", function() {
-                sidebar.classList.toggle("hide");
-            });
+        function toggleSidebar() {
+            sidebar.classList.toggle('hide');
+        }
 
-            // Function to toggle the dropdown
+        menuBar.addEventListener('click', toggleSidebar);
+
+        function handleResize() {
+            const screenWidth = window.innerWidth;
+
+            if (screenWidth <= 768) {
+                sidebar.classList.add('hide');
+            } else {
+                sidebar.classList.remove('hide');
+            }
+        }
+
+        window.addEventListener('resize', handleResize);
+        handleResize();
+
             function toggleDropdown() {
-                $(".num").hide(); // Hide the notification count when the dropdown is toggled
+                $(".num").hide();
             }
 
-            // Add click event listener to the bell icon to mark all notifications as read
             $(".notification .bxs-bell").on("click", function(event) {
                 event.stopPropagation();
-                // Toggle the dropdown
                 $(".dropdown").toggleClass("active");
                 toggleDropdown();
-                // If the dropdown is being opened, mark all notifications as read
                 if ($(".dropdown").hasClass("active")) {
                     markAllNotificationsAsRead();
                 } else {
-                    // If the dropdown is being closed, perform any other actions (if needed)
                 }
             });
 
-            // Close the dropdown when clicking outside of it
             $(document).on("click", function() {
                 $(".dropdown").removeClass("active");
             });
 
-            // Function to mark all notifications as read
             function markAllNotificationsAsRead() {
                 $.ajax({
-                    url: "mark_notification_as_read.php", // Replace with the correct path to your "mark_notification_as_read.php" file
+                    url: "mark_notification_as_read.php", 
                     type: "POST",
                     data: {
-                        read_message: "all" // Pass "all" as a parameter to mark all notifications as read
+                        read_message: "all" 
                     },
                     success: function() {
-                        // On successful marking as read, remove the "unread" class from all notification items
                         $(".notify_item").removeClass("unread");
-                        // Fetch and update the notification count on the bell icon (if needed)
                         fetchNotificationCount();
                     },
                     error: function() {
@@ -498,39 +505,32 @@ $rejectedCount = mysqli_query($conn, "SELECT COUNT(*) as count FROM tbl_userapp 
                 });
             }
 
-            // Add click event listener to the notifications to mark them as read
             $(".notify_item").on("click", function() {
                 var notificationId = $(this).data("notification-id");
                 markNotificationAsRead(notificationId);
             });
 
-            // Function to handle delete option click
             $(".notify_options .delete_option").on("click", function(event) {
                 event.stopPropagation();
                 const notificationId = $(this).data("notification-id");
-                // Send an AJAX request to delete the notification from the database
+                
                 $.ajax({
-                    url: "delete_notification.php", // Replace with the PHP file to handle the delete operation
+                    url: "delete_notification.php", 
                     type: "POST",
                     data: {
                         notification_id: notificationId
                     },
                     success: function() {
-                        // If deletion is successful, remove the notification from the dropdown
                         $(".notify_item[data-notification-id='" + notificationId + "']").remove();
-                        // Fetch and update the notification count on the bell icon
                         fetchNotificationCount();
                     },
                     error: function() {
-                        // Handle error if deletion fails
                     }
                 });
             });
 
-            // Function to handle cancel option click
             $(".notify_options .cancel_option").on("click", function(event) {
                 event.stopPropagation();
-                // Hide the options menu
                 $(this).closest(".options_menu").removeClass("active");
             });
         });

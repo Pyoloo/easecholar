@@ -96,14 +96,14 @@ if (isset($_POST['message_content'])) {
     $insertResult = mysqli_stmt_execute($insertStmt);
 
     if ($insertResult) {
-        // Message successfully sent, you can add any success message or redirection here
-        echo "Message Sent";
+        $success_message = "Message Sent";
 
         // Send email notification to the applicant
         $applicantEmail = $applicationData['email'];
         $applicantName = $applicationData['applicant_name'];
         $emailSubject = 'New Message from OSA';
-        $emailBody = "Dear $applicantName,\n\nYou have received a new message from OSA:\n\n$message_content\n\nPlease log in to check your messages.\n";
+        $websiteLink = 'https://easecholarship.azurewebsites.net/';
+        $emailBody = "Dear $applicantName,\n\nYou have received a new message from OSA:\n\n$message_content\n\nPlease log in to check your messages.:\n$websiteLink\n";
 
         sendEmailNotification($applicantEmail, $applicantName, $emailSubject, $emailBody);
 
@@ -140,7 +140,7 @@ if (isset($_POST['status'])) {
 
         sendEmailNotification($applicantEmail, $applicantName, $emailSubject, $emailBody);
 
-        echo 'Message Sent';
+        $status_message = "Status updated";
     } else {
         mysqli_rollback($conn); // Rollback the transaction in case of a status update error
         echo "Error updating status: " . mysqli_error($conn);
@@ -215,6 +215,11 @@ function sendEmailNotification($toEmail, $toName, $subject, $body)
                             </select>
 
                             <button class="submit-button" type="submit">Update</button>
+                            <?php
+                if (isset($status_message)) {
+                    echo '<p style="color: green; text-align:left; margin-top:10px">' . $status_message . '</p>';
+                }
+                ?>
                         </form>
                     </div>
                 </div>
@@ -324,7 +329,7 @@ function sendEmailNotification($toEmail, $toName, $subject, $body)
                 if (!empty($applicationData['file'])) {
                     $fileNames = explode(',', $applicationData['file']);
                     foreach ($fileNames as $fileName) {
-                        $filePath = '/EASE-CHOLAR/file_uploads/' . $fileName;
+                        $filePath = '../file_uploads/' . $fileName;
                         // Update the file path
                         if (file_exists($_SERVER['DOCUMENT_ROOT'] . $filePath)) {
                             echo '<p>File: <a href="' . $filePath . '" target="_blank">' . $fileName . '</a></p>';
@@ -345,11 +350,17 @@ function sendEmailNotification($toEmail, $toName, $subject, $body)
                             <div class="message-box-container">
                                 <label for="message_content">Message:</label>
                                 <textarea name="message_content" id="message_content" rows="4" cols="50"></textarea>
+                                <button type="submit">Send</button>
                             </div>
-                            <button type="submit">Send</button>
                         </div>
                     </form>
                 </div>
+                <?php
+                if (isset($success_message)) {
+                    echo '<p style="color: green; text-align:center">' . $success_message . '</p>';
+                }
+                ?>
+                <button class="cancel-button" type="button" onclick="window.location.href='applicants.php'">Cancel</button>
             </div>
         </form>
 

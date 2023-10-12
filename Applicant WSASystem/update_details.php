@@ -159,7 +159,7 @@ if ($result->num_rows > 0) {
         <form action="" method="POST" enctype="multipart/form-data">
             <div class="container">
                 <div class="form first">
-                    <h3 style="color:darkgreen">PERSONAL INFORMATION:</h3>
+                    <h4 class="form-label">PERSONAL INFORMATION:</h4>
                     <br>
                     <div class="details personal">
                         <div class="fields">
@@ -210,9 +210,9 @@ if ($result->num_rows > 0) {
                                 <input type="text" name="citizenship" value="<?php echo $citizenship; ?>" required>
                             </div>
                         </div>
-                        <hr>
+                        <br>
                         <div class="input-field">
-                            <h4>Permanent Address</h4>
+                            <h4 class="form-label">PERMANENT ADDRESS</h4>
                             <div class="address-inputs">
                             <input type="text" name="barangay" value="<?php echo $barangay; ?>" required>
                             <input type="text" name="town_city" value="<?php echo $town_city; ?>" required>
@@ -223,8 +223,8 @@ if ($result->num_rows > 0) {
                     </div>
                 </div>
 
-                
-                    <h3 style="color:darkgreen">FAMILY BACKGROUND:</h3>
+                    <br>
+                    <h4 class="form-label">FAMILY BACKGROUND:</h4>
                     <div class="details family">
                         <div class="fields-info">
                             <div class="form">
@@ -256,7 +256,8 @@ if ($result->num_rows > 0) {
                     </div> 
                     <div class="btns_wrap">
                         <div class="common_btns form_3_btns">
-                            <button type="submit" class="btn_done" name="submit">Update Details</button>
+                        <button class="cancel-button" type="button" onclick="window.location.href='application_status.php'">Back</button>
+                            <button class="update-button" type="submit" class="btn_done" name="submit">Update Details</button>
                         </div> 
                     </div>
             </div>

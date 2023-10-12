@@ -17,7 +17,6 @@ if (isset($_GET['logout'])) {
     exit();
 }
 
-$select = mysqli_query($conn, "SELECT * FROM tbl_userapp") or die('query failed');
 ?>
 
 <!DOCTYPE html>
@@ -61,34 +60,16 @@ $select = mysqli_query($conn, "SELECT * FROM tbl_userapp") or die('query failed'
             </li>
             <li class="active">
                 <a href="applicants.php">
-                    <i class='bx bxs-group'></i>
-                    <span class="text">Applicants</span>
-                </a>
-            </li>
-            <li>
-                <a href="#">
-                    <i class='bx bxs-message-dots'></i>
-                    <span class="text">Message</span>
-                </a>
-            </li>
-            <li>
-                <a href="#">
-                    <i class='bx bxs-group'></i>
-                    <span class="text">Team</span>
+                    <i class='bx bxs-file'></i>
+                    <span class="text">Applications</span>
                 </a>
             </li>
         </ul>
         <ul class="side-menu">
             <li>
-                <a href="#">
-                    <i class='bx bxs-cog'></i>
-                    <span class="text">Settings</span>
-                </a>
-            </li>
-            <li>
                 <a href="#" class="logout">
                     <i class='bx bxs-log-out-circle'></i>
-                    <span class="text">Logout</span>
+                    <span class="text" onclick="confirmLogout()">Logout</span>
                 </a>
             </li>
         </ul>
@@ -138,14 +119,6 @@ $select = mysqli_query($conn, "SELECT * FROM tbl_userapp") or die('query failed'
                                     <p><?php echo $row['message']; ?></p>
                                     <span class="notify_time"><?php echo $row['created_at']; ?></span>
                                 </div>
-                                <div class="notify_options">
-                                    <i class="bx bx-dots-vertical-rounded"></i>
-                                    <!-- Add the ellipsis (three-dots) icon and the options menu -->
-                                    <div class="options_menu">
-                                        <span class="delete_option" data-notification-id="<?php echo $row['notification_id']; ?>">Delete</span>
-                                        <span class="cancel_option">Cancel</span>
-                                    </div>
-                                </div>
                             </div>
                         <?php } ?>
                     </div>
@@ -191,19 +164,34 @@ $select = mysqli_query($conn, "SELECT * FROM tbl_userapp") or die('query failed'
                     </ul>
                 </div>
 
-                <?php while ($row = mysqli_fetch_array($select)) { ?>
-                    <?php
-                    $scholarshipNameVariable = $row['scholarship_name'];
-                    $applicantStatus = $row['status'];
-                    ?>
+                
 
-                    <?php if ($applicantStatus === 'Accepted') { ?>
-                        <a href="generate_pdf.php?scholarship_name=<?php echo urlencode($scholarshipNameVariable); ?>" class="btn-download">
-                            <img class="export-img" src="../img/export.png">
-                            <span class="text">Export</span>
-                        </a>
-                    <?php } ?>
-                <?php } ?>
+
+
+                    <div class="export-container">
+                
+
+                <select id="scholarshipSelect" name="scholarship_id">
+                    <option value="">Select Scholarship</option>
+                    <?php
+                    // Fetch the list of available scholarships from your database
+                    $scholarshipQuery = "SELECT scholarship_id, scholarship_name FROM tbl_userapp WHERE status = 'Accepted'";
+                    $scholarshipResult = mysqli_query($conn, $scholarshipQuery);
+
+                    if ($scholarshipResult) {
+                        while ($row = mysqli_fetch_assoc($scholarshipResult)) {
+                            $scholarshipId = $row['scholarship_id'];
+                            $scholarshipName = $row['scholarship_name'];
+                            echo '<option value="' . urlencode($scholarshipId) . '">' . $scholarshipName . '</option>';
+                        }
+                    }
+                    ?>
+                </select>
+                <button id="exportButton" class="btn-download" title="Export Rewardees">
+                    <i class='bx bxs-file-export'></i> Export
+                </button>
+                </div>
+
 
 
 
@@ -256,11 +244,11 @@ $select = mysqli_query($conn, "SELECT * FROM tbl_userapp") or die('query failed'
                     </thead>
                     <tbody>
 
-                    <?php
-$select = mysqli_query($conn, "SELECT ua.*, u.custom_id
+                        <?php
+                        $select = mysqli_query($conn, "SELECT ua.*, u.custom_id
             FROM tbl_userapp ua
             JOIN tbl_user u ON ua.user_id = u.user_id") or die('query failed');
-?>
+                        ?>
 
                         <?php
                         while ($row = mysqli_fetch_array($select)) {
@@ -287,7 +275,7 @@ $select = mysqli_query($conn, "SELECT ua.*, u.custom_id
                         ?>
 
                             <tr>
-                            <td><?= $row['custom_id'] ?></td>
+                                <td><?= $row['custom_id'] ?></td>
                                 <td><img src="../user_profiles/<?= $row['image'] ?>" alt=""><?= $row['applicant_name'] ?></td>
                                 <td><?= $row['scholarship_name'] ?></td>
                                 <td><?= formatDateSubmitted($row['date_submitted']) ?></td>
@@ -295,7 +283,7 @@ $select = mysqli_query($conn, "SELECT ua.*, u.custom_id
                                     <p class="status <?= $statusClass ?>"><?= $row['status'] ?></p>
                                 </td>
                                 <td>
-                                    <strong><a href="view_application.php?id=<?= $row['application_id'] ?>">Review</a></strong>
+                                    <strong><a class="view-link" href="view_application.php?id=<?= $row['application_id'] ?>">Review</a></strong>
                                 </td>
                             </tr>
                         <?php
@@ -334,6 +322,19 @@ $select = mysqli_query($conn, "SELECT ua.*, u.custom_id
                     event.preventDefault(); // Prevent the link from navigating directly
                     confirmLogout();
                 });
+
+                document.getElementById("exportButton").addEventListener("click", function() {
+                    var scholarshipSelect = document.getElementById("scholarshipSelect");
+                    var selectedScholarshipId = scholarshipSelect.value;
+
+                    if (selectedScholarshipId) {
+                        // Redirect to generate_pdf.php with the selected scholarship_id
+                        window.location.href = "generate_pdf.php?scholarship_id=" + selectedScholarshipId;
+                    } else {
+                        alert("Please select a scholarship to export.");
+                    }
+                });
+
 
                 // TOGGLE SIDEBAR
                 const menuBar = document.querySelector('#content nav .bx.bx-menu');

@@ -141,7 +141,7 @@ function formatExpireDate($dbExpireDate)
     <section id="sidebar">
         <a class="brand">
             <img src="../img/isulogo.png">
-            <span class="text"><?= $full_name; ?></span>
+            <span class="name-hub"><?= $full_name; ?></span>
         </a>
         <ul class="side-menu top">
             <li>
@@ -158,7 +158,7 @@ function formatExpireDate($dbExpireDate)
             </li>
             <li>
                 <a href="application_status.php">
-                    <i class='bx bxs-file-blank'></i>
+                <i class='bx bxs-file' ></i>
                     <span class="text">Application</span>
                 </a>
             </li>
@@ -166,12 +166,6 @@ function formatExpireDate($dbExpireDate)
                 <a href="#">
                     <i class='bx bxs-message-dots'></i>
                     <span class="text">Message</span>
-                </a>
-            </li>
-            <li>
-                <a href="#">
-                    <i class='bx bxs-group'></i>
-                    <span class="text">Team</span>
                 </a>
             </li>
         </ul>
@@ -194,6 +188,7 @@ function formatExpireDate($dbExpireDate)
         <nav>
             <div class="menu">
                 <i class='bx bx-menu'></i>
+                <span class="school-name">ISABELA STATE UNIVERSITY SANTIAGO</span>
             </div>
             <div class="right-section">
                 <div class="notif">
@@ -239,7 +234,7 @@ function formatExpireDate($dbExpireDate)
                     ?>
 
                     <div class="dropdown">
-                        <div class="notif-label">Notifications</div>
+                        <div class="notif-label"> <i style="margin-right: 50px;" class='bx bxs-bell'></i>Notifications</div>
                         <?php
                         // Query to fetch messages for the logged-in applicant's application
                         $notificationsQuery = "
@@ -264,8 +259,7 @@ function formatExpireDate($dbExpireDate)
                                     if (isset($_SESSION['profile'])) {
                                         $admin_image = $_SESSION['profile'];
                                     } else {
-                                        // Set a default value or handle the case when 'profile' is not set in the session
-                                        $admin_image = '../user_profiles/default-avatar.png'; // Replace with the default image name or path
+                                        $admin_image = '../user_profiles/default-avatar.png'; 
                                     }
                                     ?>
                                     <img src='img/<?php echo $admin_image; ?>' alt="" style="width: 50px">
@@ -294,7 +288,7 @@ function formatExpireDate($dbExpireDate)
                     </div>
                 </div>
                 <div class="profile">
-                    <a href="applicant_profile.php" class="profile">
+                <a href="applicant_profile.php" class="profile">
                         <?php
                         $select_user = mysqli_query($conn, "SELECT * FROM `tbl_user` WHERE user_id = '$user_id'") or die('query failed');
                         $fetch = mysqli_fetch_assoc($select_user);
@@ -416,7 +410,6 @@ function formatExpireDate($dbExpireDate)
                                     if (!$updateResult) {
                                         echo "Error updating scholarship status for ID: $scholarshipId<br>";
                                     } else {
-                                        echo "Scholarship ID: $scholarshipId marked as 'Closed'<br>";
                                         $scholarshipStatus = 'Closed';
                                     }
                                 }

@@ -20,10 +20,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $scholarship_status = $_POST["scholarship_status"];
   $expire_date = $_POST["expire_date"];
 
-  date_default_timezone_set('Asia/Manila');
+    date_default_timezone_set('Asia/Manila');
 
-  $currentTimestamp = strtotime('now');
-  $expireTimestamp = strtotime($expire_date);
+    $currentTimestamp = strtotime('now');
+    $expireTimestamp = strtotime($expire_date);
 
   if (empty($expire_date)) {
     $error_message = "Expiration date is required.";
@@ -43,24 +43,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
 
-    if (!$isEmptyField) {
-      $requirementsString = implode("\n", $requirements);
-      $benefitsString = implode("\n", $benefits);
+if (!$isEmptyField) {
+  $requirementsString = implode("\n", $requirements);
+  $benefitsString = implode("\n", $benefits);
 
-      $sql = "INSERT INTO `tbl_scholarship` (scholarship, details, requirements, benefits, scholarship_status, expire_date) VALUES (?, ?, ?, ?, ?, ?)";
-      $stmt = $conn->prepare($sql);
-      $stmt->bind_param("ssssss", $scholarship, $details, $requirementsString, $benefitsString, $scholarship_status, $expire_date);
+  $sql = "INSERT INTO `tbl_scholarship` (scholarship, details, requirements, benefits, scholarship_status, expire_date) VALUES (?, ?, ?, ?, ?, ?)";
+  $stmt = $conn->prepare($sql);
+  $stmt->bind_param("ssssss", $scholarship, $details, $requirementsString, $benefitsString, $scholarship_status, $expire_date);
 
-      if ($stmt->execute()) {
-        // Database insertion successful
-        $successMessage = 'You have created successfully';
-      } else {
-        // Database insertion failed
-        $error_message = "Database error: " . $stmt->error;
-      }
+  if ($stmt->execute()) {
+    // Database insertion successful
+    $successMessage = 'You have created successfully';
+  } else {
+    // Database insertion failed
+    $error_message = "Database error: " . $stmt->error;
+  }
 
-      $stmt->close();
-    }
+  $stmt->close();
+}
   }
 }
 
@@ -80,10 +80,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <section class="container">
     <div class="header">Add Scholarship</div>
     <?php
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-      if (empty($expire_date)) {
-        // Show the error message for an empty expiration date
-        echo '<script>
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+  if (empty($expire_date)) {
+      // Show the error message for an empty expiration date
+      echo '<script>
           Swal.fire({
               icon: "error",
               title: "Empty Field",
@@ -92,10 +92,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
               timer: 2000
           })
       </script>';
-      } elseif (!empty($error_message) && strtotime($expire_date) <= time()) {
+  } elseif (!empty($error_message) && strtotime($expire_date) <= time()) {
 
-        // Show the error message for an invalid date
-        echo '<script>
+      // Show the error message for an invalid date
+      echo '<script>
             Swal.fire({
                 icon: "error",
                 title: "Invalid Date",
@@ -104,9 +104,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 timer: 2000
             })
         </script>';
-      } elseif (isset($error_input)) {
-        // Show the error message related to the empty field
-        echo '<script>
+  } elseif (isset($error_input)) {
+      // Show the error message related to the empty field
+      echo '<script>
           Swal.fire({
               icon: "error",
               title: "Empty Field",
@@ -115,9 +115,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
               timer: 2000
           })
       </script>';
+        }
       }
-    }
-    if (!empty($successMessage)) {
+    if (!empty($successMessage)) { 
       echo '<script>
             Swal.fire({
                 position: "center",
@@ -131,7 +131,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 }
             });
             </script>';
-    }
+}
     ?>
     <form method="POST" action="" class="form">
       <div class="input-box">
@@ -162,14 +162,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
 
         <div class="input-class">
-          <label>Deadline:</label>
-          <input type="date" name="expire_date" value="<?php echo date('Y-m-d'); ?>" required>
-        </div>
+  <label>Deadline:</label>
+  <input type="date" name="expire_date" value="<?php echo date('Y-m-d'); ?>" required>
+</div>
 
         <button type="submit">Submit</button>
       </div>
 
-
+      
     </form>
   </section>
 

@@ -45,8 +45,6 @@ input{
   margin-top: 5px;
 }
 .container{
-  display: grid;
-  grid-template-columns: 1fr 1fr;
   justify-content: center;
   align-items: center;
   margin-bottom: 20px;

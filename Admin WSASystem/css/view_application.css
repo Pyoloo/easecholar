@@ -1,16 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600&display=swap');
-
-
-:root{
-	--primary: #6b59d3;
-	--secondary: #bfc0c0;
-	--white: #fff;
-	--text-clr: #5b6475;
-	--header-clr: #25273d;
-	--next-btn-hover: #8577d2;
-	--back-btn-hover: #8b8c8c;
-}
-
 *{
 	margin: 0;
 	padding: 0;
@@ -26,23 +13,77 @@ body{
 	font-size: 16px;
 	position: relative;
 }
-.form-label{
-	color: darkgreen;
-	margin-top: 0;
-	margin-bottom: .5rem;
-	font-weight: 600;
-	font-size: 20px;
-	line-height: 1.2;
+hr{
+  margin-top: 20px;
+}
+.container{
+    position: relative;
+    border-radius: 6px;
+    padding: 30px;
+    background-color: #fff;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+    margin: 3rem;
+}
+.container .head {
+    margin: 0px;
+}
+
+.container .head .reminder .remind {
+    color: #cb1414;
+    font-size: 13px;
+    font-style: italic;
+}
+
+.container .info{
+    font-size:larger; 
+}
+.container .info .field{
+    margin-top: 1rem;
+}
+.container .info label{
+    font-weight: bold;
+    margin-top: 1rem;
+}
+.container .fields {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	grid-gap: 20px;
+  }
+.container .fam-info {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	grid-gap: 20px;
+    padding: 30px;
+    align-items: center;
+    justify-content: center;
+}
+.container .fam-field {
+	display: flex;
+	flex-direction: column;
+	margin-bottom: 8px;
+  }
+  
+.container img{
+    width: 125px;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600&display=swap');
+
+
+:root{
+	--primary: #6b59d3;
+	--secondary: #bfc0c0;
+	--white: #fff;
+	--text-clr: #5b6475;
+	--header-clr: #25273d;
+	--next-btn-hover: #8577d2;
+	--back-btn-hover: #8b8c8c;
 }
 
 .wrapper{
 	background: rgb(246, 245, 245);
 }
-.wrapper .header{
-	margin-bottom: 35px;
-	display: flex;
-	justify-content: center;
-}
+
 
 .wrapper .header ul{
 	display: flex;
@@ -95,146 +136,10 @@ body{
 	background: rgb(12, 84, 12);
 }
 
-  
-  /* Adjust the modal icon size */
-  .modal_wrapper .success_wrap .modal_icon {
-	margin-right: 15px;
-	width: 40px;
-	height: 40px;
-	font-size: 28px;
-  }
-
-.wrapper .btns_wrap{
-	width: 100%;
-	max-width: 100%;
-	margin: 0 auto;
+.wrapper .btns_wrap .common_btns button {
+  margin-right: 10px;
 }
 
-.wrapper .btns_wrap .common_btns{
-	display: flex;
-	justify-content: space-evenly;
-	margin-top: 50px;
-}
-
-.wrapper .btns_wrap .common_btns.form_1_btns{
-	justify-content: flex-end;
-}
-
-.wrapper .btns_wrap .common_btns .update-button{
-	border: 0;
-	padding: 5px 15px;
-	background: var(--primary);
-	color: var(--white);
-	width: 200px;
-	justify-content: center;
-	display: flex;
-	align-items: center;
-	font-size: 20px;
-  font-weight: 600;
-	border-radius: 3px;
-	transition: 0.5s ease;
-	cursor: pointer;
-	transition: opacity 0.15s;
-}
-
-.wrapper .btns_wrap .common_btns .update-button:hover{
-	opacity: 0.8;
-}
-
-.wrapper .btns_wrap .common_btns button.btn_back{
-	background: var(--secondary);
-}
-
-.wrapper .btns_wrap .common_btns button.btn_next .icon{
-	display: flex;
-	margin-left: 10px;
-}
-
-.wrapper .btns_wrap .common_btns button.btn_back .icon{
-	display: flex;
-	margin-right: 10px;
-}
-
-.wrapper .btns_wrap .common_btns button.btn_next:hover,
-.wrapper .btns_wrap .common_btns button.btn_done:hover{
-	background: var(--next-btn-hover);
-}
-
-.wrapper .btns_wrap .common_btns button.btn_back:hover{
-	background: var(--back-btn-hover);
-}
-
-.modal_wrapper{
-	position: fixed;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	visibility: hidden;
-}
-
-.modal_wrapper .shadow{
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	background: rgba(0,0,0,0.8);
-	opacity: 0;
-	transition: 0.2s ease;
-}
-
-.modal_wrapper .success_wrap{
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%,-50%);
-	background: var(--white);
-	padding: 50px;
-	display: flex;
-	align-items: center;
-	border-radius: 5px;
-	transition: 0.5s ease;
-}
-
-.modal_wrapper .success_wrap .modal_icon{
-	margin-right: 20px;
-	width: 50px;
-	height: 50px;
-	background: var(--primary);
-	color: var(--white);
-	border-radius: 50%;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	font-size: 32px;
-	font-weight: 700;
-}
-
-.modal_wrapper.active{
-	visibility: visible;
-}
-
-.modal_wrapper.active .shadow{
-	opacity: 1;
-}
-
-.modal_wrapper.active .success_wrap{
-	transform: translate(-50%,-50%);
-}
-
-/* ===== Google Font Import - Poppins ===== */
-
-.container{
-    position: relative;
-    max-width: 900px;
-    width: 100%;
-    border-radius: 6px;
-    padding: 30px;
-    margin: 0 15px;
-    background-color: #fff;
-    box-shadow: 0 5px 10px rgba(0,0,0,0.1);
-}
 
 .container header::before{
     content: "";
@@ -249,7 +154,6 @@ body{
 .container form{
     position: relative;
     margin-top: 16px;
-    min-height: 490px;
     background-color: #fff;
     overflow: hidden;
 }
@@ -263,22 +167,22 @@ body{
     pointer-events: none;
     transform: translateX(100%);
 }
-form.secActive .form.second{
-    opacity: 1;
-    pointer-events: auto;
-    transform: translateX(0);
+.form-first{
+    margin-top: 30px;
 }
-form.secActive .form.first{
-    opacity: 0;
-    pointer-events: none;
-    transform: translateX(-100%);
+.form-second{
+    margin-top: 30px;
+}
+.form-third{
+    margin-top: 30px;
 }
 .container .title{
     font-size: 16px;
-    font-weight: 600;
+    font-weight: 500;
     margin: 6px 60px;
     color: #333;
-		text-align: center;
+    text-align: center;
+    font-weight: bold;
 }
 .container .fields-info .form{
 	border: 1px solid #aaa;
@@ -342,9 +246,8 @@ form.secActive .form.first{
 		color: red;
 }
 .checkbox {
-width: 20px; /* Adjust the width as needed */
-height: 20px; /* Adjust the height as needed */
-margin-right: 20px;
+width: 20px;
+height: 20px; 
 }
   
   .container .input-field .address-inputs input {
@@ -362,7 +265,8 @@ margin-right: 20px;
   .container .input-field .address-inputs input:last-child {
 	margin-right: 0;
   }
-    
+  
+  
   .input-field input:focus,
   input[type="date"]:focus,
   select:focus {
@@ -413,7 +317,32 @@ form .buttons{
 form .buttons button , .backBtn{
     margin-right: 14px;
 }
+.message-form{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+.message-box{
+  margin-top: 50px;
+  display: flex;
+  flex-direction: column;
+align-items: start;
+}
+.message-box-container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.status-info{
+  color: red;
+  font-size: 15px;
+  line-height: 25px;
+  text-align: justify;
+}
 .cancel-button{
+  margin-top: 20px;
   cursor: pointer;
   text-align: center;
   border: darkgreen;
@@ -476,7 +405,87 @@ form .buttons button , .backBtn{
 .input-field.error .address-inputs input:last-child {
     border-color: red;
 }
+.applicant-name{
+  margin: 5px 0;
+  font-weight: 600;
+  
+}
+.status-container{
+display: flex;
+align-items: center;
+margin: 10px 0;
+}
+.status {
+  font-size: 24px;
+  font-weight: bold;
+  padding: 2px 3px;
+  border-radius: 2rem;
+  text-align: center;
+  margin-left: 5px;
+}
 
+.status.pending {
+	padding: 2px 10px;
+	background-color: #fd7238;
+	font-weight: 600;
+	color: #fff;
+	font-size: 15px;
+}
+
+.status.in.review {
+  padding: 2px 10px;
+	background-color: #ffce26;
+	font-weight: 600;
+	color: #fff;
+	font-size: 15px;
+}
+
+.status.qualified {
+  padding: 2px 10px;
+	background-color: #00d084;
+	font-weight: 600;
+	color: #fff;
+	font-size: 15px;
+}
+
+.status.accepted {
+	padding: 2px 10px;
+	background-color: #28a745;
+	font-weight: 600;
+	color: #fff;
+	font-size: 15px;
+}
+
+.status.rejected {
+  padding: 2px 10px;
+	background-color: red;
+	font-weight: 600;
+	color: #fff;
+	font-size: 15px;
+}
+#status{
+  padding: 3px 10px;
+  border-radius: 20px;
+  margin-right: 5px;
+}
+.submit-button{
+  cursor: pointer;
+  background-color: #E6E6E6;
+  color: #444;
+  padding: 3px 20px;
+  border: none;
+  border-radius: 4px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.26);
+}
+.submit-button:hover{
+  opacity: 0.8;
+  background-color: #E6E6E6;
+}
+.document-label{
+  margin-top: 20px;
+  margin-bottom: 10px;
+  color: darkgreen;
+}
 
 
 
@@ -484,10 +493,14 @@ form .buttons button , .backBtn{
 	form .fields .input-field{
 		width: 100%;
 }
+.container {
+  margin: 1rem;
+  padding: 10px; 
+}
 	.container .fields {
 		display: grid;
     grid-template-columns: repeat(1, 1fr);
-    grid-gap: 20px;
+    grid-gap: 10px;
 	}
 	.container .input-field .address-inputs {
 		display: grid;
