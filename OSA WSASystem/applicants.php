@@ -164,32 +164,30 @@ if (isset($_GET['logout'])) {
                     </ul>
                 </div>
 
-                
 
 
 
-                    <div class="export-container">
-                
 
-                <select id="scholarshipSelect" name="scholarship_id">
-                    <option value="">Select Scholarship</option>
-                    <?php
-                    // Fetch the list of available scholarships from your database
-                    $scholarshipQuery = "SELECT scholarship_id, scholarship_name FROM tbl_userapp WHERE status = 'Accepted'";
-                    $scholarshipResult = mysqli_query($conn, $scholarshipQuery);
+                <div class="export-container">
+                    <select id="scholarshipSelect" name="scholarship_id">
+                        <option value="">Select Scholarship</option>
+                        <?php
+                        // Fetch the list of available scholarships from your database
+                        $scholarshipQuery = "SELECT scholarship_id, scholarship_name FROM tbl_userapp WHERE status = 'Accepted'";
+                        $scholarshipResult = mysqli_query($conn, $scholarshipQuery);
 
-                    if ($scholarshipResult) {
-                        while ($row = mysqli_fetch_assoc($scholarshipResult)) {
-                            $scholarshipId = $row['scholarship_id'];
-                            $scholarshipName = $row['scholarship_name'];
-                            echo '<option value="' . urlencode($scholarshipId) . '">' . $scholarshipName . '</option>';
+                        if ($scholarshipResult) {
+                            while ($row = mysqli_fetch_assoc($scholarshipResult)) {
+                                $scholarshipId = $row['scholarship_id'];
+                                $scholarshipName = $row['scholarship_name'];
+                                echo '<option value="' . urlencode($scholarshipId) . '">' . $scholarshipName . '</option>';
+                            }
                         }
-                    }
-                    ?>
-                </select>
-                <button id="exportButton" class="btn-download" title="Export Rewardees">
-                    <i class='bx bxs-file-export'></i> Export
-                </button>
+                        ?>
+                    </select>
+                    <button id="exportButton" class="btn-download" title="Export Rewardees">
+                        <i class='bx bxs-file-export'></i> Export
+                    </button>
                 </div>
 
 

@@ -160,24 +160,18 @@ $rejectedCount = mysqli_query($conn, "SELECT COUNT(*) as count FROM tbl_userapp 
 
                 </div>
                 <div class="profile">
-                    <a href="admin_profile.php" class="profile">
-                        <?php
-                        $select_admin = mysqli_query($conn, "SELECT * FROM `tbl_super_admin` WHERE super_admin_id = '$super_admin_id'") or die('query failed');
-                        $fetch = mysqli_fetch_assoc($select_admin);
-                        if ($fetch && $fetch['profile'] != '') {
-            
-                            $imagePath = $_SERVER['DOCUMENT_ROOT'] . '/user_profiles/' . $fetch['profile'];
+                <a href="admin_profile.php" class="profile">
+    <?php
+    $select_admin = mysqli_query($conn, "SELECT * FROM `tbl_super_admin` WHERE super_admin_id = '$super_admin_id'") or die('query failed');
+    $fetch = mysqli_fetch_assoc($select_admin);
+    if ($fetch && $fetch['profile'] != '') {
+        echo '<img src="../user_profiles/' . $fetch['profile'] . '">';
+    } else {
+        echo '<img src="../user_profiles/isulogo.png">';
+    }
+    ?>
+</a>
 
-                            if (file_exists($imagePath)) {
-                                echo '<img src="' . $imagePath . '">';
-                            } else {
-                                echo '<img src="../user_profiles/isulogo.png">';
-                            }
-                        } else {
-                            echo '<img src="../user_profiles/isulogo.png">';
-                        }
-                        ?>
-                    </a>
 
                 </div>
             </div>
@@ -243,7 +237,7 @@ $rejectedCount = mysqli_query($conn, "SELECT COUNT(*) as count FROM tbl_userapp 
                     <a href="application_list.php">
                     <span class="text">
                         <h3><?php echo $num_rows; ?></h3>
-                        <p>Total Applications Received</p>
+                        <p>Total Applications</p>
                     </span>
                     </a>
                 </li>
