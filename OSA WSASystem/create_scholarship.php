@@ -1,5 +1,18 @@
 <?php
-include('../include/connection.php');
+include '../include/connection.php';
+session_name("OsaSession");
+session_start();
+$admin_id = $_SESSION['admin_id'];
+
+if (!isset($admin_id)) {
+    header('location:osa_login.php');
+};
+
+if (isset($_GET['logout'])) {
+    unset($admin_id);
+    session_destroy();
+    header('location:osa_login.php');
+}
 
 $scholarship = "";
 $details = "";
