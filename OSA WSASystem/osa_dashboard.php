@@ -316,7 +316,7 @@ $select = mysqli_query($conn, "SELECT * FROM tbl_userapp WHERE status = 'Pending
 
 
                 <?php
-                $newScholarsQuery = "SELECT DISTINCT applicant_name, image FROM tbl_userapp WHERE status = 'Accepted' ORDER BY application_id DESC LIMIT 10";
+               $newScholarsQuery = "SELECT DISTINCT applicant_name, image, application_id FROM tbl_userapp WHERE status = 'Accepted' ORDER BY application_id DESC LIMIT 10";
                 $result = $conn->query($newScholarsQuery);
                 ?>
                 <div class="todo">
