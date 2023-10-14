@@ -11,6 +11,7 @@ $dob = $_POST['dob'] ?? '';
 $pob = $_POST['pob'] ?? '';
 $gender = $_POST['gender'] ?? '';
 $email = $_POST['email'] ?? '';
+$course = $_POST['course'] ?? '';
 $mobile_num = $_POST['mobile_num'] ?? '';
 $citizenship = $_POST['citizenship'] ?? '';
 $barangay = $_POST['barangay'] ?? '';
@@ -130,7 +131,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $isValid = true;
 
     // Server-side validation for required fields
-    if (empty($last_name) || empty($first_name) || empty($middle_name) || empty($dob) || empty($pob) || empty($gender) || empty($email) || empty($mobile_num) || empty($citizenship) || empty($barangay) || empty($town_city) || empty($province) || empty($zip_code) || empty($id_number) || empty($father_name) || empty($father_address) || empty($father_work) || empty($mother_name) || empty($mother_address) || empty($mother_work)) {
+    if (empty($last_name) || empty($first_name) || empty($middle_name) || empty($dob) || empty($pob) || empty($gender) || empty($email) || empty($course) || empty($mobile_num) || empty($citizenship) || empty($barangay) || empty($town_city) || empty($province) || empty($zip_code) || empty($id_number) || empty($father_name) || empty($father_address) || empty($father_work) || empty($mother_name) || empty($mother_address) || empty($mother_work)) {
         $isValid = false;
         echo "<script>alert('Please fill in all required fields.')</script>";
     }
@@ -139,7 +140,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Data is valid, proceed with database insertion
 
         // Insert into Database
-        $sql = "INSERT INTO `tbl_userapp` (user_id, image, applicant_name, scholarship_name, last_name, first_name, middle_name, dob, pob, gender, email, mobile_num, citizenship, barangay, town_city, province, zip_code, id_number, father_name, father_address, father_work, mother_name, mother_address, mother_work, file, scholarship_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO `tbl_userapp` (user_id, image, applicant_name, scholarship_name, last_name, first_name, middle_name, dob, pob, gender, email, course,mobile_num, citizenship, barangay, town_city, province, zip_code, id_number, father_name, father_address, father_work, mother_name, mother_address, mother_work, file, scholarship_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?)";
 
         $stmt = $conn->prepare($sql);
 
@@ -148,7 +149,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         $stmt->bind_param(
-            "issssssssssssssssssssssssi", // 'i' for integer variables
+            "isssssssssssssssssssssssssi", // 'i' for integer variables
             $user_id, // 'i' because user_id is an integer
             $image,
             $full_name,
@@ -160,6 +161,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $pob,
             $gender,
             $email,
+            $course,
             $mobile_num,
             $citizenship,
             $barangay,
@@ -179,7 +181,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if (!$stmt->execute()) {
             $errorMessage = "Failed to insert application.";
-            
         } else {
             // Get the image from 'tbl_user' table
             $sql = "SELECT image FROM tbl_user WHERE user_id = ?";
@@ -209,11 +210,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmtRegNotifications = $conn->prepare($sqlRegNotifications);
             $stmtRegNotifications->bind_param("ssss", $user_id, $regNotificationMessage, $userImage, $is_read);
             $stmtRegNotifications->execute();
-                 // Trigger a SweetAlert2 modal based on success
-                 $successMessage = "Application submitted successfully!";
-                 
-             }
-         }
+            // Trigger a SweetAlert2 modal based on success
+            $successMessage = "Application submitted successfully!";
+        }
+    }
 }
 ?>
 
@@ -229,19 +229,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
     <title>Application Form</title>
+    <style>
+        .select-option {
+            display: grid;
+            grid-template-columns: 1fr;
+        }
+    </style>
 </head>
 
 
 <body>
     <?php include('../include/header.php') ?>
     <div class="wrapper">
-    <?php
-    if (isset($alreadyApplied)) {
-        echo '<script>
+        <?php
+        if (isset($alreadyApplied)) {
+            echo '<script>
              Swal.fire({
                  icon: "success",
                  title: "Success",
-                 text: "'.$alreadyApplied.'",
+                 text: "' . $alreadyApplied . '",
                  confirmButtonText: "OK"
              }).then((result) => {
                  if (result.isConfirmed) {
@@ -249,13 +255,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                  }
              });
          </script>';
-    }
-            if (isset($successMessage)) {
-                echo '<script>
+        }
+        if (isset($successMessage)) {
+            echo '<script>
     Swal.fire({
         position: "center",
         icon: "success",
-        title: "'.$successMessage.'",
+        title: "' . $successMessage . '",
         showConfirmButton: false,
         timer: 1500
     }).then((result) => {
@@ -264,14 +270,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     });
 </script>';
-            }
+        }
 
-            if (isset($errorMessage)) {
-                echo '<script>
+        if (isset($errorMessage)) {
+            echo '<script>
                 Swal.fire({
                     icon: "error",
                     title: "Error",
-                    text: "'.$errorMessage.'",
+                    text: "' . $errorMessage . '",
                     confirmButtonText: "OK"
                 }).then((result) => {
                     if (result.isConfirmed) {
@@ -279,8 +285,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     }
                 });
             </script>';
-            }
-            ?>
+        }
+        ?>
 
         <div class="header">
             <ul>
@@ -348,11 +354,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             </div>
                         </div>
 
-                        <div class="input-field">
-                            <label>Email</label>
-                            <input type="email" id="email" name="email" placeholder="Enter your email" value="<?php echo $email; ?>" required>
-                            <div class="validation-message" id="email-error"></div>
+                        <div class="select-input-field">
+                            <div class="input-field">
+                                <label>Email</label>
+                                <input type="email" id="email" name="email" placeholder="Enter your email" value="<?php echo $email; ?>" required>
+                                <div class="validation-message" id="email-error"></div>
+                            </div>
+                            <div class="input-field">
+                                
+                            <label>Mobile Number</label>
+                                <input type="number" id="mobile_num" name="mobile_num" placeholder="09XXXXXXXXX" value="<?php echo $mobile_num; ?>" required pattern="[0-9]{11}">
+                                <div class="validation-message" id="mobile_num-error"></div>
+                            </div>
                         </div>
+
+
+
                         <div class="fields">
                             <div class="input-field">
                                 <label>School ID Number</label>
@@ -360,9 +377,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <div class="validation-message" id="id_number-error"></div>
                             </div>
                             <div class="input-field">
-                                <label>Mobile Number</label>
-                                <input type="number" id="mobile_num" name="mobile_num" placeholder="09XXXXXXXXX" value="<?php echo $mobile_num; ?>" required pattern="[0-9]{11}">
-                                <div class="validation-message" id="mobile_num-error"></div>
+
+                            <label>Course</label>
+                                <select id="course" name="course" required>
+                                    <option disabled selected>Select course</option>
+                                    <option value="BSIT">BSIT</option>
+                                    <option value="BSA">BSA</option>
+                                </select>
+                                <div class="validation-message" id="course-error"></div>
+
+                                
                             </div>
                             <div class="input-field">
                                 <label>Citizenship</label>
@@ -374,22 +398,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <div class="input-field">
                             <h4 class="label1">Permanent Address</h4>
                             <div class="address-inputs">
-                                <div class="address-container">
-                                    <input type="text" id="barangay" name="barangay" placeholder="Street & Barangay" value="<?php echo $barangay; ?>" required>
-                                    <div class="validation-message" id="barangay-error"></div>
+                            <div class="address-container">
+                                    <label for="region">Region</label>
+                                    <select id="region" name="region" required></select>
+                                    <div class="validation-message" id="region-error"></div>
                                 </div>
 
                                 <div class="address-container">
-                                    <input type="text" id="town_city" name="town_city" placeholder="Town/City/Municipality" value="<?php echo $town_city; ?>" required>
-                                    <div class="validation-message" id="town_city-error"></div>
-                                </div>
-
-                                <div class="address-container">
-                                    <input type="text" id="province" name="province" placeholder="Province" value="<?php echo $province; ?>" required>
+                                    <label for="province">Province</label>
+                                    <select id="province" name="province" required></select>
                                     <div class="validation-message" id="province-error"></div>
                                 </div>
 
                                 <div class="address-container">
+                                    <label for="town_city">Town City</label>
+                                    <select id="town_city" name="town_city" required></select>
+                                    <div class="validation-message" id="town_city-error"></div>
+                                </div>
+
+                                <div class="address-container">
+                                    <label for="barangay">Barangay</label>
+                                    <select id="barangay" name="barangay" required></select>
+                                    <div class="validation-message" id="barangay-error"></div>
+                                </div>
+
+                                <div class="address-container">
+
+                                    <label for="zip_code">Zip Code</label>
                                     <input type="number" id="zip_code" name="zip_code" placeholder="Zip Code" value="<?php echo $zip_code; ?>" required>
                                     <div class="validation-message" id="zip_code-error"></div>
                                 </div>
@@ -545,13 +580,90 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             });
 
             btn_done.addEventListener("click", function() {
-                if (validationForm3(form_3)) {
-                } else {
+                if (validationForm3(form_3)) {} else {
 
                 }
             })
 
         });
+        document.addEventListener("DOMContentLoaded", function () {
+    // Your existing code...
+
+    fetch('philippine_provinces_cities_municipalities_and_barangays_2019v2.json')
+        .then(response => response.json())
+        .then(data => {
+            const regionDropdown = document.getElementById('region');
+            const provinceDropdown = document.getElementById('province');
+            const townCityDropdown = document.getElementById('town_city');
+            const barangayDropdown = document.getElementById('barangay');
+
+            for (const regionCode in data) {
+                const region = data[regionCode];
+                const option = document.createElement('option');
+                option.value = regionCode;
+                option.textContent = region.region_name + ' - ' + regionCode;
+                regionDropdown.appendChild(option);
+            }
+
+            regionDropdown.addEventListener('change', () => {
+                const selectedRegionCode = regionDropdown.value;
+                const provinceData = data[selectedRegionCode].province_list;
+
+                // Populate the province dropdown based on the selected region
+                provinceDropdown.innerHTML = '';
+                for (const provinceName in provinceData) {
+                    const option = document.createElement('option');
+                    option.value = provinceName;
+                    option.textContent = provinceName;
+                    provinceDropdown.appendChild(option);
+                }
+
+                // Clear the town/city and barangay dropdowns
+                townCityDropdown.innerHTML = '';
+                barangayDropdown.innerHTML = '';
+            });
+
+            provinceDropdown.addEventListener('change', () => {
+                const selectedRegionCode = regionDropdown.value;
+                const selectedProvince = provinceDropdown.value;
+                const townCityData = data[selectedRegionCode].province_list[selectedProvince].municipality_list;
+
+                // Populate the town/city dropdown based on the selected province
+                townCityDropdown.innerHTML = '';
+                for (const townCityName in townCityData) {
+                    const option = document.createElement('option');
+                    option.value = townCityName;
+                    option.textContent = townCityName;
+                    townCityDropdown.appendChild(option);
+                }
+
+                // Clear the barangay dropdown
+                barangayDropdown.innerHTML = '';
+            });
+
+            townCityDropdown.addEventListener('change', () => {
+                const selectedRegionCode = regionDropdown.value;
+                const selectedProvince = provinceDropdown.value;
+                const selectedTownCity = townCityDropdown.value;
+                const barangayData = data[selectedRegionCode].province_list[selectedProvince].municipality_list[selectedTownCity].barangay_list;
+
+                // Populate the barangay dropdown based on the selected town/city
+                barangayDropdown.innerHTML = '';
+                for (const barangayName of barangayData) {
+                    const option = document.createElement('option');
+                    option.value = barangayName;
+                    option.textContent = barangayName;
+                    barangayDropdown.appendChild(option);
+                }
+            });
+        })
+        .catch(error => {
+            console.error('Error loading JSON file:', error);
+        });
+});
+
+
+
 
         function validationForm1(form) {
             var last_name = document.getElementById('last_name');
@@ -566,12 +678,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             var gender_error = document.getElementById('gender-error');
             var email = document.getElementById('email');
             var email_error = document.getElementById('email-error');
+            var course = document.getElementById('course');
+            var course_error = document.getElementById('course-error');
             var id_number = document.getElementById('id_number');
             var id_number_error = document.getElementById('id_number-error');
             var mobile_num = document.getElementById('mobile_num');
             var mobile_num_error = document.getElementById('mobile_num-error');
             var citizenship = document.getElementById('citizenship');
             var citizenship_error = document.getElementById('citizenship-error');
+            var region = document.getElementById('region');
+            var region_error = document.getElementById('region-error');
             var barangay = document.getElementById('barangay');
             var barangay_error = document.getElementById('barangay-error');
             var province = document.getElementById('province');
@@ -651,6 +767,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 email_error.textContent = '';
             }
 
+            var course = document.getElementById('course');
+            var course_error = document.getElementById('course-error');
+            var selectedCourse = course.value;
+
+            if (selectedCourse === 'Select course') {
+                course_error.textContent = 'Please select a course';
+                isValid = false;
+            } else {
+                course_error.textContent = '';
+            }
+
             if (id_number.value.trim() === '') {
                 id_number_error.textContent = 'Id Number is required';
                 isValid = false;
@@ -676,6 +803,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 isValid = false;
             } else {
                 mobile_num_error.textContent = '';
+            }
+
+            if (region.value.trim() === '') {
+                region_error.textContent = 'Region is required';
+                isValid = false;
+            } else {
+                region_error.textContent = '';
             }
 
             if (barangay.value.trim() === '') {

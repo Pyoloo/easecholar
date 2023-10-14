@@ -16,10 +16,8 @@ if (isset($_GET['logout'])) {
     exit();
 }
 
-// No need to include the connection.php again here
 $select = mysqli_query($conn, "SELECT * FROM tbl_userapp WHERE status = 'Pending'") or die('query failed');
 
-// Execute SQL queries to fetch counts for each status
 $pendingCount = mysqli_query($conn, "SELECT COUNT(*) as count FROM tbl_userapp WHERE status = 'Pending'")->fetch_assoc()['count'];
 $inReviewCount = mysqli_query($conn, "SELECT COUNT(*) as count FROM tbl_userapp WHERE status = 'In Review'")->fetch_assoc()['count'];
 $qualifiedCount = mysqli_query($conn, "SELECT COUNT(*) as count FROM tbl_userapp WHERE status = 'Qualified'")->fetch_assoc()['count'];
@@ -114,7 +112,6 @@ $rejectedCount = mysqli_query($conn, "SELECT COUNT(*) as count FROM tbl_userapp 
                         $notificationCount = $notificationCountData['count'];
 
 
-                        // Show the notification count only if there are new messages
                         if ($notificationCount > 0) {
                             echo '<i id="bellIcon" class="bx bxs-bell"></i>';
                             echo '<span class="num">' . $notificationCount . '</span>';
@@ -148,7 +145,6 @@ $rejectedCount = mysqli_query($conn, "SELECT COUNT(*) as count FROM tbl_userapp 
                                 </div>
                                 <div class="notify_options">
                                     <i class="bx bx-dots-vertical-rounded"></i>
-                                    <!-- Add the ellipsis (three-dots) icon and the options menu -->
                                     <div class="options_menu">
                                         <span class="delete_option" data-notification-id="<?php echo $row['notification_id']; ?>">Delete</span>
                                         <span class="cancel_option">Cancel</span>
@@ -161,18 +157,16 @@ $rejectedCount = mysqli_query($conn, "SELECT COUNT(*) as count FROM tbl_userapp 
                 </div>
                 <div class="profile">
                 <a href="admin_profile.php" class="profile">
-    <?php
-    $select_admin = mysqli_query($conn, "SELECT * FROM `tbl_super_admin` WHERE super_admin_id = '$super_admin_id'") or die('query failed');
-    $fetch = mysqli_fetch_assoc($select_admin);
-    if ($fetch && $fetch['profile'] != '') {
-        echo '<img src="../user_profiles/' . $fetch['profile'] . '">';
-    } else {
-        echo '<img src="../user_profiles/isulogo.png">';
-    }
-    ?>
-</a>
-
-
+                        <?php
+                        $select_admin = mysqli_query($conn, "SELECT * FROM `tbl_super_admin` WHERE super_admin_id = '$super_admin_id'") or die('query failed');
+                        $fetch = mysqli_fetch_assoc($select_admin);
+                        if ($fetch && $fetch['profile'] != '') {
+                            echo '<img src="../user_profiles/' . $fetch['profile'] . '">';
+                        } else {
+                            echo '<img src="../user_profiles/isulogo.png">';
+                        }
+                        ?>
+                    </a>
                 </div>
             </div>
         </nav>
@@ -237,7 +231,7 @@ $rejectedCount = mysqli_query($conn, "SELECT COUNT(*) as count FROM tbl_userapp 
                     <a href="application_list.php">
                     <span class="text">
                         <h3><?php echo $num_rows; ?></h3>
-                        <p>Total Applications</p>
+                        <p>Total Applications Received</p>
                     </span>
                     </a>
                 </li>
@@ -251,7 +245,6 @@ $rejectedCount = mysqli_query($conn, "SELECT COUNT(*) as count FROM tbl_userapp 
                     <canvas id="applicationStatusChart"></canvas>
                 </div>
 
-                <!-- Scholarship Analytics table -->
                 <div class="scholarship-analytics">
                     <div class="head">
                         <h3>Scholarship Analytics</h3>
@@ -265,7 +258,6 @@ $rejectedCount = mysqli_query($conn, "SELECT COUNT(*) as count FROM tbl_userapp 
                         </thead>
                         <tbody>
                             <?php
-                            // SQL query to retrieve scholarship names and count of applicants
                             $sql = "SELECT s.scholarship, COUNT(ua.user_id) AS num_applicants
                             FROM tbl_scholarship s
                             LEFT JOIN tbl_userapp ua ON s.scholarship_id = ua.scholarship_id
@@ -441,7 +433,7 @@ $rejectedCount = mysqli_query($conn, "SELECT COUNT(*) as count FROM tbl_userapp 
                 confirmLogout();
             });
 
-             // TOGGLE SIDEBAR
+             
         const menuBar = document.querySelector('#content nav .bx.bx-menu');
         const sidebar = document.getElementById('sidebar');
 
@@ -462,10 +454,11 @@ $rejectedCount = mysqli_query($conn, "SELECT COUNT(*) as count FROM tbl_userapp 
         }
 
         window.addEventListener('resize', handleResize);
+
         handleResize();
 
             function toggleDropdown() {
-                $(".num").hide();
+                $(".num").hide(); 
             }
 
             $(".notification .bxs-bell").on("click", function(event) {
@@ -484,7 +477,7 @@ $rejectedCount = mysqli_query($conn, "SELECT COUNT(*) as count FROM tbl_userapp 
 
             function markAllNotificationsAsRead() {
                 $.ajax({
-                    url: "mark_notification_as_read.php", 
+                    url: "mark_notification_as_read.php",
                     type: "POST",
                     data: {
                         read_message: "all" 
@@ -507,7 +500,6 @@ $rejectedCount = mysqli_query($conn, "SELECT COUNT(*) as count FROM tbl_userapp 
             $(".notify_options .delete_option").on("click", function(event) {
                 event.stopPropagation();
                 const notificationId = $(this).data("notification-id");
-                
                 $.ajax({
                     url: "delete_notification.php", 
                     type: "POST",

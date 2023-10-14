@@ -20,6 +20,7 @@ $profile_path = '';
 $email = '';
 $phone_num = '';
 
+
 $sql = "SELECT * FROM tbl_admin WHERE admin_id = ?";
 $stmt = $conn->prepare($sql);
 
@@ -70,7 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         $file_name = uniqid('profile_') . '.' . $file_extension;
-        $upload_directory = $_SERVER['DOCUMENT_ROOT'] . '/user_profiles/' . $file_name;
+        $upload_directory = $_SERVER['DOCUMENT_ROOT'] . '../user_profiles/' . $file_name;
 
         if (move_uploaded_file($profile['tmp_name'], $upload_directory)) {
             // Only update $profile_path if the move operation was successful

@@ -159,12 +159,6 @@ if ($rowUserInfo = mysqli_fetch_assoc($resultUserInfo)) {
                     <span class="text">Application</span>
                 </a>
             </li>
-            <li>
-                <a href="message.php">
-                    <i class='bx bxs-message-dots'></i>
-                    <span class="text">Message</span>
-                </a>
-            </li>
         </ul>
         <ul class="side-menu">
             <li>
@@ -292,13 +286,7 @@ if ($rowUserInfo = mysqli_fetch_assoc($resultUserInfo)) {
                         $select_user = mysqli_query($conn, "SELECT * FROM `tbl_user` WHERE user_id = '$user_id'") or die('query failed');
                         $fetch = mysqli_fetch_assoc($select_user);
                         if ($fetch && $fetch['image'] != '') {
-                            $imagePath = $_SERVER['DOCUMENT_ROOT'] . '/user_profiles/' . $fetch['image'];
-
-                            if (file_exists($imagePath)) {
-                                echo '<img src="' . $imagePath . '">';
-                            } else {
-                                echo '<img src="../user_profiles/default-avatar.png">';
-                            }
+                            echo '<img src="../user_profiles/' . $fetch['image'] . '">';
                         } else {
                             echo '<img src="../user_profiles/default-avatar.png">';
                         }

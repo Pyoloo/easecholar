@@ -23,6 +23,14 @@ body{
   color: #636363;
 }
 
+.swal2-styled.swal2-cancel {
+  border: 0;
+  border-radius: .25em;
+  background: initial;
+  background-color: red;
+  color: #fff;
+  font-size: 1em;
+}
 section{
   background-color: white;
   border-radius: 5px;

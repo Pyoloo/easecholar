@@ -10,7 +10,7 @@ if (isset($_POST['submit'])) {
     $image_size = $_FILES['image']['size'];
     $image_tmp_name = $_FILES['image']['tmp_name'];
     $image_type = $_FILES['image']['type'];
-    $maxImageSize = 1024 * 1024;
+    $maxImageSize = 5 * 1024 * 1024;
 
     if (!strpos($student_num, "-")) {
         $invalidStudentNumMessage = 'Student number must contain a "-" character (e.g., \'20-00022\').';

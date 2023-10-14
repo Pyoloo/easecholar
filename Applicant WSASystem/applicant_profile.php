@@ -18,7 +18,6 @@ if (isset($_GET['logout'])) {
 
 $image_path = '';
 
-
 $sql = "SELECT * FROM tbl_user WHERE user_id = ?";
 $stmt = $conn->prepare($sql);
 
@@ -46,11 +45,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $email = $_POST['email'];
   $password = $_POST['password'];
 
-  // Check if $_POST['student_num'] is set before trying to access it
   if (isset($_POST['student_num'])) {
     $student_num = $_POST['student_num'];
   } else {
-    $student_num = ''; // You can set a default value or leave it empty as needed
+    $student_num = ''; 
   }
 
   $errors = array();

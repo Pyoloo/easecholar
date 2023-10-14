@@ -191,14 +191,11 @@ function sendEmailNotification($toEmail, $toName, $subject, $body)
 
 <body>
     <?php include('../include/header.php'); ?>
-
-    <hr>
-
     <div class="wrapper">
         <form action="" method="POST" enctype="multipart/form-data">
             <div class="container">
                 <div class="head">
-                    <div class="img"><img src="/EASE-CHOLAR/user_profiles/<?php echo $applicationData['image']; ?>" alt="Profile"></div>
+                    <div class="img"><img src="../user_profiles/<?php echo $applicationData['image']; ?>" alt="Profile"></div>
                     <p class="applicant-name"><?php echo $applicationData['applicant_name']; ?></p>
                     <div class="reminder">
                         <h3 class="status-container">Status: <span class="status <?php echo strtolower($status); ?>"><?php echo $status; ?></span></h3>
@@ -323,22 +320,63 @@ function sendEmailNotification($toEmail, $toName, $subject, $body)
                     </div>
                 </div>
 
-                <h3 class="document-label">Other Documents</h3>
-                <?php
-                // Assuming $applicationData['file'] contains comma-separated file names
-                if (!empty($applicationData['file'])) {
-                    $fileNames = explode(',', $applicationData['file']);
-                    foreach ($fileNames as $fileName) {
-                        $filePath = '../file_uploads/' . $fileName;
-                        // Update the file path
-                        if (file_exists($_SERVER['DOCUMENT_ROOT'] . $filePath)) {
-                            echo '<p>File: <a href="' . $filePath . '" target="_blank">' . $fileName . '</a></p>';
-                        } else {
-                            echo '<p>File path not found: ' . $filePath . '</p>';
-                        }
-                    }
+                <h3 style="color:darkgreen">REQUIREMENTS UPLOADED</h3>
+        <div class="attachments-container">
+          <div class="files-column">
+            <h4 class="files-label">Files Uploaded</h4>
+            <?php
+            if (!empty($applicationData['file'])) {
+              $fileNames = explode(',', $applicationData['file']);
+              foreach ($fileNames as $fileName) {
+                $filePath = '../file_uploads/' . $fileName;
+                // Check if the file exists on the server
+                if (file_exists($filePath)) {
+                  // Display a link to the file
+                  echo '<p>File: <a href="' . $filePath . '" target="_blank">' . $fileName . '</a></p>';
+                } else {
+                  // Handle the case where the file is missing
+                  echo '<p>File not found: ' . $fileName . '</p>';
                 }
-                ?>
+              }
+            } else {
+              echo '<p>No files uploaded</p>';
+            }
+            ?>
+
+          </div>
+
+
+          <div class="attachments-column">
+            <h4 class="files-label">Attachments</h4>
+            <?php
+            $attachmentFiles = [];
+
+            // Retrieve attachment filenames from the 'attachments' column
+            if (!empty($applicationData['attachments'])) {
+              $attachmentFiles = explode(',', $applicationData['attachments']);
+            }
+
+            if (!empty($attachmentFiles)) {
+              foreach ($attachmentFiles as $attachmentName) {
+                $attachmentPath = '../file_uploads/' . $attachmentName;
+                // Check if the file exists on the server
+                if (file_exists($attachmentPath)) {
+                  // Display a link to the attachment
+                  echo '<p>Attachment: <a href="' . $attachmentPath . '" target="_blank">' . $attachmentName . '</a></p>';
+                } else {
+                  // Handle the case where the attachment file is missing
+                  echo '<p>Attachment not found: ' . $attachmentName . '</p>';
+                }
+              }
+            } else {
+              echo '<p>No attachments uploaded</p>';
+            }
+
+
+            ?>
+          </div>
+
+        </div>
 
                 <hr>
                 <div class="message-box">

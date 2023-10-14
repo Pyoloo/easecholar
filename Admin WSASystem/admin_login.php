@@ -10,7 +10,6 @@ if (isset($_POST['submit'])) {
     $row = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM tbl_super_admin WHERE username = '$username'"));
 
     if (isset($_POST['remember_me'])) {
-        // Set cookies with user credentials
         setcookie('remember_user', $username, time() + (30 * 24 * 3600), '/');
         setcookie('remember_password', $password, time() + (30 * 24 * 3600), '/');
     }
@@ -19,7 +18,6 @@ if (isset($_POST['submit'])) {
         $_SESSION["super_admin_id"] = $row["super_admin_id"];
         $successMessage = "Login successfully!";
     } elseif (isset($row)) {
-        // User exists, but wrong password
         $incorrectMessage = 'Incorrect Username or Password!';
     } else {
         // User not registered

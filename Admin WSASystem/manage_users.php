@@ -102,12 +102,6 @@ function formatExpireDate($dbExpireDate)
 					<span class="text">Application List</span>
 				</a>
 			</li>
-      <li>
-        <a href="#">
-          <i class='bx bxs-message-dots'></i>
-          <span class="text">Message</span>
-        </a>
-      </li>
     </ul>
     <ul class="side-menu">
       <li>
@@ -176,19 +170,17 @@ function formatExpireDate($dbExpireDate)
 
         </div>
         <div class="profile">
-          <a href="admin_profile.php" class="profile">
-            <?php
-            $select_admin = mysqli_query($conn, "SELECT * FROM `tbl_super_admin` WHERE super_admin_id = '$super_admin_id'") or die('query failed');
-            if (mysqli_num_rows($select_admin) > 0) {
-              $fetch_admin = mysqli_fetch_assoc($select_admin);
-            }
-            if ($fetch_admin['profile'] == '') {
-              echo '<img src="../user_profiles/isulogo.png">';
-            } else {
-              echo '<img src="../user_profiles/' . $fetch_admin['profile'] . '">';
-            }
-            ?>
-          </a>
+        <a href="admin_profile.php" class="profile">
+                        <?php
+                        $select_admin = mysqli_query($conn, "SELECT * FROM `tbl_super_admin` WHERE super_admin_id = '$super_admin_id'") or die('query failed');
+                        $fetch = mysqli_fetch_assoc($select_admin);
+                        if ($fetch && $fetch['profile'] != '') {
+                            echo '<img src="../user_profiles/' . $fetch['profile'] . '">';
+                        } else {
+                            echo '<img src="../user_profiles/isulogo.png">';
+                        }
+                        ?>
+                    </a>
         </div>
       </div>
     </nav>

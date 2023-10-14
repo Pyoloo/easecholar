@@ -130,19 +130,12 @@ if (isset($_GET['logout'])) {
                         $select_osa = mysqli_query($conn, "SELECT * FROM `tbl_admin` WHERE admin_id = '$admin_id'") or die('query failed');
                         $fetch = mysqli_fetch_assoc($select_osa);
                         if ($fetch && $fetch['profile'] != '') {
-                            $imagePath = $_SERVER['DOCUMENT_ROOT'] . '/user_profiles/' . $fetch['profile'];
-
-                            if (file_exists($imagePath)) {
-                                echo '<img src="' . $imagePath . '">';
-                            } else {
-                                echo '<img src="../user_profiles/default-avatar.png">';
-                            }
+                            echo '<img src="../user_profiles/' . $fetch['profile'] . '">';
                         } else {
                             echo '<img src="../user_profiles/default-avatar.png">';
                         }
                         ?>
                     </a>
-
                 </div>
             </div>
         </nav>
@@ -169,31 +162,27 @@ if (isset($_GET['logout'])) {
 
 
                 <div class="export-container">
-                    <select id="scholarshipSelect" name="scholarship_id">
-                        <option value="">Select Scholarship</option>
-                        <?php
-                        // Fetch the list of available scholarships from your database
-                        $scholarshipQuery = "SELECT scholarship_id, scholarship_name FROM tbl_userapp WHERE status = 'Accepted'";
-                        $scholarshipResult = mysqli_query($conn, $scholarshipQuery);
+                <select id="scholarshipSelect" name="scholarship_id">
+    <option value="">All Scholarships</option>
+    <?php
+    // Fetch unique scholarship names and their corresponding scholarship_id from your database
+    $scholarshipQuery = "SELECT DISTINCT scholarship_id, scholarship_name FROM tbl_userapp WHERE status = 'Accepted'";
+    $scholarshipResult = mysqli_query($conn, $scholarshipQuery);
 
-                        if ($scholarshipResult) {
-                            while ($row = mysqli_fetch_assoc($scholarshipResult)) {
-                                $scholarshipId = $row['scholarship_id'];
-                                $scholarshipName = $row['scholarship_name'];
-                                echo '<option value="' . urlencode($scholarshipId) . '">' . $scholarshipName . '</option>';
-                            }
-                        }
-                        ?>
-                    </select>
+    if ($scholarshipResult) {
+        while ($row = mysqli_fetch_assoc($scholarshipResult)) {
+            $scholarshipId = $row['scholarship_id'];
+            $scholarshipName = $row['scholarship_name'];
+            echo '<option value="' . urlencode($scholarshipId) . '">' . $scholarshipName . '</option>';
+        }
+    }
+    ?>
+</select>
+
                     <button id="exportButton" class="btn-download" title="Export Rewardees">
                         <i class='bx bxs-file-export'></i> Export
                     </button>
                 </div>
-
-
-
-
-
             </div>
         </main>
 
@@ -243,7 +232,7 @@ if (isset($_GET['logout'])) {
                     <tbody>
 
                         <?php
-                        $select = mysqli_query($conn, "SELECT ua.*, u.custom_id
+                        $select = mysqli_query($conn, "SELECT  ua.*, u.custom_id
             FROM tbl_userapp ua
             JOIN tbl_user u ON ua.user_id = u.user_id") or die('query failed');
                         ?>
@@ -322,16 +311,34 @@ if (isset($_GET['logout'])) {
                 });
 
                 document.getElementById("exportButton").addEventListener("click", function() {
-                    var scholarshipSelect = document.getElementById("scholarshipSelect");
-                    var selectedScholarshipId = scholarshipSelect.value;
+    var scholarshipSelect = document.getElementById("scholarshipSelect");
+    var selectedScholarshipId = scholarshipSelect.value;
+    
+    // Here you can add another parameter, application_id, if needed
+    var applicationId = ''; // You should set the actual application_id based on your requirements
+    
+    // Construct the URL with both scholarship_id and application_id
+    var exportURL = "generate_pdf.php";
+    if (selectedScholarshipId) {
+        exportURL += "?scholarship_id=" + selectedScholarshipId;
+    }
+    
+    if (applicationId) {
+        if (selectedScholarshipId) {
+            exportURL += "&"; // Add '&' if there's already a parameter
+        } else {
+            exportURL += "?"; // Otherwise, start with '?'
+        }
+        exportURL += "application_id=" + applicationId;
+    }
+    
+    // Redirect to the URL with both parameters
+    window.location.href = exportURL;
+});
 
-                    if (selectedScholarshipId) {
-                        // Redirect to generate_pdf.php with the selected scholarship_id
-                        window.location.href = "generate_pdf.php?scholarship_id=" + selectedScholarshipId;
-                    } else {
-                        alert("Please select a scholarship to export.");
-                    }
-                });
+
+
+
 
 
                 // TOGGLE SIDEBAR

@@ -16,6 +16,37 @@ body{
 hr{
   margin-top: 20px;
 }
+p{
+  margin-bottom: 5px;
+}
+
+.attachments-container{
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	column-gap: 20px;
+}
+
+.files-label{
+	font-size: 17px;
+	font-weight: 600;
+  margin-bottom: 13px;
+}
+.files-column{
+	border: 1px solid #aaa;
+	padding: 15px;
+	border-radius: 3px;
+}
+.attachments-column{
+	border: 1px solid #aaa;
+	padding: 15px;
+	border-radius: 3px;
+}
+
+.attach-label{
+	margin-top: 20px;
+	font-size: 15px;
+	font-style: italic;
+}
 .container{
     position: relative;
     border-radius: 6px;
@@ -204,6 +235,7 @@ hr{
 	display: grid;
 	grid-template-columns: repeat(2, 1fr);
 	grid-gap: 20px;
+  margin-bottom: 20px;
   }
   
   .container .input-field {
@@ -289,19 +321,20 @@ margin-right: 20px;
     color: #333;
 }
 .container form button, .backBtn{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 45px;
-    padding: 0 60px;
-    border: none;
-    outline: none;
-    color: #fff;
-    border-radius: 5px;
-    margin: 25px 20px;
-    background-color: #4070f4;
-    transition: all 0.3s linear;
-    cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  padding: 0px 40px;
+  border: none;
+  outline: none;
+  color: #fff;
+  font-weight: 600;
+  border-radius: 3px;
+  margin: 25px 20px;
+  background-color: #4070f4;
+  transition: all 0.3s linear;
+  cursor: pointer;
 }
 .container form .btnText{
     font-size: 14px;

@@ -141,24 +141,17 @@ function formatExpireDate($dbExpireDate)
 
                 </div>
                 <div class="profile">
-                    <a href="osa_profile.php" class="profile">
+                <a href="osa_profile.php" class="profile">
                         <?php
                         $select_osa = mysqli_query($conn, "SELECT * FROM `tbl_admin` WHERE admin_id = '$admin_id'") or die('query failed');
                         $fetch = mysqli_fetch_assoc($select_osa);
                         if ($fetch && $fetch['profile'] != '') {
-                            $imagePath = $_SERVER['DOCUMENT_ROOT'] . '/user_profiles/' . $fetch['profile'];
-
-                            if (file_exists($imagePath)) {
-                                echo '<img src="' . $imagePath . '">';
-                            } else {
-                                echo '<img src="../user_profiles/default-avatar.png">';
-                            }
+                            echo '<img src="../user_profiles/' . $fetch['profile'] . '">';
                         } else {
                             echo '<img src="../user_profiles/default-avatar.png">';
                         }
                         ?>
                     </a>
-
                 </div>
             </div>
         </nav>

@@ -84,13 +84,11 @@ if (isset($_GET['id'])) {
 <body>
   <?php include('../include/header.php'); ?>
 
-  <hr>
-
   <div class="wrapper">
     <form action="" method="POST" enctype="multipart/form-data">
       <div class="container">
         <div class="head">
-          <div class="img"><img src="../user_profiles/<?php echo $applicationData['image']; ?>" alt="Profile"></div>
+          <div class="img"><img src="/EASE-CHOLAR/user_profiles/<?php echo $applicationData['image']; ?>" alt="Profile"></div>
           <p class="applicant-name"><?php echo $applicationData['applicant_name']; ?></p>
           <div class="reminder">
             <h3 class="status-container">Status: <span class="status <?php echo strtolower($status); ?>"><?php echo $status; ?></span></h3>
@@ -196,50 +194,90 @@ if (isset($_GET['id'])) {
           </div>
         </div>
 
-        <h3 class="document-label">Other Documents</h3>
-        <?php
-        // Assuming $applicationData['file'] contains comma-separated file names
-        if (!empty($applicationData['file'])) {
-          $fileNames = explode(',', $applicationData['file']);
-          foreach ($fileNames as $fileName) {
-            $filePath = '../file_uploads/' . $fileName;
-            // Update the file path
-            if (file_exists($_SERVER['DOCUMENT_ROOT'] . $filePath)) {
-              echo '<p>File: <a href="' . $filePath . '" target="_blank">' . $fileName . '</a></p>';
+
+        <h3 style="color:darkgreen">REQUIREMENTS UPLOADED</h3>
+        <div class="attachments-container">
+          <div class="files-column">
+            <h4 class="files-label">Files Uploaded</h4>
+            <?php
+            if (!empty($applicationData['file'])) {
+              $fileNames = explode(',', $applicationData['file']);
+              foreach ($fileNames as $fileName) {
+                $filePath = '../file_uploads/' . $fileName;
+                // Check if the file exists on the server
+                if (file_exists($filePath)) {
+                  // Display a link to the file
+                  echo '<p>File: <a href="' . $filePath . '" target="_blank">' . $fileName . '</a></p>';
+                } else {
+                  // Handle the case where the file is missing
+                  echo '<p>File not found: ' . $fileName . '</p>';
+                }
+              }
             } else {
-              echo '<p>File path not found: ' . $filePath . '</p>';
+              echo '<p>No files uploaded</p>';
             }
-          }
-        }
-        ?>
+            ?>
+
+          </div>
+
+
+          <div class="attachments-column">
+            <h4 class="files-label">Attachments</h4>
+            <?php
+            $attachmentFiles = [];
+
+            // Retrieve attachment filenames from the 'attachments' column
+            if (!empty($applicationData['attachments'])) {
+              $attachmentFiles = explode(',', $applicationData['attachments']);
+            }
+
+            if (!empty($attachmentFiles)) {
+              foreach ($attachmentFiles as $attachmentName) {
+                $attachmentPath = '../file_uploads/' . $attachmentName;
+                // Check if the file exists on the server
+                if (file_exists($attachmentPath)) {
+                  // Display a link to the attachment
+                  echo '<p>Attachment: <a href="' . $attachmentPath . '" target="_blank">' . $attachmentName . '</a></p>';
+                } else {
+                  // Handle the case where the attachment file is missing
+                  echo '<p>Attachment not found: ' . $attachmentName . '</p>';
+                }
+              }
+            } else {
+              echo '<p>No attachments uploaded</p>';
+            }
+
+
+            ?>
+          </div>
+
+        </div>
 
         <hr><br>
         <div class="status-info">
-  <?php
-    if ($status === 'Pending') {
-      echo "<p>This status indicates that application has been received but has not yet been reviewed or processed. It's awaiting initial assessment.</p>";
+          <?php
+          if ($status === 'Pending') {
+            echo "<p>Application has been received but has not yet been reviewed or processed. It's awaiting initial assessment.</p>";
+          } elseif ($status === 'In Review') {
+            echo "<p>Application is actively being evaluated by the scholarship committee or administrators. They are diligently assessing your eligibility and qualifications to make informed decisions. Rest assured that your application is receiving careful consideration and is part of a competitive selection process.</p>";
+          } elseif ($status === 'Qualified') {
 
-    } elseif ($status === 'In Review') {
-      echo "<p>Application is actively being evaluated by the scholarship committee or administrators. They are diligently assessing your eligibility and qualifications to make informed decisions. Rest assured that your application is receiving careful consideration and is part of a competitive selection process.</p>";
-    } elseif ($status === 'Qualified') {
+            echo "<p>Application is marked as 'Qualified,' it suggests that application meet the eligibility criteria and have advanced to the next stage of consideration. We recognize strong potential in the application, and we will continue to evaluate it further to make well-informed decisions.</p>";
+          } elseif ($status === 'Accepted') {
 
-      echo "<p>Application is marked as 'Qualified,' it suggests that application meet the eligibility criteria and have advanced to the next stage of consideration. We recognize strong potential in the application, and we will continue to evaluate it further to make well-informed decisions.</p>";
-    } elseif ($status === 'Accepted') {
+            echo "<p>Have been selected as a recipient of the scholarship. It will receive further instructions on how to claim the award, complete necessary paperwork, and fulfill any additional requirements.</p>";
+          } elseif ($status === 'Rejected') {
+            echo "<p>Unfortunately, Application was not chosen for the scholarship.</p>";
+          } else {
+            echo "<p>Unknown status: " . htmlspecialchars($status) . "</p>";
+          }
 
-      echo "<p>Have been selected as a recipient of the scholarship. It will receive further instructions on how to claim the award, complete necessary paperwork, and fulfill any additional requirements.</p>";
+          ?>
+        </div>
 
-    } elseif ($status === 'Rejected') {
-      echo "<p>Unfortunately, this status means that application was not chosen for the scholarship.</p>";
-    } else {
-      echo "<p>Unknown status: " . htmlspecialchars($status) . "</p>";
-    }
-    
-  ?>
-</div>
-
-<div class="button-container">
-<button class="cancel-button" type="button" onclick="window.location.href='application_list.php'">Back</button>
-</div>
+        <div class="button-container">
+          <button class="cancel-button" type="button" onclick="window.location.href='application_list.php'">Back</button>
+        </div>
 
 
       </div>

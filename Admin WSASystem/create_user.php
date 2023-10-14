@@ -19,12 +19,10 @@ if (isset($_POST['submit'])) {
         $passwordComplexityMessage = "Password must contain at least one uppercase letter, one lowercase letter, one digit, and one special character.";
     }
 
-    // Check if an image was uploaded
     if (isset($_FILES['profile']) && $_FILES['profile']['error'] === UPLOAD_ERR_OK) {
         $profile = $_FILES['profile']['name'];
         move_uploaded_file($image_tmp_name, $image_folder . $profile);
     } else {
-        // If no image was uploaded, set a default image
         $profile = 'default-avatar.png';
     }
 
@@ -38,12 +36,10 @@ if (isset($_POST['submit'])) {
     } else {
         if ($password != $confirmpassword) {
             $passwordMismatchMessage = "Confirm password does not match!";
-        } elseif ($image_size > 2000000) {
+        } elseif ($image_size > 5000000) {
             $largeImageMessage = "Image size is too large!";
         } elseif (isset($passwordLengthMessage) || isset($passwordComplexityMessage)) {
-            // Do nothing if password requirements are not met
         } else {
-            // Insert the data into the database without hashing the password
             $insert = mysqli_query($conn, "INSERT INTO `tbl_admin` (username, full_name, email, password, role, profile) VALUES ('$username', '$full_name', '$email', '$password', '$role', '$profile')") or die('Query failed: ' . mysqli_error($conn));
 
             if ($insert) {
