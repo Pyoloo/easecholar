@@ -71,7 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         $file_name = uniqid('profile_') . '.' . $file_extension;
-        $upload_directory = $_SERVER['DOCUMENT_ROOT'] . '/user_profiles/' . $file_name;
+        $upload_directory = $_SERVER['DOCUMENT_ROOT'] . '../user_profiles/' . $file_name;
 
         if (move_uploaded_file($profile['tmp_name'], $upload_directory)) {
             // Only update $profile_path if the move operation was successful
@@ -82,11 +82,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if (empty($errors)) {
-        $conn = new mysqli($dbHost, $dbUser, $dbPass, $dbName);
-
-        if ($conn->connect_error) {
-            die("Connection failed: " . $conn->connect_error);
-        }
 
         $sql = "UPDATE tbl_admin SET email = ?, phone_num = ?, profile = ?, username = ?, full_name = ? WHERE admin_id = ?";
         $stmt = $conn->prepare($sql);
