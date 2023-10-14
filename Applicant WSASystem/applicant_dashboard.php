@@ -32,19 +32,6 @@ if ($resultAdmin->num_rows > 0) {
 }
 
 
-$sqlRegistrar = "SELECT username FROM tbl_registrar WHERE registrar_id = ?";
-$stmtRegistrar = $conn->prepare($sqlRegistrar);
-$stmtRegistrar->bind_param("s", $_SESSION['registrar_id']);
-$stmtRegistrar->execute();
-$resultRegistrar = $stmtRegistrar->get_result();
-
-if ($resultRegistrar->num_rows > 0) {
-    $rowRegistrar = $resultRegistrar->fetch_assoc();
-    $_SESSION['registrar_username'] = $rowRegistrar['username'];
-} else {
-    $_SESSION['registrar_username'] = 'Registrar'; 
-}
-
 $applicationQuery = "SELECT application_id FROM tbl_userapp WHERE user_id = ?";
 $stmtApplication = mysqli_prepare($conn, $applicationQuery);
 mysqli_stmt_bind_param($stmtApplication, "i", $user_id);
@@ -321,25 +308,6 @@ if ($rowUserInfo = mysqli_fetch_assoc($resultUserInfo)) {
                 </div>
             </div>
 
-            <div class="modal" id="registrarMessageModal">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Modal title</h5>
-                            <button type="button" class="close" onclick="closeModal()">&times;</button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="info">
-                                <label id="modalMessageContent"></label>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" onclick="closeModal()">Close</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
 
 
             <div class="head-title">
@@ -541,36 +509,6 @@ if ($rowUserInfo = mysqli_fetch_assoc($resultUserInfo)) {
                 }
             });
         }
-
-        function showRegistrarMessageModal(messageId, applicationId, registrarId) {
-            console.log("messageId:", messageId);
-            console.log("applicationId:", applicationId);
-            console.log("registrarId:", registrarId);
-            $.ajax({
-                url: "fetch_reg_message_content.php",
-                type: "POST",
-                data: {
-                    message_id: messageId,
-                    application_id: applicationId,
-                    registrar_id: registrarId // Send the admin_id to the server
-                },
-                success: function(response) {
-                    // Display the message content in the modal
-                    console.log(response); // Add this line to see the response in the browser's console
-                    document.getElementById("modalMessageContent").innerText = response;
-                    document.querySelector("#registrarMessageModal .modal-title").innerText = "Message from <?php echo $_SESSION['registrar_username']; ?>";
-                    openModal();
-
-                    // Now, after displaying the message, mark it as read by calling another AJAX request
-                    markAsRead(applicationId); // Call the function to mark the message as read
-                },
-                error: function() {
-                    alert("Failed to fetch message content.");
-                }
-            });
-        }
-
-
 
 
         // Function to open the modal
