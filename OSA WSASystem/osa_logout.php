@@ -1,4 +1,5 @@
 <?php
+session_name("OsaSession");
 session_start();
 
 $_SESSION = array();
