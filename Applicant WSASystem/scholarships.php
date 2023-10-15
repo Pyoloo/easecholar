@@ -102,7 +102,7 @@ function formatExpireDate($dbExpireDate)
 
 
     <!-- My CSS -->
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/scholarships.css">
 
     <title>ApplicantModule</title>
 </head>
@@ -117,14 +117,14 @@ function formatExpireDate($dbExpireDate)
             <span class="name-hub"><?= $full_name; ?></span>
         </div>
         <ul class="side-menu top">
-            <li class="active">
-                <a href="#">
+            <li>
+                <a href="applicant_dashboard.php">
                     <i class='bx bxs-dashboard'></i>
                     <span class="text">Dashboard</span>
                 </a>
             </li>
-            <li>
-                <a href="scholarships.php">
+            <li class="active">
+                <a href="#">
                     <i class='bx bxs-shopping-bag-alt'></i>
                     <span class="text">Scholarship</span>
                 </a>
@@ -511,35 +511,6 @@ function formatExpireDate($dbExpireDate)
                 }
             });
         }
-
-        function showRegistrarMessageModal(messageId, applicationId, registrarId) {
-            console.log("messageId:", messageId);
-            console.log("applicationId:", applicationId);
-            console.log("registrarId:", registrarId);
-            $.ajax({
-                url: "fetch_reg_message_content.php",
-                type: "POST",
-                data: {
-                    message_id: messageId,
-                    application_id: applicationId,
-                    registrar_id: registrarId // Send the admin_id to the server
-                },
-                success: function(response) {
-                    // Display the message content in the modal
-                    console.log(response); // Add this line to see the response in the browser's console
-                    document.getElementById("modalMessageContent").innerText = response;
-                    document.querySelector("#registrarMessageModal .modal-title").innerText = "Message from <?php echo $_SESSION['registrar_username']; ?>";
-                    openModal();
-
-                    // Now, after displaying the message, mark it as read by calling another AJAX request
-                    markAsRead(applicationId); // Call the function to mark the message as read
-                },
-                error: function() {
-                    alert("Failed to fetch message content.");
-                }
-            });
-        }
-
 
 
 
