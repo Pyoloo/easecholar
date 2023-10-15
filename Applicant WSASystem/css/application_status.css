@@ -51,6 +51,18 @@ body {
 	z-index: 2000;
 }
 
+.modal {
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	z-index: 2000;
+	display: none;
+	overflow: hidden;
+	outline: 0;
+	background-color: #0000004f;
+}
 
 /* SIDEBAR */
 #sidebar {

@@ -6,7 +6,6 @@ $user_id = $_SESSION['user_id'];
 
 if (!isset($user_id)) {
     header('location:applicant_login.php');
-    exit();
 }
 
 if (isset($_GET['logout'])) {
@@ -16,9 +15,11 @@ if (isset($_GET['logout'])) {
     exit();
 }
 
+$user_id = $_SESSION['user_id'];
+
 $select = mysqli_query($conn, "SELECT application_id, scholarship_name, date_submitted, status FROM tbl_userapp WHERE user_id = '$user_id'") or die(mysqli_error($conn));
 
-// Fetch and store the admin's username in a session variable
+
 $sqlAdmin = "SELECT username FROM tbl_admin WHERE admin_id = ?";
 $stmtAdmin = $conn->prepare($sqlAdmin);
 $stmtAdmin->bind_param("s", $_SESSION['admin_id']);
@@ -29,22 +30,9 @@ if ($resultAdmin->num_rows > 0) {
     $rowAdmin = $resultAdmin->fetch_assoc();
     $_SESSION['admin_username'] = $rowAdmin['username'];
 } else {
-    $_SESSION['admin_username'] = 'Osa'; // Replace with a default username for the admin
+    $_SESSION['admin_username'] = 'Osa';
 }
 
-// Fetch and store the registrar's username in a session variable
-$sqlRegistrar = "SELECT username FROM tbl_registrar WHERE registrar_id = ?";
-$stmtRegistrar = $conn->prepare($sqlRegistrar);
-$stmtRegistrar->bind_param("s", $_SESSION['registrar_id']);
-$stmtRegistrar->execute();
-$resultRegistrar = $stmtRegistrar->get_result();
-
-if ($resultRegistrar->num_rows > 0) {
-    $rowRegistrar = $resultRegistrar->fetch_assoc();
-    $_SESSION['registrar_username'] = $rowRegistrar['username'];
-} else {
-    $_SESSION['registrar_username'] = 'Registrar'; // Replace with a default username for the registrar
-}
 
 $applicationQuery = "SELECT application_id FROM tbl_userapp WHERE user_id = ?";
 $stmtApplication = mysqli_prepare($conn, $applicationQuery);
@@ -52,50 +40,30 @@ mysqli_stmt_bind_param($stmtApplication, "i", $user_id);
 mysqli_stmt_execute($stmtApplication);
 $applicationResult = mysqli_stmt_get_result($stmtApplication);
 
-// Check if the application exists for the logged-in user
+
 if ($applicationResult->num_rows > 0) {
     $applicationData = mysqli_fetch_assoc($applicationResult);
     $application_id = $applicationData['application_id'];
 } else {
-    // Handle the case when the application does not exist for the logged-in user
-    // You may redirect the user to a specific page or display an error message
 }
 
-// Function to update the message status as read
-function markMessageAsRead($conn, $messageId, $adminId, $registrarId)
+function markMessageAsRead($conn, $messageId, $adminId)
 {
-    if ($adminId !== null) {
-        $updateQuery = "UPDATE tbl_user_messages SET read_status = 'read' WHERE message_id = ? AND admin_id = ?";
-    } elseif ($registrarId !== null) {
-        $updateQuery = "UPDATE tbl_reg_messages SET read_status = 'read' WHERE message_id = ? AND registrar_id = ?";
-    }
-
+    $updateQuery = "UPDATE tbl_user_messages SET read_status = 'read' WHERE message_id = ? AND admin_id = ?";
     $stmtUpdate = mysqli_prepare($conn, $updateQuery);
-
-    if ($adminId !== null) {
-        mysqli_stmt_bind_param($stmtUpdate, "ii", $messageId, $adminId);
-    } elseif ($registrarId !== null) {
-        mysqli_stmt_bind_param($stmtUpdate, "ii", $messageId, $registrarId);
-    }
-
+    mysqli_stmt_bind_param($stmtUpdate, "ii", $messageId, $adminId);
     mysqli_stmt_execute($stmtUpdate);
 }
 
-// Check if the applicant clicked to read a message and mark it as read in the database
 if (isset($_GET['read_message']) && is_numeric($_GET['read_message'])) {
     $messageId = intval($_GET['read_message']);
-
-    // Determine whether the message is from an admin or registrar
-    $adminId = null; // Set to null by default
-    $registrarId = null; // Set to null by default
+    $adminId = null;
 
     if (isset($_GET['admin_id']) && is_numeric($_GET['admin_id'])) {
         $adminId = intval($_GET['admin_id']);
-    } elseif (isset($_GET['registrar_id']) && is_numeric($_GET['registrar_id'])) {
-        $registrarId = intval($_GET['registrar_id']);
     }
 
-    markMessageAsRead($conn, $messageId, $adminId, $registrarId);
+    markMessageAsRead($conn, $messageId, $adminId);
 }
 
 $userInfoQuery = "SELECT full_name FROM tbl_user WHERE user_id = ?";
@@ -109,7 +77,6 @@ if ($rowUserInfo = mysqli_fetch_assoc($resultUserInfo)) {
 } else {
     $full_name = "Unknown User";
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -121,26 +88,30 @@ if ($rowUserInfo = mysqli_fetch_assoc($resultUserInfo)) {
 
     <!-- Boxicons -->
     <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+
     <!-- My CSS -->
-    <link rel="stylesheet" href="css/application_status.css">
+    <link rel="stylesheet" href="css/style.css">
 
     <title>ApplicantModule</title>
 </head>
+
 <body>
 
 
     <!-- SIDEBAR -->
     <section id="sidebar">
-        <a class="brand">
+        <div class="brand">
             <img src="../img/isulogo.png">
             <span class="name-hub"><?= $full_name; ?></span>
-        </a>
+        </div>
         <ul class="side-menu top">
-            <li>
-                <a href="applicant_dashboard.php">
+            <li class="active">
+                <a href="#">
                     <i class='bx bxs-dashboard'></i>
                     <span class="text">Dashboard</span>
                 </a>
@@ -148,21 +119,21 @@ if ($rowUserInfo = mysqli_fetch_assoc($resultUserInfo)) {
             <li>
                 <a href="scholarships.php">
                     <i class='bx bxs-shopping-bag-alt'></i>
-                    <span class="text">Scholarships</span>
+                    <span class="text">Scholarship</span>
                 </a>
             </li>
-            <li class="active">
-                <a href="#">
-                <i class='bx bxs-file' ></i>
+            <li>
+                <a href="application_status.php">
+                    <i class='bx bxs-file'></i>
                     <span class="text">Application</span>
                 </a>
             </li>
         </ul>
         <ul class="side-menu">
             <li>
-                <a href="applicant_logout.php" class="logout">
+                <a href="#" class="logout">
                     <i class='bx bxs-log-out-circle'></i>
-                    <span class="text">Logout</span>
+                    <span class="text" onclick="confirmLogout()">Logout</span>
                 </a>
             </li>
         </ul>
@@ -174,6 +145,7 @@ if ($rowUserInfo = mysqli_fetch_assoc($resultUserInfo)) {
     <!-- CONTENT -->
     <section id="content">
         <!-- NAVBAR -->
+        <!-- NAVBAR -->
         <nav>
             <div class="menu">
                 <i class='bx bx-menu'></i>
@@ -183,27 +155,34 @@ if ($rowUserInfo = mysqli_fetch_assoc($resultUserInfo)) {
                 <div class="notif">
                     <div class="notification">
                         <?php
-                        // Query to fetch the count of unread messages for the logged-in applicant's application
-                        $userMessageCountQuery = "SELECT COUNT(*) AS count FROM tbl_user_messages WHERE application_id = ? AND read_status = 'unread'";
-                        $regMessageCountQuery = "SELECT COUNT(*) AS count FROM tbl_reg_messages WHERE application_id = ? AND read_status = 'unread'";
+                        $user_id = $_SESSION['user_id'];
 
-                        // Fetch user message count
-                        $stmtUserMessageCount = mysqli_prepare($conn, $userMessageCountQuery);
-                        mysqli_stmt_bind_param($stmtUserMessageCount, "i", $application_id);
-                        mysqli_stmt_execute($stmtUserMessageCount);
-                        $userMessageCountData = mysqli_fetch_assoc(mysqli_stmt_get_result($stmtUserMessageCount));
-                        $userMessageCount = $userMessageCountData['count'];
+                        // Initialize the total notification count
+                        $totalNotificationCount = 0;
 
-                        // Fetch registrar message count
-                        $stmtRegMessageCount = mysqli_prepare($conn, $regMessageCountQuery);
-                        mysqli_stmt_bind_param($stmtRegMessageCount, "i", $application_id);
-                        mysqli_stmt_execute($stmtRegMessageCount);
-                        $regMessageCountData = mysqli_fetch_assoc(mysqli_stmt_get_result($stmtRegMessageCount));
-                        $regMessageCount = $regMessageCountData['count'];
+                        // Step 1: Fetch a list of application IDs for the user
+                        $applicationIdsQuery = "SELECT application_id FROM tbl_userapp WHERE user_id = ?";
+                        $stmtApplicationIds = mysqli_prepare($conn, $applicationIdsQuery);
+                        mysqli_stmt_bind_param($stmtApplicationIds, "i", $user_id);
+                        mysqli_stmt_execute($stmtApplicationIds);
+                        $applicationIdsResult = mysqli_stmt_get_result($stmtApplicationIds);
 
-                        $totalNotificationCount = $userMessageCount + $regMessageCount;
+                        // Step 2: Loop through application IDs and fetch counts for each application
+                        while ($applicationData = mysqli_fetch_assoc($applicationIdsResult)) {
+                            $application_id = $applicationData['application_id'];
 
-                        // Show the notification count only if there are new messages
+                            $userMessageCountQuery = "SELECT COUNT(*) AS count FROM tbl_user_messages WHERE application_id = ? AND read_status = 'unread'";
+
+                            $stmtUserMessageCount = mysqli_prepare($conn, $userMessageCountQuery);
+                            mysqli_stmt_bind_param($stmtUserMessageCount, "i", $application_id);
+                            mysqli_stmt_execute($stmtUserMessageCount);
+                            $userMessageCountData = mysqli_fetch_assoc(mysqli_stmt_get_result($stmtUserMessageCount));
+                            $userMessageCount = $userMessageCountData['count'];
+
+                            // Add the count to the total count
+                            $totalNotificationCount += $userMessageCount;
+                        }
+
                         if ($totalNotificationCount > 0) {
                             echo '<i id="bellIcon" class="bx bxs-bell"></i>';
                             echo '<span class="num">' . $totalNotificationCount . '</span>';
@@ -213,6 +192,7 @@ if ($rowUserInfo = mysqli_fetch_assoc($resultUserInfo)) {
                         }
                         ?>
                     </div>
+
 
                     <?php
                     function formatSentAt($dbSentAt)
@@ -225,56 +205,56 @@ if ($rowUserInfo = mysqli_fetch_assoc($resultUserInfo)) {
                     <div class="dropdown">
                         <div class="notif-label"><i style="margin-right: 50px;" class='bx bxs-bell'></i>Notifications</div>
                         <?php
-                        // Query to fetch messages for the logged-in applicant's application
-                        $notificationsQuery = "
-                        SELECT message_id, application_id, admin_id, null as registrar_id, osa_message_content as message_content, sent_at
-                        FROM tbl_user_messages WHERE application_id = ?
-                        UNION
-                        SELECT message_id, application_id, null as admin_id, registrar_id, registrar_message_content as message_content, sent_at
-                        FROM tbl_reg_messages WHERE application_id = ?
-                        ORDER BY sent_at DESC";
-                        $stmtNotifications = mysqli_prepare($conn, $notificationsQuery);
-                        mysqli_stmt_bind_param($stmtNotifications, "ii", $application_id, $application_id);
-                        mysqli_stmt_execute($stmtNotifications);
-                        $notificationsResult = mysqli_stmt_get_result($stmtNotifications);
+                        $applicationIdsQuery = "SELECT application_id FROM tbl_userapp WHERE user_id = ?";
+                        $stmtApplicationIds = mysqli_prepare($conn, $applicationIdsQuery);
+                        mysqli_stmt_bind_param($stmtApplicationIds, "i", $user_id);
+                        mysqli_stmt_execute($stmtApplicationIds);
+                        $applicationIdsResult = mysqli_stmt_get_result($stmtApplicationIds);
 
+                        while ($applicationData = mysqli_fetch_assoc($applicationIdsResult)) {
+                            $application_id = $applicationData['application_id'];
 
-                        while ($row = mysqli_fetch_assoc($notificationsResult)) {
+                            $notificationsQuery = "
+                                SELECT message_id, application_id, admin_id, osa_message_content, sent_at
+                                FROM tbl_user_messages
+                                WHERE user_id = ? AND application_id = ?
+                                ORDER BY sent_at DESC
+                            ";
+
+                            $stmtNotifications = mysqli_prepare($conn, $notificationsQuery);
+                            mysqli_stmt_bind_param($stmtNotifications, "ii", $user_id, $application_id);
+                            mysqli_stmt_execute($stmtNotifications);
+                            $notificationsResult = mysqli_stmt_get_result($stmtNotifications);
+
+                            while ($row = mysqli_fetch_assoc($notificationsResult)) {
                         ?>
-                            <div class="notify_item" data-message-id="<?php echo $row['message_id']; ?>" data-application-id="<?php echo $row['application_id']; ?>" data-admin-id="<?php echo $row['admin_id']; ?>" data-registrar-id="<?php echo $row['registrar_id']; ?>">
-                                <div class="notify_img">
-                                    <?php
-                                    // Before accessing 'profile', check if it exists in the session
-                                    if (isset($_SESSION['profile'])) {
-                                        $admin_image = $_SESSION['profile'];
-                                    } else {
-                                        // Set a default value or handle the case when 'profile' is not set in the session
-                                        $admin_image = 'img/default-avatar.png'; // Replace with the default image name or path
-                                    }
-                                    ?>
-                                    <img src='img/<?php echo $admin_image; ?>' alt="" style="width: 50px">
-                                </div>
-                                <div class="notify_info">
-                                    <a href="#" onclick="showMessageModal(<?php echo $row['message_id']; ?>, <?php echo $row['application_id']; ?>,
-                                        <?php echo $row['admin_id']; ?>)">
+                                <div class="notify_item" data-message-id="<?php echo $row['message_id']; ?>" data-application-id="<?php echo $row['application_id']; ?>" data-admin-id="<?php echo $row['admin_id']; ?>">
+                                    <div class="notify_img">
                                         <?php
-                                        if (!empty($row['admin_id'])) {
-                                            echo '<p>You received a new message from <span> ' . $_SESSION['admin_username'] . '.</span></p>';
+                                        // Before accessing 'profile', check if it exists in the session
+                                        if (isset($_SESSION['profile'])) {
+                                            $admin_image = $_SESSION['profile'];
+                                        } else {
+                                            $admin_image = 'img/default-avatar.png';
                                         }
                                         ?>
-                                    </a>
-                                    <a href="#" onclick="showRegistrarMessageModal(<?php echo $row['message_id']; ?>, <?php echo $row['application_id']; ?>,
-                                        <?php echo $row['registrar_id']; ?>)">
-                                        <?php
-                                        if (!empty($row['registrar_id'])) {
-                                            echo '<p>You received a new message from <span> ' . $_SESSION['registrar_username'] . '. </span></p>';
-                                        }
-                                        ?>
-                                    </a>
-                                    <span class="notify_time"><?php echo formatSentAt($row['sent_at']); ?></span>
+                                        <img src='img/<?php echo $admin_image; ?>' alt="" style="width: 50px">
+                                    </div>
+                                    <div class="notify_info">
+                                        <a href="#" onclick="showMessageModal(<?php echo $row['message_id']; ?>, <?php echo $row['application_id']; ?>, <?php echo $row['admin_id']; ?>)">
+                                            <?php
+                                            if (!empty($row['admin_id'])) {
+                                                echo '<p>You received a new message from <span> ' . $_SESSION['admin_username'] . '.</span></p>';
+                                            }
+                                            ?>
+                                        </a>
+                                        <span class="notify_time"><?php echo formatSentAt($row['sent_at']); ?></span>
+                                    </div>
                                 </div>
-                            </div>
-                        <?php } ?>
+                        <?php
+                            }
+                        }
+                        ?>
                     </div>
                 </div>
 

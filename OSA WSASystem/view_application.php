@@ -26,6 +26,8 @@ if (isset($_GET['logout'])) {
     exit();
 }
 
+$user_id = isset($_POST['user_id']) ? $_POST['user_id'] : ''; 
+
 if (isset($_GET['id'])) {
     $application_id = $_GET['id'];
 
@@ -82,9 +84,9 @@ if (isset($_GET['id'])) {
 if (isset($_POST['message_content'])) {
     $message_content = $_POST['message_content'];
 
-    // Insert the message into 'tbl_user_messages' using prepared statement
-    $insertQuery = "INSERT INTO `tbl_user_messages` (`application_id`, `admin_id`, `osa_message_content`, `sent_at`, `read_status`)
-                    VALUES (?, ?, ?, NOW(), 'unread')";
+    $insertQuery = "INSERT INTO `tbl_user_messages` (`application_id`, `admin_id`, `user_id`, `osa_message_content`, `sent_at`, `read_status`)
+                VALUES (?, ?, ?, ?, NOW(), 'unread')";
+
     $insertStmt = mysqli_prepare($conn, $insertQuery);
 
     if (!$insertStmt) {
@@ -92,7 +94,7 @@ if (isset($_POST['message_content'])) {
         exit();
     }
 
-    mysqli_stmt_bind_param($insertStmt, "iis", $application_id, $admin_id, $message_content);
+    mysqli_stmt_bind_param($insertStmt, "iiis", $application_id, $admin_id, $user_id, $message_content);
     $insertResult = mysqli_stmt_execute($insertStmt);
 
     if ($insertResult) {
@@ -383,6 +385,7 @@ function sendEmailNotification($toEmail, $toName, $subject, $body)
                     <h3>Send Message to Applicant</h3>
                     <form method="post" action="view_application.php?id=<?php echo $application_id; ?>">
                         <div class="message-form">
+                        <input type="hidden" name="user_id" value="<?php echo $applicationData['user_id']; ?>">
                             <input type="hidden" name="application_id" value="<?php echo $application_id; ?>">
                             <input type="hidden" name="admin_id" value="<?php echo $admin_id; ?>"> <!-- Add this line -->
                             <div class="message-box-container">
