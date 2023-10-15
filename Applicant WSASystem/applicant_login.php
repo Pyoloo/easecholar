@@ -14,8 +14,8 @@ if (isset($_POST['submit'])) {
     $result = mysqli_stmt_get_result($query);
 
     if (isset($_POST['remember_me'])) {
-        setcookie('applicant_remember_user', $username, time() + (30 * 24 * 3600), '/');
-        setcookie('applicant_remember_password', $password, time() + (30 * 24 * 3600), '/');
+        setcookie('student_remember_user', $username, time() + (30 * 24 * 3600), '/');
+        setcookie('student_remember_password', $password, time() + (30 * 24 * 3600), '/');
     }
 
     if ($row = mysqli_fetch_assoc($result)) {
@@ -160,8 +160,7 @@ if (isset($_POST['submit'])) {
                 <span class="input-container-addon">
                     <i class="fa fa-envelope-square"></i>
                 </span>
-                <input class="input-style" name="email_or_student_num" type="text" placeholder="Email or Student Number" required
-    value="<?php echo isset($_COOKIE['applicant_remember_user']) ? htmlspecialchars($_COOKIE['applicant_remember_user']) : ''; ?>">
+                <input class="input-style" name="email_or_student_num" type="text" placeholder="Email or Student Number" required value="<?php echo isset($_COOKIE['student_remember_user']) ? htmlspecialchars($_COOKIE['student_remember_user']) : ''; ?>">
             </div>
 
 
@@ -169,16 +168,15 @@ if (isset($_POST['submit'])) {
                 <span class="input-container-addon">
                     <i class="fa fa-lock"></i>
                 </span>
-                <input class="input-style" id="password" name="password" type="password" placeholder="LRN's number" required
-    value="<?php echo isset($_COOKIE['applicant_remember_password']) ? htmlspecialchars($_COOKIE['applicant_remember_password']) : ''; ?>">
+                <input class="input-style" id="password" name="password" type="password" placeholder="LRN's number" required value="<?php echo isset($_COOKIE['student_remember_password']) ? htmlspecialchars($_COOKIE['student_remember_password']) : ''; ?>">
             </div>
 
             <label class="show-password" for="show-password">
                 <input type="checkbox" id="show-password"> Show LRN's Number
             </label>
             <label class="show-password" for="remember-me">
-    <input type="checkbox" id="remember-me" name="remember_me"> Remember Me
-</label>
+                <input type="checkbox" id="remember-me" name="remember_me"> Remember Me
+            </label>
 
 
             <div class="button">
@@ -198,4 +196,5 @@ if (isset($_POST['submit'])) {
         });
     </script>
 </body>
+
 </html>
