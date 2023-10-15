@@ -116,7 +116,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $newFileName = uniqid();
                 $newFileName .= '.' . $imageExtension;
 
-                // Upload the file to the specified target directory
                 if (move_uploaded_file($tmpName, $targetDirectory . $newFileName)) {
                     $uploadedFiles[] = $newFileName;
                 }
