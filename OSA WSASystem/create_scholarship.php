@@ -65,10 +65,8 @@ if (!$isEmptyField) {
   $stmt->bind_param("ssssss", $scholarship, $details, $requirementsString, $benefitsString, $scholarship_status, $expire_date);
 
   if ($stmt->execute()) {
-    // Database insertion successful
     $successMessage = 'You have created successfully';
   } else {
-    // Database insertion failed
     $error_message = "Database error: " . $stmt->error;
   }
 
@@ -95,7 +93,6 @@ if (!$isEmptyField) {
     <?php
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
   if (empty($expire_date)) {
-      // Show the error message for an empty expiration date
       echo '<script>
           Swal.fire({
               icon: "error",
@@ -107,7 +104,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       </script>';
   } elseif (!empty($error_message) && strtotime($expire_date) <= time()) {
 
-      // Show the error message for an invalid date
       echo '<script>
             Swal.fire({
                 icon: "error",

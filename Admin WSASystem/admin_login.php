@@ -10,8 +10,8 @@ if (isset($_POST['submit'])) {
     $row = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM tbl_super_admin WHERE username = '$username'"));
 
     if (isset($_POST['remember_me'])) {
-        setcookie('admin_remember_user', $username, time() + (30 * 24 * 3600), '/');
-        setcookie('admin_remember_password', $password, time() + (30 * 24 * 3600), '/');
+        setcookie('remember_user', $username, time() + (30 * 24 * 3600), '/');
+        setcookie('remember_password', $password, time() + (30 * 24 * 3600), '/');
     }
 
     if ($row && $password == $row['password']) {
@@ -107,19 +107,18 @@ if (isset($_POST['submit'])) {
                 <a href="user_login.php" class="active">Login</a>
             </div>
             <div class="input-container">
-    <span class="input-container-addon">
-        <i class="fa fa-envelope-square"></i>
-    </span>
-    <input class="input-style" name="admin_username" type="text" placeholder="Enter your Username" required value="<?php echo isset($_COOKIE['admin_remember_user']) ? htmlspecialchars($_COOKIE['admin_remember_user']) : ''; ?>">
-</div>
+                <span class="input-container-addon">
+                    <i class="fa fa-envelope-square"></i>
+                </span>
+                <input class="input-style" name="username" type="text" placeholder="Enter your Username" required value="<?php echo isset($_COOKIE['remember_user']) ? htmlspecialchars($_COOKIE['remember_user']) : ''; ?>">
+            </div>
 
-<div class="input-container">
-    <span class="input-container-addon">
-        <i class="fa fa-lock"></i>
-    </span>
-    <input class="input-style" id="password" name="admin_password" type="password" placeholder="Enter password" required value="<?php echo isset($_COOKIE['admin_remember_password']) ? htmlspecialchars($_COOKIE['admin_remember_password']) : ''; ?>">
-</div>
-
+            <div class="input-container">
+                <span class="input-container-addon">
+                    <i class="fa fa-lock"></i>
+                </span>
+                <input class="input-style" id="password" name="password" type="password" placeholder="Enter password" required value="<?php echo isset($_COOKIE['remember_password']) ? htmlspecialchars($_COOKIE['remember_password']) : ''; ?>">
+            </div>
             <label class="show-password" for="show-password">
                 <input type="checkbox" id="show-password"> Show Password
             </label>
