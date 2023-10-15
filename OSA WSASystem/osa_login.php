@@ -14,9 +14,8 @@ if (isset($_POST['submit'])) {
     $row = mysqli_fetch_assoc($result);
 
     if (isset($_POST['remember_me'])) {
-        // Set cookies with user credentials
-        setcookie('remember_user', $usernameOrEmail, time() + (30 * 24 * 3600), '/');
-        setcookie('remember_password', $password, time() + (30 * 24 * 3600), '/');
+        setcookie('osa_remember_user', $username, time() + (30 * 24 * 3600), '/');
+        setcookie('osa_remember_password', $password, time() + (30 * 24 * 3600), '/');
     }
 
     if ($row) {
@@ -131,14 +130,14 @@ if (isset($_POST['submit'])) {
                 <span class="input-container-addon">
                     <i class="fa fa-user"></i>
                 </span>
-                <input class="input-style" name="username_or_email" type="text" placeholder="Username or Email" required <?php if (isset($_POST['username_or_email'])) echo 'value="' . htmlspecialchars($_POST['username_or_email']) . '"'; ?> value="<?php echo isset($_COOKIE['remember_user']) ? htmlspecialchars($_COOKIE['remember_user']) : ''; ?>">
+                <input class="input-style" name="username_or_email" type="text" placeholder="Username or Email" required <?php if (isset($_POST['username_or_email'])) echo 'value="' . htmlspecialchars($_POST['username_or_email']) . '"'; ?> value="<?php echo isset($_COOKIE['osa_remember_user']) ? htmlspecialchars($_COOKIE['osa_remember_user']) : ''; ?>">
             </div>
 
             <div class="input-container">
                 <span class="input-container-addon">
                     <i class="fa fa-lock"></i>
                 </span>
-                <input class="input-style" id="password" name="password" type="password" placeholder="Enter password" required value="<?php echo isset($_COOKIE['remember_password']) ? htmlspecialchars($_COOKIE['remember_password']) : ''; ?>">
+                <input class="input-style" id="password" name="password" type="password" placeholder="Enter password" required value="<?php echo isset($_COOKIE['osa_remember_password']) ? htmlspecialchars($_COOKIE['osa_remember_password']) : ''; ?>">
             </div>
 
             <label class="show-password" for="show-password">

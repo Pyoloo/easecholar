@@ -14,9 +14,8 @@ if (isset($_POST['submit'])) {
     $result = mysqli_stmt_get_result($query);
 
     if (isset($_POST['remember_me'])) {
-        // Set cookies with user credentials
-        setcookie('remember_user', $emailOrStudentNum, time() + (30 * 24 * 3600), '/');
-        setcookie('remember_password', $password, time() + (30 * 24 * 3600), '/');
+        setcookie('applicant_remember_user', $username, time() + (30 * 24 * 3600), '/');
+        setcookie('applicant_remember_password', $password, time() + (30 * 24 * 3600), '/');
     }
 
     if ($row = mysqli_fetch_assoc($result)) {
@@ -162,7 +161,7 @@ if (isset($_POST['submit'])) {
                     <i class="fa fa-envelope-square"></i>
                 </span>
                 <input class="input-style" name="email_or_student_num" type="text" placeholder="Email or Student Number" required
-    value="<?php echo isset($_COOKIE['remember_user']) ? htmlspecialchars($_COOKIE['remember_user']) : ''; ?>">
+    value="<?php echo isset($_COOKIE['applicant_remember_user']) ? htmlspecialchars($_COOKIE['applicant_remember_user']) : ''; ?>">
             </div>
 
 
@@ -171,7 +170,7 @@ if (isset($_POST['submit'])) {
                     <i class="fa fa-lock"></i>
                 </span>
                 <input class="input-style" id="password" name="password" type="password" placeholder="LRN's number" required
-    value="<?php echo isset($_COOKIE['remember_password']) ? htmlspecialchars($_COOKIE['remember_password']) : ''; ?>">
+    value="<?php echo isset($_COOKIE['applicant_remember_password']) ? htmlspecialchars($_COOKIE['applicant_remember_password']) : ''; ?>">
             </div>
 
             <label class="show-password" for="show-password">
