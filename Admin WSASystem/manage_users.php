@@ -1,7 +1,8 @@
 <?php
-include '../include/connection.php';
 session_name("AdminSession");
 session_start();
+include '../include/connection.php';
+
 
 if (!isset($_SESSION['super_admin_id'])) {
   header('location: admin_login.php');

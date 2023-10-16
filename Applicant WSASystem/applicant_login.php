@@ -1,7 +1,8 @@
 <?php
-include '../include/connection.php';
 session_name("ApplicantSession");
 session_start();
+include '../include/connection.php';
+
 
 if (isset($_POST['submit'])) {
     $emailOrStudentNum = mysqli_real_escape_string($conn, $_POST['email_or_student_num']);

@@ -1,4 +1,6 @@
 <?php
+session_name("ApplicantSession");
+session_start();
 include '../include/connection.php';
 
 if (isset($_POST['message_id']) && isset($_POST['application_id']) && isset($_POST['admin_id'])) {

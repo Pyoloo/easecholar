@@ -8,9 +8,9 @@ require_once 'PHPMailer-master/src/PHPMailer.php';
 require_once 'PHPMailer-master/src/SMTP.php';
 
 
-include '../include/connection.php';
 session_name("OsaSession");
 session_start();
+include '../include/connection.php';
 
 if (!isset($_SESSION['admin_id'])) {
     header('location: osa_login.php');

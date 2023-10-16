@@ -1,7 +1,8 @@
 <?php
-include '../include/connection.php';
 session_name("OsaSession");
 session_start();
+
+include '../include/connection.php';
 
 if (isset($_POST['submit'])) {
     $usernameOrEmail = mysqli_real_escape_string($conn, $_POST['username_or_email']);

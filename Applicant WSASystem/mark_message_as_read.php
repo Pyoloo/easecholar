@@ -1,5 +1,6 @@
 <?php
-// mark_message_as_read.php
+session_name("ApplicantSession");
+session_start();
 
 include '../include/connection.php';
 

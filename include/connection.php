@@ -22,6 +22,4 @@ if (!$conn->real_connect($serverName, $username, $password, $databaseName, 3306,
     die("Connect Error: " . mysqli_connect_error());
 }
 
-// If you reach this point, the connection was successful
-echo "Connected to the database!";
 ?>

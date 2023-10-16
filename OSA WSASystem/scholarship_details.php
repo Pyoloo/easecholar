@@ -1,7 +1,8 @@
 <?php
-include '../include/connection.php';
 session_name("OsaSession");
 session_start();
+include '../include/connection.php';
+
 $admin_id = $_SESSION['admin_id'];
 
 if (!isset($admin_id)) {

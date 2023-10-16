@@ -1,6 +1,8 @@
 <?php
-include '../include/connection.php';
+session_name("ApplicantSession");
 session_start();
+include '../include/connection.php';
+
 $user_id = $_SESSION['user_id'];
 
 if (!isset($user_id)) {
