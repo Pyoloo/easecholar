@@ -21,77 +21,54 @@ if (isset($_POST['submit'])) {
         $result = mysqli_stmt_get_result($query);
 
         if (mysqli_num_rows($result) > 0) {
-            $userExistsMessage = 'Email or student number already exists';
+            $userExistsMessage = 'Email or student number already exists!';
 
             if (!empty($_FILES['image']['name'])) {
-                if (!in_array($image_type, array('image/jpeg', 'image/jpg', 'image/png'))) {
-                    $imageTypeMessage = 'Only JPEG, JPG, and PNG images are allowed.';
-                } elseif ($image_size > $maxImageSize) {
-                    $largeImageMessage = 'Image size is too large!';
-                } else {
-                    // Generate a unique filename for the uploaded image
-                    $filename = uniqid() . '_' . $image;
+        if (!in_array($image_type, array('image/jpeg', 'image/jpg', 'image/png'))) {
+            $imageTypeMessage = 'Only JPEG, JPG, and PNG images are allowed.';
+        } elseif ($image_size > $maxImageSize) {
+            $largeImageMessage = 'Image size is too large!';
+        } else {
+            $filename = uniqid() . '_' . $image;
 
-                    // Create the target path for uploading to Azure Blob Storage
-                    $targetPath = '/' . $containerName . '/' . $filename;
+            $targetDirectory = $_SERVER['DOCUMENT_ROOT'] . '/user_profiles/';
+            $targetPath = $targetDirectory . $filename;
 
-                    // Azure Blob Storage REST API integration here
-                    $storageAccountName = 'easecholar';
-                    $containerName = 'file-uploads';
-                    $sasToken = '?sv=2022-11-02&ss=bfqt&srt=sco&sp=rwdlacupiytfx&se=2023-10-16T22:45:20Z&st=2023-10-16T14:45:20Z&spr=https&sig=Z7NC7z%2BekiLp5AsRGLosLs3qTtzWKGOKQsXQYbsIPKY%3D';
+            if (move_uploaded_file($image_tmp_name, $targetPath)) {
+                if (file_exists($targetPath)) {
+                    // Insert user data into the database with the selected image
+                    $custom_id = 'ISU_' . sprintf("%03d", rand(1, 999));
+                    $insert = mysqli_prepare($conn, "INSERT INTO `tbl_user` (custom_id, full_name, student_num, email, password, image) VALUES(?, ?, ?, ?, ?, ?)");
+                    mysqli_stmt_bind_param($insert, "ssssss", $custom_id, $full_name, $student_num, $email, $password, $filename);
 
-                    $azureBlobUrl = "https://$storageAccountName.blob.core.windows.net/$containerName/$filename$sasToken";
-
-                    $ch = curl_init($azureBlobUrl);
-                    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
-                    curl_setopt($ch, CURLOPT_HTTPHEADER, [
-                        'x-ms-blob-type: BlockBlob',
-                        'Content-Type: ' . $image_type,
-                    ]);
-                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                    curl_setopt($ch, CURLOPT_POSTFIELDS, file_get_contents($image_tmp_name));
-
-                    $response = curl_exec($ch);
-                    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-                    curl_close($ch);
-
-                    if ($httpCode == 201) {
-                        // File uploaded successfully
-                        // Insert user data into the database with the Azure Blob Storage URL
-                        $custom_id = 'ISU_' . sprintf("%03d", rand(1, 999));
-                        $insert = mysqli_prepare($conn, "INSERT INTO `tbl_user` (custom_id, full_name, student_num, email, password, image) VALUES(?, ?, ?, ?, ?, ?)");
-                        mysqli_stmt_bind_param($insert, "ssssss", $custom_id, $full_name, $student_num, $email, $password, $azureBlobUrl);
-
-                        if (mysqli_stmt_execute($insert)) {
-                            $successMessage = 'Registered successfully!';
-                        } else {
-                            error_log("Error executing insert query: " . mysqli_error($conn)); // Log the SQL error
-                            $registrationFailedMessage = 'Registration failed!';
-                        }
+                    if (mysqli_stmt_execute($insert)) {
+                        $successMessage = 'Registered successfully!';
                     } else {
-                        $azureBlobErrorMessage = 'Error uploading the image to Azure Blob Storage.';
+                        error_log("Error executing insert query: " . mysqli_error($conn)); // Log the SQL error
+                        $registrationFailedMessage = 'Registration failed!';
                     }
                 }
             }
-        } else {
-            // User did not select an image, use the default avatar
-            $filename = 'default-avatar.png'; // Set to the default avatar filename
-            // Insert user data into the database with the default image
-            $custom_id = 'ISU_' . sprintf("%03d", rand(1, 999));
-            $insert = mysqli_prepare($conn, "INSERT INTO `tbl_user` (custom_id, full_name, student_num, email, password, image) VALUES(?, ?, ?, ?, ?, ?)");
-            mysqli_stmt_bind_param($insert, "ssssss", $custom_id, $full_name, $student_num, $email, $password, $filename);
-
-            if (mysqli_stmt_execute($insert)) {
-                $successMessage = 'Registered successfully!';
+        }
+    }
             } else {
-                error_log("Error executing insert query: " . mysqli_error($conn)); // Log the SQL error
-                $registrationFailedMessage = 'Registration failed!';
+                // User did not select an image, use the default avatar
+                $filename = 'default-avatar.png'; // Set to the default avatar filename
+                // Insert user data into the database with the default image
+                $custom_id = 'ISU_' . sprintf("%03d", rand(1, 999));
+                $insert = mysqli_prepare($conn, "INSERT INTO `tbl_user` (custom_id, full_name, student_num, email, password, image) VALUES(?, ?, ?, ?, ?, ?)");
+                mysqli_stmt_bind_param($insert, "ssssss", $custom_id, $full_name, $student_num, $email, $password, $filename);
+
+                if (mysqli_stmt_execute($insert)) {
+                    $successMessage = 'Registered successfully!';
+                } else {
+                    error_log("Error executing insert query: " . mysqli_error($conn)); // Log the SQL error
+                    $registrationFailedMessage = 'Registration failed!';
+                }
             }
         }
     }
-}
 ?>
-
 
 
 <!DOCTYPE html>
@@ -247,7 +224,7 @@ if (isset($_POST['submit'])) {
                 </span>
                 <input class="input-style" id="password" type="password" name="password" placeholder="LRN's number" required>
             </div>
-
+            
             <label class="show-password" for="show-password">
                 <input type="checkbox" id="show-password"> Show Password
             </label>
@@ -264,9 +241,9 @@ if (isset($_POST['submit'])) {
             var lrnNumber = document.getElementById('password').value;
 
             if (studentNum.length !== 8 || studentNum.indexOf('-') !== 2 || isNaN(studentNum.replace('-', ''))) {
-                event.preventDefault(); // Prevent form submission
-                swal("Invalid Student ID", "Student ID number must be exactly 8 characters long and formatted as 'XX-XXXXX', where X represents digits.", "error");
-            }
+    event.preventDefault(); // Prevent form submission
+    swal("Invalid Student ID", "Student ID number must be exactly 8 characters long and formatted as 'XX-XXXXX', where X represents digits.", "error");
+}
 
             // Check if the LRN number is exactly 12 digits long and contains only digits
             if (lrnNumber.length !== 12 || isNaN(lrnNumber)) {
