@@ -206,19 +206,35 @@ $rejectedCount = mysqli_query($conn, "SELECT COUNT(*) as count FROM tbl_userapp 
                     </a>
                 </li>
                 <li>
-                    <i class='bx bxs-group'></i>
-                    <?php include('../include/connection.php'); ?>
-
                     <?php
-                    $result = mysqli_query($conn, "SELECT * FROM tbl_userapp");
-                    $num_rows = mysqli_num_rows($result);
+                    include('../include/connection.php');
+
+                    $sql = "
+                    SELECT SUM(total_count) AS total FROM (
+                        SELECT COUNT(*) AS total_count FROM tbl_user
+                        UNION ALL
+                        SELECT COUNT(*) AS total_count FROM tbl_admin
+                        UNION ALL
+                        SELECT COUNT(*) AS total_count FROM tbl_super_admin
+                    ) AS combined";
+
+                    $result = mysqli_query($conn, $sql);
+
+                    if ($result) {
+                        $row = mysqli_fetch_assoc($result);
+
+                        $total_count = $row['total'];
+                    } else {
+                        echo "Error: " . mysqli_error($conn);
+                    }
                     ?>
-                    
+
+                    <i class='bx bxs-group'></i>
                     <a href="manage_users.php">
-                    <span class="text">
-                        <h3><?php echo $num_rows; ?></h3>
-                        <p>System Users</p>
-                    </span>
+                        <span class="text">
+                            <h3><?php echo $total_count; ?></h3>
+                            <p>System Users</p>
+                        </span>
                     </a>
                 </li>
                 <li>
