@@ -275,7 +275,7 @@ $select = mysqli_query($conn, "SELECT * FROM tbl_userapp") or die('query failed'
                         cancelButtonText: "Cancel"
                     }).then((result) => {
                         if (result.isConfirmed) {
-                            window.location.href = "osa_logout.php";
+                            window.location.href = "admin_logout.php";
                         }
                     });
                 }

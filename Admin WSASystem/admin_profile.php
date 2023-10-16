@@ -1,8 +1,7 @@
 <?php
+include '../include/connection.php';
 session_name("AdminSession");
 session_start();
-include '../include/connection.php';
-
 $super_admin_id = $_SESSION['super_admin_id'];
 
 if (!isset($super_admin_id)) {
